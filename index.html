@@ -1241,7 +1241,6 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 
 <script>
 (function(){
-'use strict';
 // Aplicar configuración guardada al cargar (afecta login screen)
 // Brand se aplica después de cargar el DOM (ver applyConfig al final)
 
@@ -2838,15 +2837,16 @@ function renderHistorial(){
 }
 function exportHistorial(){
   if(!S.historial||!S.historial.length){toast('Sin historial para exportar','warn');return}
-  let csv='Fecha,Tipo,Descripción,Usuario,OT
-';
-  S.historial.forEach(e=>{
-    const ot=e.otId?S.ordenes.find(o=>o.id===e.otId):null;
-    csv+='"'+new Date(e.time).toLocaleString('es-PE')+'","'+e.tipo+'","'+e.desc.replace(/"/g,"'")+'","'+e.userName+'","'+(ot?ot.ot:'')+'"
-';
+  var lines=['Fecha,Tipo,Descripcion,Usuario,OT'];
+  S.historial.forEach(function(e){
+    var ot=e.otId?S.ordenes.find(function(o){return o.id===e.otId;}):null;
+    var d=new Date(e.time).toLocaleString('es-PE');
+    var desc=(e.desc||'').replace(/,/g,';').replace(/"/g,"'");
+    lines.push(d+','+e.tipo+','+desc+','+(e.userName||'')+','+(ot?ot.ot:''));
   });
-  const b=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Historial_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+  var csv=lines.join('\n');
+  var b=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Historial_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -3060,36 +3060,23 @@ function openWhatsApp(otId){
   openM('m-whatsapp');
 }
 function buildWAMsg(tipo,o,ow){
-  const fecha=new Date().toLocaleDateString('es-PE');
-  const cfg2=loadConfig(); const base='*'+(cfg2.waNombre||'ElectricaPro')+' — Notificación*
-📅 '+fecha+'
-
-';
-  if(tipo==='OT_CREADA')    return base+'✅ *Nueva OT creada*
-📋 OT: '+(o?o.ot:'—')+'
-👤 Asignado a: '+(ow?ow.nombre:'—')+'
-📍 Zona: '+(o?o.zona:'—')+'
-⚡ Alimentador: '+(o?o.alimentador:'—')+'
-
-Por favor revisar en ElectricaPro.';
-  if(tipo==='OT_COMPLETADA') return base+'🎉 *OT Completada*
-📋 OT: '+(o?o.ot:'—')+'
-👤 Técnico: '+(ow?ow.nombre:'—')+'
-
-Trabajo finalizado exitosamente.';
-  if(tipo==='OT_OBSERVADA')  return base+'⚠️ *OT con Observaciones*
-📋 OT: '+(o?o.ot:'—')+'
-Se requiere revisión y corrección de observaciones.';
+  var cfg2=loadConfig();
+  var appNm=cfg2.waNombre||'ElectricaPro';
+  var fecha=new Date().toLocaleDateString('es-PE');
+  var base='*'+appNm+' - Notificacion*\n Fecha: '+fecha+'\n\n';
+  var otNm=o?o.ot:'--';
+  var usrNm=ow?ow.nombre:'--';
+  var zona=o?o.zona:'--';
+  var ali=o?o.alimentador:'--';
+  if(tipo==='OT_CREADA')     return base+'Nueva OT creada\n OT: '+otNm+'\n Asignado a: '+usrNm+'\n Zona: '+zona+'\n Alimentador: '+ali+'\n\nPor favor revisar en el sistema.';
+  if(tipo==='OT_COMPLETADA') return base+'OT Completada\n OT: '+otNm+'\n Tecnico: '+usrNm+'\n\nTrabajo finalizado exitosamente.';
+  if(tipo==='OT_OBSERVADA')  return base+'OT con Observaciones\n OT: '+otNm+'\nSe requiere revision.';
   if(tipo==='RESUMEN'){
-    const total=S.ordenes.length,comp=S.ordenes.filter(x=>x.estado==='Completado').length;
-    const pct=total?Math.round(comp/total*100):0;
-    return base+'📊 *Resumen del día*
-📋 Total OT: '+total+'
-✅ Completadas: '+comp+'
-📈 Cumplimiento: '+pct+'%
-⏳ Pendientes: '+S.ordenes.filter(x=>x.estado==='Pendiente').length;
+    var total=S.ordenes.length,comp=S.ordenes.filter(function(x){return x.estado==='Completado'}).length;
+    var pct=total?Math.round(comp/total*100):0;
+    return base+'Resumen del dia\n Total OT: '+total+'\n Completadas: '+comp+'\n Cumplimiento: '+pct+'%\n Pendientes: '+S.ordenes.filter(function(x){return x.estado==='Pendiente'}).length;
   }
-  return base+'Mensaje desde ElectricaPro.';
+  return base+'Mensaje desde '+appNm+'.';
 }
 function sendWhatsApp(){
   const num=ge('wa-numero').value.replace(/[\s\-\(\)]/g,'');
