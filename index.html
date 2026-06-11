@@ -309,6 +309,10 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 #firma-canvas{display:block;background:#fff;touch-action:none}
 /* ── WHATSAPP ── */
 .wa-btn{background:#25d366!important;color:#000!important}
+/* ── CONFIG ── */
+[data-ctab].act{color:var(--ac);border-bottom-color:var(--ac);font-weight:600}
+.cfg-color-dot{transition:transform .15s}
+.cfg-color-dot:hover{transform:scale(1.2)}
 /* scrollbar */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -354,11 +358,25 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 <body>
 
 <div id="login-screen">
-  <div class="ll">
-    <svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#f0a500" fill-opacity=".15"/><path d="M28 8L14 26h12l-6 14 20-22H28L34 8H28z" fill="#f0a500"/></svg>
-    <h1>Electrica<span>Pro</span></h1>
+  <!-- LOGO + NOMBRE (dinámico) -->
+  <div class="ll" id="login-brand">
+    <div id="login-logo-wrap">
+      <svg id="login-logo-svg" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#f0a500" fill-opacity=".15"/><path d="M28 8L14 26h12l-6 14 20-22H28L34 8H28z" fill="#f0a500"/></svg>
+      <img id="login-logo-img" src="" alt="" style="display:none;width:48px;height:48px;border-radius:12px;object-fit:cover"/>
+    </div>
+    <div>
+      <h1 id="login-nombre-app">Electrica<span>Pro</span></h1>
+      <div id="login-slogan-txt" style="font-size:11px;color:var(--t2);margin-top:2px"></div>
+    </div>
   </div>
+
+  <!-- CARD LOGIN -->
   <div class="lbox">
+    <!-- Empresa info (si está configurada) -->
+    <div id="login-empresa-info" style="display:none;text-align:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--br)">
+      <div id="login-empresa-nm" style="font-size:14px;font-weight:700"></div>
+      <div id="login-empresa-ruc" style="font-size:11px;color:var(--t2)"></div>
+    </div>
     <div class="tabs">
       <button class="ltab act" id="ltab-login">Iniciar Sesión</button>
       <button class="ltab" id="ltab-recover">Recuperar Contraseña</button>
@@ -366,8 +384,10 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
     <div id="lf-login">
       <div class="field"><label>Usuario</label><input type="text" id="li-user" placeholder="tu usuario" autocomplete="username"/></div>
       <div class="field"><label>Contraseña</label><div class="pw-wrap"><input type="password" id="li-pass" placeholder="••••••••"/><button type="button" class="pw-eye" data-eye="li-pass">👁</button></div></div>
-      <button id="btn-login" class="btn bp bfull">⚡ Entrar</button>
+      <button id="btn-login" class="btn bp bfull" id="btn-login-txt">⚡ Entrar</button>
       <div class="lerr" id="li-err">Usuario o contraseña incorrectos.</div>
+      <!-- Mensaje de bienvenida personalizable -->
+      <div id="login-welcome-msg" style="display:none;margin-top:12px;text-align:center;font-size:12px;color:var(--t2);line-height:1.5;padding:8px;background:var(--s3);border-radius:var(--r)"></div>
     </div>
     <div id="lf-recover" style="display:none">
       <div class="field"><label>Usuario</label><input type="text" id="rc-user" placeholder="tu nombre de usuario"/></div>
@@ -381,8 +401,116 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       <div class="lsuc" id="rc-suc">✅ Contraseña cambiada. Ya puedes iniciar sesión.</div>
     </div>
   </div>
-  <p style="color:var(--t3);font-size:12px;margin-top:14px">Admin: <b style="color:var(--t2)">admin</b> / <b style="color:var(--t2)">admin123</b></p>
+  <!-- Footer de login -->
+  <div id="login-footer-area" style="margin-top:14px;text-align:center">
+    <p style="color:var(--t3);font-size:11px" id="login-footer-txt">Sistema de Gestión de Trabajos Eléctricos</p>
+    <p style="color:var(--t3);font-size:11px;margin-top:3px" id="login-version-txt">v2.0</p>
+  </div>
+</div>
 
+<!-- MODAL PERSONALIZAR EMPRESA -->
+<div class="mover" id="m-config">
+  <div class="modal" style="max-width:500px">
+    <div class="mh"><h3>⚙️ Configuración de la Plataforma</h3><button class="mc" data-close="m-config">✕</button></div>
+    <div class="mb">
+      <!-- TABS de configuración -->
+      <div class="tabs" style="margin-bottom:16px">
+        <button class="ltab act" data-ctab="marca">🏢 Marca</button>
+        <button class="ltab" data-ctab="login">🔐 Login</button>
+        <button class="ltab" data-ctab="sistema">⚙️ Sistema</button>
+      </div>
+
+      <!-- TAB MARCA -->
+      <div id="ctab-marca">
+        <div class="field">
+          <label>Nombre de la plataforma</label>
+          <input type="text" id="cfg-nombre" placeholder="Ej: GestiónElec, MiEmpresaPro..."/>
+          <div style="font-size:10px;color:var(--t2);margin-top:3px">Este nombre aparece en el logo, topbar, reportes y PDFs</div>
+        </div>
+        <div class="field">
+          <label>Slogan / Descripción breve</label>
+          <input type="text" id="cfg-slogan" placeholder="Ej: Gestión de Trabajos Eléctricos"/>
+        </div>
+        <div class="field">
+          <label>Color principal</label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <input type="color" id="cfg-color" value="#f0a500" style="width:48px;height:36px;border-radius:var(--r);border:1px solid var(--br);cursor:pointer;background:none;padding:2px"/>
+            <div style="display:flex;gap:6px;flex-wrap:wrap" id="cfg-color-presets">
+              <div data-color="#f0a500" style="width:24px;height:24px;border-radius:50%;background:#f0a500;cursor:pointer;border:2px solid transparent" title="Naranja"></div>
+              <div data-color="#388bfd" style="width:24px;height:24px;border-radius:50%;background:#388bfd;cursor:pointer;border:2px solid transparent" title="Azul"></div>
+              <div data-color="#3fb950" style="width:24px;height:24px;border-radius:50%;background:#3fb950;cursor:pointer;border:2px solid transparent" title="Verde"></div>
+              <div data-color="#f85149" style="width:24px;height:24px;border-radius:50%;background:#f85149;cursor:pointer;border:2px solid transparent" title="Rojo"></div>
+              <div data-color="#a371f7" style="width:24px;height:24px;border-radius:50%;background:#a371f7;cursor:pointer;border:2px solid transparent" title="Morado"></div>
+              <div data-color="#e8973a" style="width:24px;height:24px;border-radius:50%;background:#e8973a;cursor:pointer;border:2px solid transparent" title="Cobre"></div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Logo personalizado (imagen)</label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div id="cfg-logo-preview" style="width:52px;height:52px;border-radius:12px;background:var(--s3);border:1px solid var(--br);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden">⚡</div>
+            <div style="flex:1">
+              <label class="btn bs" style="cursor:pointer;font-size:12px;display:inline-flex">
+                📷 Subir logo
+                <input type="file" id="cfg-logo-file" accept="image/*" style="display:none"/>
+              </label>
+              <button class="btn bs" id="cfg-logo-clear" style="font-size:12px;margin-left:6px">✕ Quitar</button>
+              <div style="font-size:10px;color:var(--t3);margin-top:4px">PNG, JPG — aparecerá en el login y en la barra superior</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB LOGIN -->
+      <div id="ctab-login" style="display:none">
+        <div class="field">
+          <label>Nombre de la empresa</label>
+          <input type="text" id="cfg-empresa" placeholder="Ej: Distribuidora Eléctrica SAC"/>
+        </div>
+        <div class="field">
+          <label>RUC / Código de empresa</label>
+          <input type="text" id="cfg-ruc" placeholder="Ej: RUC 20123456789"/>
+        </div>
+        <div class="field">
+          <label>Mensaje de bienvenida (aparece bajo el botón Entrar)</label>
+          <textarea id="cfg-welcome" placeholder="Ej: Bienvenido al sistema de gestión. Para soporte contactar a IT al 999-999-999." style="min-height:70px"></textarea>
+        </div>
+        <div class="field">
+          <label>Texto del botón de ingreso</label>
+          <input type="text" id="cfg-btn-txt" placeholder="Ej: Ingresar al sistema, Acceder..."/>
+        </div>
+        <div class="field">
+          <label>Pie de página del login</label>
+          <input type="text" id="cfg-footer" placeholder="Ej: © 2024 Mi Empresa SAC — Todos los derechos reservados"/>
+        </div>
+        <div class="field">
+          <label>Versión</label>
+          <input type="text" id="cfg-version" placeholder="Ej: v2.0, Beta, 2024"/>
+        </div>
+      </div>
+
+      <!-- TAB SISTEMA -->
+      <div id="ctab-sistema" style="display:none">
+        <div class="field">
+          <label>Nombre en reportes e impresiones</label>
+          <input type="text" id="cfg-rep-nombre" placeholder="Aparece en el encabezado de los PDFs"/>
+        </div>
+        <div class="field">
+          <label>Nombre en notificaciones WhatsApp</label>
+          <input type="text" id="cfg-wa-nombre" placeholder="Aparece en los mensajes de WhatsApp"/>
+        </div>
+        <div style="background:var(--s3);border-radius:var(--r);padding:12px;font-size:12px;color:var(--t2);line-height:1.7">
+          <b style="color:var(--tx)">Vista previa del encabezado de reportes:</b><br>
+          <span id="cfg-preview-rep" style="color:var(--ac)">⚡ ElectricaPro</span><br>
+          <span style="font-size:10px">Sistema de Gestión Eléctrica</span>
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" data-close="m-config">Cancelar</button>
+      <button class="btn bp" id="btn-save-config">💾 Guardar configuración</button>
+    </div>
+  </div>
 </div>
 
 <div id="app">
@@ -393,11 +521,12 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       <div class="nav-sep"></div>
       <button id="btn-fwd" title="Adelante" disabled>&#8594;</button>
     </div>
-    <div class="tlogo">⚡ Electrica<span>Pro</span></div>
+    <div class="tlogo" id="topbar-brand-name">⚡ Electrica<span>Pro</span></div>
     <div class="tsep"></div>
     <input type="text" id="gsearch" placeholder="🔍 Buscar OT..."/>
     <button id="theme-btn" title="Cambiar tema">🌙</button>
     <button id="btn-print-top" class="btn bi" title="Imprimir" style="width:34px;height:34px">🖨️</button>
+    <button id="btn-config-top" class="btn bi" title="Configurar plataforma" style="width:34px;height:34px;display:none">⚙️</button>
     <button class="btn bi nbell" id="btn-notif" style="position:relative;width:34px;height:34px">🔔<span class="ndot" id="ndot"></span></button>
     <div class="ubadge" id="user-badge-top">
       <div class="uav" id="tb-av">A</div>
@@ -1113,6 +1242,8 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 <script>
 (function(){
 'use strict';
+// Aplicar configuración guardada al cargar (afecta login screen)
+// Brand se aplica después de cargar el DOM (ver applyConfig al final)
 
 const CHECKLIST=[
   'Acta de Conformidad','Hoja de Residuos','Inspeccion Previa',
@@ -1266,6 +1397,9 @@ function showApp(){
   const u=S.user;
   ge('tb-av').textContent=u.nombre[0].toUpperCase();ge('tb-nm').textContent=u.nombre;
   ge('anav').style.display=getRol(u.rol).canManageUsers?'block':'none';
+  // Mostrar botón de configuración solo a admin
+  const cfgBtn=ge('btn-config-top');
+  if(cfgBtn) cfgBtn.style.display=u.rol==='admin'?'flex':'none';
   // On mobile, sidebar starts hidden
   if(window.innerWidth<768)ge('sidebar').classList.remove('show-mobile');
   else ge('sidebar').classList.remove('hidden');
@@ -2530,7 +2664,7 @@ function doPrint(){
 function printHeader(title,subtitle){
   const now=new Date().toLocaleString('es-PE');
   return '<div class="print-header">'+
-    '<div><div class="print-logo">⚡ ElectricaPro</div><div style="font-size:10px;color:#888;margin-top:2px">Sistema de Gestión Eléctrica</div></div>'+
+    (function(){const cfg=Object.assign({nombre:'ElectricaPro',repNombre:'ElectricaPro'},JSON.parse(localStorage.getItem('ep_config')||'{}'));return '<div><div class="print-logo">⚡ '+(cfg.repNombre||cfg.nombre||'ElectricaPro')+'</div><div style="font-size:10px;color:#888;margin-top:2px">'+(cfg.slogan||'Sistema de Gestión Eléctrica')+'</div></div>'})()+
     '<div><div class="print-title">'+title+'</div><div class="print-subtitle">'+subtitle+'<br>Impreso: '+now+'</div></div>'+
   '</div>';
 }
@@ -2927,7 +3061,7 @@ function openWhatsApp(otId){
 }
 function buildWAMsg(tipo,o,ow){
   const fecha=new Date().toLocaleDateString('es-PE');
-  const base='*ElectricaPro — Notificación*
+  const cfg2=loadConfig(); const base='*'+(cfg2.waNombre||'ElectricaPro')+' — Notificación*
 📅 '+fecha+'
 
 ';
@@ -3041,6 +3175,148 @@ saveSubFiles=function(){
   _origSaveSubFiles();
   if(n>0) logEvent('ARCHIVO_SUBIDO',n+' archivo(s) subidos a carpeta "'+sf+'"',otId);
 };
+
+
+// ═══════════════════════════════════════════════════════
+// ── CONFIGURACIÓN DE MARCA / PLATAFORMA ──
+// ═══════════════════════════════════════════════════════
+const CFG_KEY = 'ep_config';
+const CFG_DEF = {
+  nombre: 'ElectricaPro',
+  slogan: 'Gestión de Trabajos Eléctricos',
+  color: '#f0a500',
+  logoData: null,
+  empresa: '',
+  ruc: '',
+  welcome: '',
+  btnTxt: '⚡ Entrar',
+  footer: 'Sistema de Gestión de Trabajos Eléctricos',
+  version: 'v2.0',
+  repNombre: 'ElectricaPro',
+  waNombre: 'ElectricaPro',
+};
+function loadConfig(){ try{return Object.assign({},CFG_DEF,JSON.parse(localStorage.getItem(CFG_KEY)||'{}'))}catch(e){return {...CFG_DEF}} }
+function saveConfig(cfg){ try{localStorage.setItem(CFG_KEY,JSON.stringify(cfg))}catch(e){} }
+
+function applyConfig(){
+  const cfg = loadConfig();
+  // Aplicar color principal
+  document.documentElement.style.setProperty('--ac', cfg.color);
+  document.documentElement.style.setProperty('--ac2', shadeColor(cfg.color, -15));
+  // Login: nombre
+  const loginNm = ge('login-nombre-app');
+  if(loginNm){
+    // Dividir nombre en dos partes: primera mitad normal, segunda en color
+    const nm = cfg.nombre || 'ElectricaPro';
+    const half = Math.ceil(nm.length/2);
+    loginNm.innerHTML = nm.slice(0,half) + '<span>' + nm.slice(half) + '</span>';
+  }
+  // Login: slogan
+  const sl = ge('login-slogan-txt');
+  if(sl) sl.textContent = cfg.slogan || '';
+  // Login: logo
+  const svg = ge('login-logo-svg'), img = ge('login-logo-img');
+  if(cfg.logoData && img && svg){ svg.style.display='none'; img.src=cfg.logoData; img.style.display='block'; }
+  else if(svg && img){ svg.style.display='block'; img.style.display='none'; }
+  // Login: empresa info
+  const ei = ge('login-empresa-info');
+  if(ei && (cfg.empresa || cfg.ruc)){
+    ei.style.display='block';
+    const en = ge('login-empresa-nm'); if(en) en.textContent = cfg.empresa||'';
+    const er = ge('login-empresa-ruc'); if(er) er.textContent = cfg.ruc||'';
+  } else if(ei){ ei.style.display='none'; }
+  // Login: welcome msg
+  const wm = ge('login-welcome-msg');
+  if(wm){ if(cfg.welcome){wm.style.display='block';wm.textContent=cfg.welcome}else{wm.style.display='none'} }
+  // Login: botón texto
+  const btn = ge('btn-login');
+  if(btn && cfg.btnTxt) btn.innerHTML = cfg.btnTxt;
+  // Login: footer
+  const ft = ge('login-footer-txt'); if(ft) ft.textContent = cfg.footer || '';
+  const vt = ge('login-version-txt'); if(vt) vt.textContent = cfg.version || '';
+  // Topbar logo + nombre
+  const tlogoEl = ge('topbar-brand-name');
+  if(tlogoEl){
+    const nm2 = cfg.nombre||'ElectricaPro';
+    const half2 = Math.ceil(nm2.length/2);
+    tlogoEl.innerHTML = '⚡ ' + nm2.slice(0,half2) + '<span style="color:var(--ac)">' + nm2.slice(half2) + '</span>';
+  }
+  // Título del navegador
+  document.title = cfg.nombre || 'ElectricaPro';
+}
+
+function shadeColor(hex, pct){
+  try{
+    let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+    r=Math.max(0,Math.min(255,r+pct));g=Math.max(0,Math.min(255,g+pct));b=Math.max(0,Math.min(255,b+pct));
+    return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+  }catch(e){return hex}
+}
+
+function openConfig(){
+  const cfg = loadConfig();
+  ge('cfg-nombre').value = cfg.nombre||'';
+  ge('cfg-slogan').value = cfg.slogan||'';
+  ge('cfg-color').value  = cfg.color||'#f0a500';
+  ge('cfg-empresa').value= cfg.empresa||'';
+  ge('cfg-ruc').value    = cfg.ruc||'';
+  ge('cfg-welcome').value= cfg.welcome||'';
+  ge('cfg-btn-txt').value= cfg.btnTxt||'';
+  ge('cfg-footer').value = cfg.footer||'';
+  ge('cfg-version').value= cfg.version||'';
+  ge('cfg-rep-nombre').value = cfg.repNombre||'';
+  ge('cfg-wa-nombre').value  = cfg.waNombre||'';
+  // Preview logo
+  const prev = ge('cfg-logo-preview');
+  if(cfg.logoData){ prev.innerHTML='<img src="'+cfg.logoData+'" style="width:100%;height:100%;object-fit:cover"/>'; }
+  else { prev.innerHTML='⚡'; }
+  // Update preview
+  updateCfgPreview();
+  switchCTab('marca');
+  openM('m-config');
+}
+
+function switchCTab(tab){
+  ['marca','login','sistema'].forEach(t=>{
+    const panel=ge('ctab-'+t);
+    const btn=document.querySelector('[data-ctab="'+t+'"]');
+    if(panel) panel.style.display = t===tab?'block':'none';
+    if(btn){ btn.classList.toggle('act', t===tab); }
+  });
+}
+
+function updateCfgPreview(){
+  const nm = ge('cfg-rep-nombre').value || ge('cfg-nombre').value || 'ElectricaPro';
+  const prev = ge('cfg-preview-rep');
+  if(prev) prev.textContent = '⚡ ' + nm;
+}
+
+function saveCfg(){
+  const cfg = {
+    nombre:    ge('cfg-nombre').value.trim() || 'ElectricaPro',
+    slogan:    ge('cfg-slogan').value.trim(),
+    color:     ge('cfg-color').value,
+    logoData:  loadConfig().logoData, // preserve existing logo unless changed
+    empresa:   ge('cfg-empresa').value.trim(),
+    ruc:       ge('cfg-ruc').value.trim(),
+    welcome:   ge('cfg-welcome').value.trim(),
+    btnTxt:    ge('cfg-btn-txt').value.trim() || '⚡ Entrar',
+    footer:    ge('cfg-footer').value.trim(),
+    version:   ge('cfg-version').value.trim() || 'v2.0',
+    repNombre: ge('cfg-rep-nombre').value.trim() || ge('cfg-nombre').value.trim() || 'ElectricaPro',
+    waNombre:  ge('cfg-wa-nombre').value.trim() || ge('cfg-nombre').value.trim() || 'ElectricaPro',
+  };
+  // Check if new logo was uploaded
+  const logoFileReader = ge('cfg-logo-reader-data');
+  if(logoFileReader && logoFileReader.dataset.logo){
+    cfg.logoData = logoFileReader.dataset.logo;
+  }
+  saveConfig(cfg);
+  applyConfig();
+  closeM('m-config');
+  toast('✅ Configuración guardada — nombre actualizado en toda la plataforma','success');
+  logEvent('CONFIG_CAMBIADA','Configuración de plataforma actualizada: '+cfg.nombre, null);
+}
 
 // ═══ EVENT LISTENERS ═══
 
@@ -3230,6 +3506,57 @@ ge('btn-savepw').addEventListener('click',saveChPw);
 // Chat send
 ge('btn-chat-send').addEventListener('click', sendChatMsg);
 
+// ── CONFIGURACIÓN ──
+ge('btn-config-top').addEventListener('click', openConfig);
+ge('btn-save-config').addEventListener('click', saveCfg);
+
+// Config tabs
+document.querySelectorAll('[data-ctab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>switchCTab(btn.dataset.ctab));
+});
+
+// Color presets
+ge('cfg-color-presets').addEventListener('click', e=>{
+  const d=e.target.closest('[data-color]');
+  if(!d)return;
+  ge('cfg-color').value=d.dataset.color;
+  document.documentElement.style.setProperty('--ac',d.dataset.color);
+  document.documentElement.style.setProperty('--ac2',shadeColor(d.dataset.color,-15));
+});
+ge('cfg-color').addEventListener('input', e=>{
+  document.documentElement.style.setProperty('--ac', e.target.value);
+});
+
+// Logo file upload
+ge('cfg-logo-file').addEventListener('change', function(){
+  const file=this.files[0]; if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    ge('cfg-logo-preview').innerHTML='<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:10px"/>';
+    // Store temporarily
+    let tmp=ge('cfg-logo-reader-data');
+    if(!tmp){tmp=document.createElement('div');tmp.id='cfg-logo-reader-data';tmp.style.display='none';document.body.appendChild(tmp);}
+    tmp.dataset.logo=e.target.result;
+  };
+  r.readAsDataURL(file);
+  this.value='';
+});
+
+// Clear logo
+ge('cfg-logo-clear').addEventListener('click', ()=>{
+  ge('cfg-logo-preview').innerHTML='⚡';
+  const tmp=ge('cfg-logo-reader-data');
+  if(tmp) tmp.dataset.logo='';
+  const cfg=loadConfig(); cfg.logoData=null; saveConfig(cfg);
+  applyConfig(); toast('Logo eliminado','info');
+});
+
+// Preview en tiempo real (tab sistema)
+ge('cfg-rep-nombre').addEventListener('input', updateCfgPreview);
+ge('cfg-nombre').addEventListener('input', updateCfgPreview);
+
+
+
 // ── WHATSAPP ──
 ge('btn-wa-send').addEventListener('click', sendWhatsApp);
 ge('wa-tmpl1').addEventListener('click',()=>{const o=S.ordenes[0];ge('wa-mensaje').value=buildWAMsg('OT_CREADA',o,o?S.users.find(u=>u.id===o.userId):null)});
@@ -3319,6 +3646,9 @@ if(!S.ordenes.length){
   }
   saveAll();
 }
+
+// Apply brand config on page load
+try{applyConfig();}catch(e){}
 
 })();
 </script>
