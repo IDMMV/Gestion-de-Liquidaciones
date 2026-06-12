@@ -381,6 +381,19 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 [data-ctab].act{color:var(--ac);border-bottom-color:var(--ac);font-weight:600}
 .cfg-color-dot{transition:transform .15s}
 .cfg-color-dot:hover{transform:scale(1.2)}
+/* ── DASHBOARD INTERACTIVO ── */
+.db-bar{cursor:pointer;transition:opacity .15s,transform .1s;position:relative}
+.db-bar:hover{opacity:.85;transform:scaleY(1.03);transform-origin:bottom}
+.db-bar.selected{outline:2px solid #fff;outline-offset:1px;opacity:1!important}
+.db-hbar{cursor:pointer;transition:background .15s}
+.db-hbar:hover .db-hbar-fill{filter:brightness(1.2)}
+.db-hbar.selected .db-hbar-fill{filter:brightness(1.3);box-shadow:0 0 0 2px #fff}
+.sc{cursor:pointer;transition:transform .15s,box-shadow .15s}
+.sc:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.sc.selected{transform:translateY(-2px);box-shadow:0 0 0 2px var(--ac),0 6px 20px rgba(0,0,0,.2)}
+.dash-tooltip{position:fixed;background:var(--s);border:1px solid var(--br);border-radius:8px;padding:8px 12px;font-size:12px;pointer-events:none;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.3);min-width:140px;display:none}
+.dash-active-filter{display:inline-flex;align-items:center;gap:5px;background:var(--ac);color:#000;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;margin:2px;cursor:pointer}
+.dash-active-filter:hover{opacity:.85}
 /* scrollbar */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -635,6 +648,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
   </div>
 
   <div id="sb-overlay"></div>
+<div class="dash-tooltip" id="dash-tooltip"></div>
 
   <div id="sidebar">
     <div class="nsec">
@@ -796,6 +810,54 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
           <div class="card">
             <div class="ch"><h3>📊 Análisis M.O. por OT</h3></div>
             <div style="padding:15px;max-height:280px;overflow-y:auto" id="chart-mo-detail"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILA NUEVOS GRÁFICOS 1: Donut + Gauge -->
+      <div class="row" style="margin-bottom:14px">
+        <div class="col">
+          <div class="card">
+            <div class="ch"><h3>🍩 Distribución por Estado</h3><span style="font-size:11px;color:var(--t2);margin-left:auto">Toca para filtrar</span></div>
+            <div style="padding:15px;display:flex;align-items:center;gap:20px" id="chart-donut"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="ch"><h3>🎯 Gauge de Cumplimiento</h3></div>
+            <div style="padding:15px;text-align:center" id="chart-gauge"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILA NUEVOS GRÁFICOS 2: Área/Línea + Radar -->
+      <div class="row" style="margin-bottom:14px">
+        <div class="col">
+          <div class="card">
+            <div class="ch"><h3>📈 Evolución acumulada de OT</h3></div>
+            <div style="padding:15px" id="chart-area"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="ch"><h3>🕸️ Radar de rendimiento</h3></div>
+            <div style="padding:15px;text-align:center" id="chart-radar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILA NUEVOS GRÁFICOS 3: Heatmap + Scatter -->
+      <div class="row" style="margin-bottom:14px">
+        <div class="col">
+          <div class="card">
+            <div class="ch"><h3>🌡️ Heatmap de actividad semanal</h3></div>
+            <div style="padding:15px;overflow-x:auto" id="chart-heatmap"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="ch"><h3>💹 M.O. Campo vs Liquidación (scatter)</h3></div>
+            <div style="padding:15px;position:relative" id="chart-scatter"></div>
           </div>
         </div>
       </div>
@@ -1954,30 +2016,106 @@ function switchLTab(t){
 
 // ── DASHBOARD POWER BI ──
 // Helpers de gráficos
-function barChart(data,colors,height=90){
-  const max=Math.max(...data.map(d=>d.v),1);
-  return '<div style="display:flex;gap:6px;align-items:flex-end;height:'+height+'px;">'+
+// ── TOOLTIP ──
+function showTooltip(e, html){
+  var tt = ge('dash-tooltip');
+  if(!tt) return;
+  tt.innerHTML = html;
+  tt.style.display = 'block';
+  var x = e.clientX + 12, y = e.clientY - 10;
+  if(x + 160 > window.innerWidth) x = e.clientX - 160;
+  tt.style.left = x + 'px';
+  tt.style.top  = y + 'px';
+}
+function hideTooltip(){
+  var tt = ge('dash-tooltip');
+  if(tt) tt.style.display = 'none';
+}
+document.addEventListener('mousemove', function(e){
+  var tt = ge('dash-tooltip');
+  if(tt && tt.style.display !== 'none'){
+    var x = e.clientX + 12, y = e.clientY - 10;
+    if(x + 160 > window.innerWidth) x = e.clientX - 160;
+    tt.style.left = x + 'px';
+    tt.style.top  = y + 'px';
+  }
+});
+
+// ── ESTADO DEL DASHBOARD (filtros activos por click) ──
+var dashClickFilters = {est:'', zona:'', ali:'', usr:''};
+
+function applyDashClickFilter(key, val){
+  // Toggle: si ya está activo, quitar
+  dashClickFilters[key] = dashClickFilters[key]===val ? '' : val;
+  // Sincronizar con los selects del panel de filtros
+  var selMap = {est:'df-est', zona:'df-zona', ali:'df-ali', usr:'df-usr'};
+  if(selMap[key]){
+    var sel = ge(selMap[key]);
+    if(sel) sel.value = dashClickFilters[key];
+  }
+  renderDashData();
+}
+
+function clearAllDashFilters(){
+  dashClickFilters = {est:'', zona:'', ali:'', usr:''};
+  ['df-est','df-zona','df-ali','df-usr','df-desde','df-hasta','df-search'].forEach(function(id){
+    var el=ge(id); if(el) el.value='';
+  });
+  renderDashData();
+}
+
+// Sobreescribir getFilteredOT para incluir filtros de click
+var _origGetFilteredOT = getFilteredOT;
+function getFilteredOTInteractive(){
+  return _origGetFilteredOT().filter(function(o){
+    if(dashClickFilters.est  && o.estado!==dashClickFilters.est)  return false;
+    if(dashClickFilters.zona && o.zona!==dashClickFilters.zona)   return false;
+    if(dashClickFilters.ali  && o.alimentador!==dashClickFilters.ali) return false;
+    if(dashClickFilters.usr  && o.userId!==dashClickFilters.usr)  return false;
+    return true;
+  });
+}
+
+// ── BARRAS INTERACTIVAS ──
+function barChart(data, colors, height, filterKey){
+  height = height || 90;
+  var max = Math.max.apply(null, data.map(function(d){return d.v;}));
+  max = max || 1;
+  var total = data.reduce(function(a,d){return a+d.v;},0);
+  return '<div style="display:flex;gap:6px;align-items:flex-end;height:'+height+'px;" class="db-barchart">'+
     data.map(function(d,i){
-      const h=Math.round((d.v/max)*100);
-      const col=Array.isArray(colors)?colors[i%colors.length]:colors;
-      return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0">'+
-        '<span style="font-size:11px;color:var(--t2);font-weight:600">'+d.v+'</span>'+
-        '<div style="height:'+h+'px;background:'+col+';border-radius:4px 4px 0 0;width:100%;min-height:'+(d.v>0?4:1)+'px;transition:height .5s"></div>'+
+      var h = Math.max(Math.round((d.v/max)*100), d.v>0?4:1);
+      var col = Array.isArray(colors) ? colors[i%colors.length] : colors;
+      var pct = total ? Math.round(d.v/total*100) : 0;
+      var isSelected = filterKey && dashClickFilters[filterKey]===d.k;
+      var filterAttr = filterKey ? 'data-dbfilter="'+filterKey+'" data-dbval="'+escapeHtml(d.k||d.l)+'"' : '';
+      return '<div class="db-bar'+(isSelected?' selected':'')+'" '+filterAttr+
+        ' style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0"'+
+        ' data-tip="'+d.l+': <b>'+d.v+'</b> OT ('+pct+'%)">'+
+        '<span style="font-size:11px;font-weight:700;color:'+(isSelected?col:'var(--t2)')+'">'+d.v+'</span>'+
+        '<div style="height:'+h+'px;background:'+col+';border-radius:4px 4px 0 0;width:100%;opacity:'+(isSelected||!filterKey?1:.7)+';transition:all .3s"></div>'+
         '<span style="font-size:10px;color:var(--t3);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%">'+d.l+'</span>'+
       '</div>';
     }).join('')+'</div>';
 }
-function hBarChart(data,color,max){
-  const mx=max||Math.max(...data.map(d=>d.v),1);
+
+function hBarChart(data, color, max, filterKey){
+  var mx = max || Math.max.apply(null, data.map(function(d){return d.v;}));
+  mx = mx || 1;
+  var total = data.reduce(function(a,d){return a+d.v;},0);
   return data.map(function(d){
-    const w=Math.round((d.v/mx)*100);
-    return '<div style="margin-bottom:8px">'+
+    var w = Math.round((d.v/mx)*100);
+    var pct = total ? Math.round(d.v/total*100) : 0;
+    var isSelected = filterKey && dashClickFilters[filterKey]===(d.k||d.l);
+    var filterAttr = filterKey ? 'data-dbfilter="'+filterKey+'" data-dbval="'+escapeHtml(d.k||d.l)+'"' : '';
+    return '<div class="db-hbar'+(isSelected?' selected':'')+'" '+filterAttr+
+      ' data-tip="'+d.l+': <b>'+d.v+'</b> OT ('+pct+'%)" style="margin-bottom:8px;cursor:pointer;padding:4px;border-radius:6px;background:'+(isSelected?'var(--gl)':'transparent')+'">'+
       '<div style="display:flex;justify-content:space-between;margin-bottom:3px;font-size:12px">'+
-        '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1">'+d.l+'</span>'+
-        '<span style="color:'+color+';font-weight:600;margin-left:8px">'+d.v+'</span>'+
+        '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-weight:'+(isSelected?700:400)+'">'+d.l+'</span>'+
+        '<span style="color:'+color+';font-weight:700;margin-left:8px">'+d.v+'</span>'+
       '</div>'+
-      '<div style="background:var(--s3);border-radius:20px;height:6px;overflow:hidden">'+
-        '<div style="height:100%;border-radius:20px;background:'+color+';width:'+w+'%;transition:width .6s"></div>'+
+      '<div style="background:var(--s3);border-radius:20px;height:8px;overflow:hidden">'+
+        '<div class="db-hbar-fill" style="height:100%;border-radius:20px;background:'+color+';width:'+w+'%;transition:width .6s;opacity:'+(isSelected||!filterKey?1:.6)+'"></div>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -2034,8 +2172,21 @@ function renderDash(){
   renderDashData();
 }
 function renderDashData(){
-  const ots=getFilteredOT();
+  const ots=getFilteredOTInteractive();
   const all=S.ordenes;
+  // ── CHIPS DE FILTROS ACTIVOS POR CLICK ──
+  var chipsHtml = '';
+  var chipLabels={est:'Estado',zona:'Zona',ali:'Alimentador',usr:'Usuario'};
+  Object.keys(dashClickFilters).forEach(function(k){
+    if(!dashClickFilters[k]) return;
+    var label = k==='usr' ? (S.users.find(function(u){return u.id===dashClickFilters[k];})||{nombre:dashClickFilters[k]}).nombre : dashClickFilters[k];
+    chipsHtml += '<span class="dash-active-filter" data-clrdbfilter="'+k+'">'+chipLabels[k]+': '+label+' ×</span>';
+  });
+  var panelChips = ge('dash-filter-chips');
+  if(panelChips){
+    var staticChips = panelChips.innerHTML.replace(/<span class="dash-active-filter"[^<]*<\/span>/g,'');
+    panelChips.innerHTML = chipsHtml + staticChips;
+  }
   const u=S.user;
   renderFilterChips();
 
@@ -2057,25 +2208,35 @@ function renderDashData(){
     return a+(new Date(o.updated)-new Date(o.created))/(1000*86400);
   },0)/cerradas.length):0;
 
-  ge('dash-stats').innerHTML=[
-    {c:'y',ico:'📋',lbl:'Total OT',val:total,sub:'en el período'},
-    {c:'b',ico:'⚡',lbl:'En Curso',val:curso,sub:obs+' observadas'},
-    {c:'g',ico:'✅',lbl:'Completadas',val:comp,sub:pct+'% cumplimiento'},
-    {c:'r',ico:'⏳',lbl:'Pendientes',val:pend,sub:'por iniciar'},
-    {c:'b',ico:'📁',lbl:'Archivos',val:totalFiles,sub:'documentos cargados'},
-    {c:'g',ico:'📋',lbl:'CL Completos',val:clComp,sub:'checklist 27/27'},
-    {c:'y',ico:'⏱',lbl:'Días prom.',val:avgDays+'d',sub:'tiempo de cierre'},
-    {c:'r',ico:'👥',lbl:'Usuarios',val:S.users.filter(x=>x.activo).length,sub:S.users.filter(x=>x.online).length+' en línea'},
-  ].map(function(s){
-    return '<div class="sc '+s.c+'"><div class="slbl">'+s.lbl+'</div><div class="sval">'+s.val+'</div><div class="sico">'+s.ico+'</div><div class="ssub">'+s.sub+'</div></div>';
+  var kpiCards=[
+    {c:'y',ico:'📋',lbl:'Total OT',val:total,sub:'en el período',fk:null,fv:null},
+    {c:'b',ico:'⚡',lbl:'En Curso',val:curso,sub:obs+' observadas',fk:'est',fv:'En Curso'},
+    {c:'g',ico:'✅',lbl:'Completadas',val:comp,sub:pct+'% cumplimiento',fk:'est',fv:'Completado'},
+    {c:'r',ico:'⏳',lbl:'Pendientes',val:pend,sub:'por iniciar',fk:'est',fv:'Pendiente'},
+    {c:'b',ico:'📁',lbl:'Archivos',val:totalFiles,sub:'documentos cargados',fk:null,fv:null},
+    {c:'g',ico:'📋',lbl:'CL Completos',val:clComp,sub:'checklist 27/27',fk:null,fv:null},
+    {c:'y',ico:'⏱',lbl:'Días prom.',val:avgDays+'d',sub:'tiempo de cierre',fk:null,fv:null},
+    {c:'r',ico:'👥',lbl:'Usuarios',val:S.users.filter(x=>x.activo).length,sub:S.users.filter(x=>x.online).length+' en línea',fk:null,fv:null},
+  ];
+  ge('dash-stats').innerHTML=kpiCards.map(function(s){
+    var isActive = s.fk && dashClickFilters[s.fk]===s.fv;
+    var filterAttr = s.fk ? 'data-dbfilter="'+s.fk+'" data-dbval="'+s.fv+'"' : '';
+    return '<div class="sc '+s.c+(isActive?' selected':'')+'" '+filterAttr+
+      ' data-tip="'+s.lbl+': '+s.val+'<br>Toca para filtrar"'+
+      ' style="'+(s.fk?'cursor:pointer':'')+'">'+
+      '<div class="slbl">'+s.lbl+'</div>'+
+      '<div class="sval">'+s.val+'</div>'+
+      '<div class="sico">'+s.ico+'</div>'+
+      '<div class="ssub">'+s.sub+'</div>'+
+    '</div>';
   }).join('');
 
   // ── CHART ESTADO ──
   const est=['Pendiente','En Curso','Completado','Observado'];
   const eColors=['var(--or)','var(--bl)','var(--gn)','var(--rd)'];
   ge('chart-est').innerHTML=barChart(
-    est.map(function(e,i){return{l:e,v:ots.filter(o=>o.estado===e).length}}),
-    eColors,100
+    est.map(function(e,i){return{l:e,k:e,v:ots.filter(o=>o.estado===e).length}}),
+    eColors,100,'est'
   )+
   '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">'+
   est.map(function(e,i){
@@ -2093,7 +2254,7 @@ function renderDashData(){
   });
   const mKeys=Object.keys(meses).sort().slice(-8);
   ge('chart-mensual').innerHTML=mKeys.length?
-    barChart(mKeys.map(function(m){return{l:m.slice(5),v:meses[m]}}),['var(--ac)'],100)+
+    barChart(mKeys.map(function(m){return{l:m.slice(5),k:m,v:meses[m]}}),['var(--ac)'],100)+
     '<div style="font-size:11px;color:var(--t3);margin-top:6px;text-align:center">Últimos '+mKeys.length+' meses</div>':
     '<p style="color:var(--t2);font-size:12px;text-align:center;padding:20px">Sin datos temporales</p>';
 
@@ -2101,13 +2262,13 @@ function renderDashData(){
   const zonas=[...new Set(ots.map(o=>o.zona).filter(Boolean))];
   const zColors=['var(--bl)','var(--gn)','var(--ac)','var(--rd)','var(--or)'];
   ge('chart-zona').innerHTML=zonas.length?
-    hBarChart(zonas.map(function(z){return{l:z,v:ots.filter(o=>o.zona===z).length}}),zColors[0]):
+    hBarChart(zonas.map(function(z){return{l:z,k:z,v:ots.filter(o=>o.zona===z).length}}),zColors[0],null,'zona'):
     '<p style="color:var(--t2);font-size:12px;text-align:center;padding:20px">Sin zonas registradas</p>';
 
   // ── CHART ALIMENTADOR ──
   const alis=[...new Set(ots.map(o=>o.alimentador).filter(Boolean))];
   ge('chart-ali').innerHTML=alis.length?
-    hBarChart(alis.map(function(a){return{l:a,v:ots.filter(o=>o.alimentador===a).length}}),zColors[1]):
+    hBarChart(alis.map(function(a){return{l:a,k:a,v:ots.filter(o=>o.alimentador===a).length}}),zColors[1],null,'ali'):
     '<p style="color:var(--t2);font-size:12px;text-align:center;padding:20px">Sin alimentadores registrados</p>';
 
   // ── CUMPLIMIENTO POR USUARIO ──
@@ -4704,6 +4865,299 @@ function checkRecordatorios(){
 setTimeout(checkRecordatorios, 5000);
 setInterval(checkRecordatorios, 3600000);
 
+
+// ═══════════════════════════════════════════════════════
+// ── 6 NUEVOS GRÁFICOS INTERACTIVOS ──
+// ═══════════════════════════════════════════════════════
+
+// ─── 1. DONUT CHART ───
+function renderDonut(ots){
+  var el = ge('chart-donut'); if(!el) return;
+  var est = ['Pendiente','En Curso','Completado','Observado'];
+  var cols = ['var(--or)','var(--bl)','var(--gn)','var(--rd)'];
+  var total = ots.length || 1;
+  var data = est.map(function(e,i){return{l:e,v:ots.filter(function(o){return o.estado===e;}).length,c:cols[i],k:e};});
+  // SVG Donut
+  var R=60, r=36, cx=75, cy=75, stroke=22;
+  var circ = 2*Math.PI*R;
+  var offset = 0;
+  var segs = data.map(function(d,i){
+    var pct = d.v/total;
+    var len = circ*pct;
+    var seg = '<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="'+d.c+'" stroke-width="'+stroke+'" '+
+      'stroke-dasharray="'+len.toFixed(2)+' '+(circ-len).toFixed(2)+'" '+
+      'stroke-dashoffset="'+(-(offset*circ)).toFixed(2)+'" '+
+      'style="cursor:pointer;transition:stroke-width .2s;transform-origin:center" '+
+      'class="donut-seg" data-dbfilter="est" data-dbval="'+d.k+'" data-tip="'+d.l+': '+d.v+' OT ('+(Math.round(pct*100))+'%)">'+
+      '</circle>';
+    offset += pct;
+    return seg;
+  }).join('');
+  var isFiltered = dashClickFilters.est;
+  var svg = '<svg width="150" height="150" viewBox="0 0 150 150" style="flex-shrink:0">'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="var(--s3)" stroke-width="'+stroke+'"/>'+
+    segs+
+    '<text x="'+cx+'" y="'+(cy-8)+'" text-anchor="middle" fill="var(--tx)" font-size="20" font-weight="700">'+total+'</text>'+
+    '<text x="'+cx+'" y="'+(cy+10)+'" text-anchor="middle" fill="var(--t2)" font-size="10">Total OT</text>'+
+  '</svg>';
+  // Leyenda
+  var legend = '<div style="display:flex;flex-direction:column;gap:6px;flex:1">'+
+    data.map(function(d){
+      var pct = Math.round(d.v/total*100);
+      var isActive = dashClickFilters.est===d.k;
+      return '<div class="db-bar" data-dbfilter="est" data-dbval="'+d.k+'" data-tip="'+d.l+': '+d.v+' OT" '+
+        'style="display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:6px;cursor:pointer;background:'+(isActive?'var(--gl)':'transparent')+'">'+
+        '<div style="width:10px;height:10px;border-radius:50%;background:'+d.c+';flex-shrink:0"></div>'+
+        '<div style="flex:1;font-size:12px">'+d.l+'</div>'+
+        '<div style="font-size:12px;font-weight:700;color:'+d.c+'">'+d.v+'</div>'+
+        '<div style="font-size:10px;color:var(--t3);width:28px;text-align:right">'+pct+'%</div>'+
+      '</div>';
+    }).join('')+
+  '</div>';
+  el.innerHTML = svg + legend;
+  // Click en segmentos SVG
+  el.querySelectorAll('.donut-seg').forEach(function(seg){
+    seg.addEventListener('click', function(){
+      applyDashClickFilter('est', this.dataset.dbval);
+    });
+    seg.addEventListener('mouseover', function(e){
+      this.setAttribute('stroke-width', (stroke+4));
+      showTooltip(e, this.dataset.tip);
+    });
+    seg.addEventListener('mouseout', function(){
+      this.setAttribute('stroke-width', stroke);
+      hideTooltip();
+    });
+  });
+}
+
+// ─── 2. GAUGE CHART ───
+function renderGauge(pct){
+  var el = ge('chart-gauge'); if(!el) return;
+  pct = Math.max(0, Math.min(100, pct||0));
+  var col = pct>=80?'var(--gn)':pct>=50?'var(--ac)':'var(--rd)';
+  var label = pct>=80?'Excelente':pct>=60?'Bueno':pct>=40?'Regular':'Bajo';
+  // SVG Semicircle gauge
+  var R=80, cx=100, cy=95;
+  var total_arc = Math.PI * R; // semicircle circumference
+  var full_circ = 2*Math.PI*R;
+  var filled = (pct/100)*Math.PI*R;
+  var deg = -180 + (pct/100)*180;
+  var rad = deg*Math.PI/180;
+  var nx = cx + R*Math.cos(rad), ny = cy + R*Math.sin(rad);
+  var svg = '<svg width="200" height="110" viewBox="0 0 200 110" style="overflow:visible">'+
+    // Fondo gris
+    '<path d="M '+( cx-R)+' '+cy+' A '+R+' '+R+' 0 0 1 '+(cx+R)+' '+cy+'" fill="none" stroke="var(--s3)" stroke-width="16" stroke-linecap="round"/>'+
+    // Arco coloreado
+    '<path d="M '+(cx-R)+' '+cy+' A '+R+' '+R+' 0 0 1 '+(cx+R)+' '+cy+'" fill="none" stroke="'+col+'" stroke-width="16" stroke-linecap="round" '+
+      'stroke-dasharray="'+filled.toFixed(1)+' '+full_circ.toFixed(1)+'" style="transition:stroke-dasharray .8s"/>'+
+    // Aguja
+    '<line x1="'+cx+'" y1="'+cy+'" x2="'+nx.toFixed(1)+'" y2="'+ny.toFixed(1)+'" stroke="var(--tx)" stroke-width="2.5" stroke-linecap="round" style="transition:x2 .8s,y2 .8s"/>'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="5" fill="var(--tx)"/>'+
+    // Porcentaje
+    '<text x="'+cx+'" y="'+(cy-10)+'" text-anchor="middle" fill="'+col+'" font-size="26" font-weight="800">'+pct+'%</text>'+
+    '<text x="'+cx+'" y="'+(cy+6)+'" text-anchor="middle" fill="var(--t2)" font-size="11">'+label+'</text>'+
+    // Labels
+    '<text x="'+(cx-R)+'" y="'+(cy+18)+'" fill="var(--t3)" font-size="9" text-anchor="middle">0%</text>'+
+    '<text x="'+cx+'" y="'+(cy-R-6)+'" fill="var(--t3)" font-size="9" text-anchor="middle">50%</text>'+
+    '<text x="'+(cx+R)+'" y="'+(cy+18)+'" fill="var(--t3)" font-size="9" text-anchor="middle">100%</text>'+
+  '</svg>'+
+  '<div style="font-size:11px;color:var(--t2);text-align:center;margin-top:6px">Cumplimiento general del equipo</div>';
+  el.innerHTML = svg;
+}
+
+// ─── 3. ÁREA / LÍNEA acumulada ───
+function renderArea(ots){
+  var el = ge('chart-area'); if(!el) return;
+  if(!ots.length){ el.innerHTML='<p style="color:var(--t2);font-size:12px;text-align:center;padding:20px">Sin datos</p>'; return; }
+  var byMonth = {};
+  ots.forEach(function(o){ if(!o.fecha) return; var m=o.fecha.slice(0,7); byMonth[m]=(byMonth[m]||0)+1; });
+  var months = Object.keys(byMonth).sort().slice(-10);
+  if(!months.length){ el.innerHTML='<p style="color:var(--t2);font-size:12px;text-align:center;padding:20px">Sin datos temporales</p>'; return; }
+  var W=340, H=120, pad={t:16,r:12,b:28,l:32};
+  var cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  // Acumulado
+  var vals=[], acc=0;
+  months.forEach(function(m){ acc+=byMonth[m]; vals.push(acc); });
+  var maxV = Math.max.apply(null,vals)||1;
+  // Puntos
+  var pts = vals.map(function(v,i){
+    return {x:pad.l+i*(cw/(months.length-1||1)),y:pad.t+ch-(v/maxV)*ch,v:v,m:months[i]};
+  });
+  var polyline = pts.map(function(p){return p.x.toFixed(1)+','+p.y.toFixed(1);}).join(' ');
+  var area = 'M'+pts[0].x.toFixed(1)+','+(pad.t+ch)+' '+pts.map(function(p){return p.x.toFixed(1)+','+p.y.toFixed(1);}).join(' ')+' '+(pts[pts.length-1].x).toFixed(1)+','+(pad.t+ch).toFixed(1);
+  var svg = '<svg width="100%" viewBox="0 0 '+W+' '+H+'" style="overflow:visible">'+
+    '<defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--ac)" stop-opacity=".3"/><stop offset="100%" stop-color="var(--ac)" stop-opacity=".02"/></linearGradient></defs>'+
+    '<path d="'+area+' Z" fill="url(#areaGrad)"/>'+
+    '<polyline points="'+polyline+'" fill="none" stroke="var(--ac)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+
+    pts.map(function(p,i){
+      return '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4" fill="var(--ac)" stroke="var(--s)" stroke-width="2" '+
+        'class="db-bar" data-tip="'+p.m+': '+p.v+' OT acumuladas" style="cursor:pointer"/>'+
+        (i%2===0?'<text x="'+p.x.toFixed(1)+'" y="'+(pad.t+ch+14)+'" text-anchor="middle" fill="var(--t3)" font-size="8">'+p.m.slice(5)+'</text>':'');
+    }).join('')+
+    // Y axis labels
+    [0,.5,1].map(function(f){
+      var y=pad.t+ch-(f*ch);
+      return '<text x="'+(pad.l-4)+'" y="'+(y+4)+'" text-anchor="end" fill="var(--t3)" font-size="8">'+Math.round(f*maxV)+'</text>'+
+        '<line x1="'+pad.l+'" y1="'+y+'" x2="'+(pad.l+cw)+'" y2="'+y+'" stroke="var(--br)" stroke-width=".5" stroke-dasharray="3,3"/>';
+    }).join('')+
+  '</svg>';
+  el.innerHTML = svg;
+}
+
+// ─── 4. RADAR ───
+function renderRadar(ots, users){
+  var el = ge('chart-radar'); if(!el) return;
+  var activeUsers = users.filter(function(u){return u.activo&&u.rol!=='visualizador';}).slice(0,6);
+  if(!activeUsers.length){ el.innerHTML='<p style="color:var(--t2);font-size:12px;text-align:center;padding:20px">Sin usuarios</p>'; return; }
+  var dims = ['OT creadas','Completadas','En curso','Archivos','CL completos','Días activo'];
+  var N=dims.length, W=220, H=220, cx=110, cy=110, R=80;
+  var maxVals=[1,1,1,1,1,1];
+  var userData = activeUsers.map(function(u){
+    var mis = ots.filter(function(o){return o.userId===u.id;});
+    var comp = mis.filter(function(o){return o.estado==='Completado';}).length;
+    var curso = mis.filter(function(o){return o.estado==='En Curso';}).length;
+    var arch = S.files.filter(function(f){return mis.some(function(o){return o.id===f.otId;});}).length;
+    var clComp = mis.filter(function(o){
+      var oF=S.files.filter(function(f){return f.otId===o.id;});
+      return CHECKLIST.filter(function(sf){return oF.some(function(f){return f.subFolder===sf;});}).length===CHECKLIST.length;
+    }).length;
+    var dias = u.lastSeen ? Math.min(30,Math.round((Date.now()-new Date(u.lastSeen))/86400000)) : 0;
+    dias = 30-dias; // invertir: más activo = más días
+    return [mis.length, comp, curso, arch, clComp, dias];
+  });
+  userData.forEach(function(u){ u.forEach(function(v,i){maxVals[i]=Math.max(maxVals[i],v);}); });
+  // Ejes
+  var axes = dims.map(function(_,i){
+    var a = (i/N)*2*Math.PI - Math.PI/2;
+    return {x:cx+R*Math.cos(a),y:cy+R*Math.sin(a),ax:a,lx:cx+(R+16)*Math.cos(a),ly:cy+(R+16)*Math.sin(a)};
+  });
+  var colors=['var(--ac)','var(--bl)','var(--gn)','var(--rd)','var(--or)','#a371f7'];
+  var polys = userData.map(function(u,ui){
+    var pts = u.map(function(v,i){
+      var r=R*(v/maxVals[i]);
+      var a=(i/N)*2*Math.PI-Math.PI/2;
+      return (cx+r*Math.cos(a)).toFixed(1)+','+(cy+r*Math.sin(a)).toFixed(1);
+    });
+    return '<polygon points="'+pts.join(' ')+'" fill="'+colors[ui]+'" fill-opacity=".15" stroke="'+colors[ui]+'" stroke-width="1.5"/>';
+  }).join('');
+  var grid = [.25,.5,.75,1].map(function(f){
+    var p=axes.map(function(ax){return (cx+R*f*Math.cos(ax.ax)).toFixed(1)+','+(cy+R*f*Math.sin(ax.ax)).toFixed(1);});
+    return '<polygon points="'+p.join(' ')+'" fill="none" stroke="var(--br)" stroke-width=".5"/>';
+  }).join('');
+  var axLines = axes.map(function(ax){return '<line x1="'+cx+'" y1="'+cy+'" x2="'+ax.x.toFixed(1)+'" y2="'+ax.y.toFixed(1)+'" stroke="var(--br)" stroke-width=".7"/>'+
+    '<text x="'+ax.lx.toFixed(1)+'" y="'+ax.ly.toFixed(1)+'" text-anchor="middle" fill="var(--t2)" font-size="7.5" dominant-baseline="middle">'+dims[axes.indexOf(ax)]+'</text>';}).join('');
+  var legend = activeUsers.map(function(u,i){
+    return '<div style="display:flex;align-items:center;gap:5px;font-size:10px"><div style="width:8px;height:8px;border-radius:50%;background:'+colors[i]+';flex-shrink:0"></div>'+u.nombre.split(' ')[0]+'</div>';
+  }).join('');
+  el.innerHTML='<svg width="220" height="220" viewBox="0 0 220 220">'+grid+axLines+polys+'</svg>'+
+    '<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px">'+legend+'</div>';
+}
+
+// ─── 5. HEATMAP semanal ───
+function renderHeatmap(ots){
+  var el = ge('chart-heatmap'); if(!el) return;
+  var days=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  var hours=[6,8,10,12,14,16,18,20];
+  var grid={};
+  ots.forEach(function(o){
+    if(!o.created) return;
+    var d=new Date(o.created);
+    var day=(d.getDay()+6)%7; // 0=Lun
+    var h=Math.floor(d.getHours()/2)*2; // cada 2h
+    var k=day+'-'+h;
+    grid[k]=(grid[k]||0)+1;
+  });
+  var maxV=Math.max.apply(null,Object.values(grid).concat([1]));
+  var cw=34, ch=22, pad={t:20,l:30};
+  var totalW=pad.l+hours.length*cw+10;
+  var totalH=pad.t+days.length*ch+10;
+  var cells=[];
+  days.forEach(function(day,di){
+    hours.forEach(function(h,hi){
+      var v=grid[di+'-'+h]||0;
+      var intensity=v/maxV;
+      var alpha=intensity*.9+.05;
+      var x=pad.l+hi*cw, y=pad.t+di*ch;
+      cells.push(
+        '<rect x="'+x+'" y="'+y+'" width="'+(cw-2)+'" height="'+(ch-2)+'" rx="3" '+
+        'fill="var(--ac)" fill-opacity="'+alpha.toFixed(2)+'" '+
+        'class="db-bar" data-tip="'+day+' '+h+':00h: '+v+' OT" style="cursor:pointer"/>'+
+        (v>0?'<text x="'+(x+(cw-2)/2)+'" y="'+(y+(ch-2)/2+4)+'" text-anchor="middle" fill="var(--tx)" font-size="8" fill-opacity="'+Math.min(1,alpha+.3)+'">'+v+'</text>':'')
+      );
+    });
+  });
+  var yLabels=days.map(function(d,i){return '<text x="'+(pad.l-4)+'" y="'+(pad.t+i*ch+ch/2+3)+'" text-anchor="end" fill="var(--t2)" font-size="9">'+d+'</text>';}).join('');
+  var xLabels=hours.map(function(h,i){return '<text x="'+(pad.l+i*cw+cw/2-1)+'" y="'+(pad.t-6)+'" text-anchor="middle" fill="var(--t2)" font-size="8">'+h+'h</text>';}).join('');
+  el.innerHTML='<svg width="'+totalW+'" height="'+totalH+'" viewBox="0 0 '+totalW+' '+totalH+'">'+yLabels+xLabels+cells.join('')+'</svg>'+
+    '<div style="font-size:10px;color:var(--t3);margin-top:6px">Intensidad de creación de OT por día y hora</div>';
+}
+
+// ─── 6. SCATTER PLOT: MO Campo vs Liquidación ───
+function renderScatter(ots){
+  var el = ge('chart-scatter'); if(!el) return;
+  var moOts = ots.filter(function(o){return (o.moCampo||0)>0||(o.moLiq||0)>0;});
+  if(!moOts.length){
+    el.innerHTML='<p style="color:var(--t2);font-size:12px;text-align:center;padding:30px">Sin datos de Mano de Obra.<br><small>Ingresa MO al crear o editar una OT</small></p>';
+    return;
+  }
+  var W=320,H=200,pad={t:16,r:16,b:32,l:40};
+  var cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  var maxX=Math.max.apply(null,moOts.map(function(o){return o.moCampo||0;}))*1.1||1;
+  var maxY=Math.max.apply(null,moOts.map(function(o){return o.moLiq||0;}))*1.1||1;
+  // Línea diagonal (perfecta paridad)
+  var diag='M'+pad.l+','+(pad.t+ch)+' '+(pad.l+cw)+','+pad.t;
+  // Puntos
+  var dots=moOts.map(function(o){
+    var x=pad.l+(o.moCampo/maxX)*cw;
+    var y=pad.t+ch-(o.moLiq/maxY)*ch;
+    var diff=o.moDiff||0;
+    var col=diff>0?'var(--gn)':diff<0?'var(--rd)':'var(--or)';
+    return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="6" fill="'+col+'" fill-opacity=".8" stroke="var(--s)" stroke-width="1.5" '+
+      'class="db-bar" style="cursor:pointer" data-dbfilter="est" data-dbval="'+o.estado+'" '+
+      'data-tip="'+o.ot+'<br>Campo: S/'+((o.moCampo||0).toFixed(0))+'<br>Liq: S/'+((o.moLiq||0).toFixed(0))+'<br>Diff: '+(diff>=0?'+':'')+diff.toFixed(0)+'"/>';
+  }).join('');
+  // Ejes
+  var xTicks=[0,.5,1].map(function(f){
+    var x=pad.l+f*cw;
+    return '<text x="'+x+'" y="'+(pad.t+ch+14)+'" text-anchor="middle" fill="var(--t3)" font-size="8">'+Math.round(f*maxX)+'</text>'+
+      '<line x1="'+x+'" y1="'+pad.t+'" x2="'+x+'" y2="'+(pad.t+ch)+'" stroke="var(--br)" stroke-width=".5" stroke-dasharray="3,3"/>';
+  }).join('');
+  var yTicks=[0,.5,1].map(function(f){
+    var y=pad.t+ch*(1-f);
+    return '<text x="'+(pad.l-4)+'" y="'+(y+4)+'" text-anchor="end" fill="var(--t3)" font-size="8">'+Math.round(f*maxY)+'</text>'+
+      '<line x1="'+pad.l+'" y1="'+y+'" x2="'+(pad.l+cw)+'" y2="'+y+'" stroke="var(--br)" stroke-width=".5" stroke-dasharray="3,3"/>';
+  }).join('');
+  el.innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+H+'" style="overflow:visible">'+
+    xTicks+yTicks+
+    '<path d="'+diag+'" stroke="var(--t3)" stroke-width="1" stroke-dasharray="4,4" opacity=".5"/>'+
+    '<text x="'+(pad.l+cw/2)+'" y="'+(pad.t+ch+26)+'" text-anchor="middle" fill="var(--t3)" font-size="9">MO Campo (S/)</text>'+
+    '<text x="10" y="'+(pad.t+ch/2)+'" text-anchor="middle" fill="var(--t3)" font-size="9" transform="rotate(-90,10,'+(pad.t+ch/2)+')">MO Liquidación (S/)</text>'+
+    dots+
+  '</svg>'+
+  '<div style="display:flex;gap:10px;flex-wrap:wrap;font-size:10px;margin-top:8px;justify-content:center">'+
+    '<span><span style="color:var(--gn)">●</span> Adicionales a favor</span>'+
+    '<span><span style="color:var(--rd)">●</span> Ejecutado sobre liquidado</span>'+
+    '<span style="color:var(--t3)">— Línea de paridad</span>'+
+  '</div>';
+}
+
+// ── HOOK: añadir 6 gráficos al renderDashData ──
+var _origRenderDashData = renderDashData;
+renderDashData = function(){
+  _origRenderDashData();
+  var ots = getFilteredOTInteractive();
+  var total = ots.length || 1;
+  var comp = ots.filter(function(o){return o.estado==='Completado';}).length;
+  var pct = Math.round(comp/total*100);
+  renderDonut(ots);
+  renderGauge(pct);
+  renderArea(ots);
+  renderRadar(ots, S.users);
+  renderHeatmap(ots);
+  renderScatter(ots);
+};
+
 // ═══ EVENT LISTENERS ═══
 
 // Login
@@ -4838,9 +5292,42 @@ ge('btn-expxls-dash').addEventListener('click',expXLS);
   const el=ge(id);if(el)el.addEventListener('change',renderDashData);
 });
 ge('df-search').addEventListener('input',renderDashData);
+// ── DASHBOARD INTERACTIVO: event delegation ──
+// Click en barras/hbars/KPI cards
+document.addEventListener('click', function(e){
+  // Click en filtro de chip activo
+  var clrChip = e.target.closest('[data-clrdbfilter]');
+  if(clrChip){
+    dashClickFilters[clrChip.dataset.clrdbfilter]='';
+    var sel=ge({est:'df-est',zona:'df-zona',ali:'df-ali',usr:'df-usr'}[clrChip.dataset.clrdbfilter]);
+    if(sel) sel.value='';
+    renderDashData(); return;
+  }
+  // Click en barra o KPI card con filtro
+  var dbEl = e.target.closest('[data-dbfilter]');
+  if(dbEl && ge('page-dashboard') && ge('page-dashboard').classList.contains('act')){
+    var fk = dbEl.dataset.dbfilter;
+    var fv = dbEl.dataset.dbval;
+    if(fk && fv) applyDashClickFilter(fk, fv);
+    return;
+  }
+});
+
+// Tooltip en hover
+document.addEventListener('mouseover', function(e){
+  var el = e.target.closest('[data-tip]');
+  if(el && ge('page-dashboard') && ge('page-dashboard').classList.contains('act')){
+    showTooltip(e, el.dataset.tip);
+  } else {
+    hideTooltip();
+  }
+});
+document.addEventListener('mouseleave', function(){ hideTooltip(); }, true);
+
 ge('dash-clear-filters').addEventListener('click',()=>{
   ['df-est','df-zona','df-ali','df-usr'].forEach(id=>{const el=ge(id);if(el)el.value='';});
   ['df-desde','df-hasta','df-search'].forEach(id=>{const el=ge(id);if(el)el.value='';});
+  dashClickFilters={est:'',zona:'',ali:'',usr:''};
   renderDashData();
 });
 // Chips limpiar filtro individual
