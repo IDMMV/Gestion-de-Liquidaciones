@@ -340,6 +340,9 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 }
 /* ── FILTROS DASHBOARD ── */
 .filter-chip{display:inline-flex;align-items:center;gap:5px;background:var(--gl);border:1px solid var(--ac);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--ac)}
+/* Notif config */
+#m-notif-cfg input[type=checkbox]{accent-color:var(--ac)}
+[data-ntab].act{color:var(--ac);border-bottom-color:var(--ac);font-weight:600}
 /* ── MAPA LEAFLET ── */
 #leaflet-map .leaflet-container{background:var(--bg)}
 .map-popup{font-family:'Segoe UI',sans-serif;font-size:12px;min-width:180px}
@@ -638,6 +641,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
     </div>
     <div class="nsec">
       <div class="nlbl">Cuenta</div>
+      <button class="ni" id="sb-notif-cfg"><span class="ico">🔔</span> Notificaciones</button>
       <button class="ni" id="sb-chpw"><span class="ico">🔑</span> Cambiar contraseña</button>
       <button class="ni" id="sb-logout"><span class="ico">↩</span> Cerrar sesión</button>
     </div>
@@ -962,7 +966,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
           <!-- Input area -->
           <div id="chat-input-area">
             <!-- Preview archivo adjunto -->
-            <div id="chat-attach-preview" style="display:none;padding:6px 12px;background:var(--s3);border-top:1px solid var(--br);display:flex;align-items:center;gap:8px">
+            <div id="chat-attach-preview" style="display:none;padding:6px 12px;background:var(--s3);border-top:1px solid var(--br);align-items:center;gap:8px">
               <span id="chat-attach-name" style="font-size:12px;flex:1"></span>
               <button id="btn-chat-rm-attach" class="btn bi" style="font-size:11px;padding:3px 7px">✕</button>
             </div>
@@ -980,7 +984,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
               <button class="btn bp" id="btn-chat-send" style="width:40px;height:40px;padding:0;border-radius:50%;font-size:18px;flex-shrink:0">➤</button>
             </div>
             <!-- Emoji panel -->
-            <div id="chat-emoji-panel" style="display:none;padding:8px 12px;border-top:1px solid var(--br);background:var(--s2);flex-wrap:wrap;gap:4px">
+            <div id="chat-emoji-panel" style="padding:8px 12px;border-top:1px solid var(--br);background:var(--s2);flex-wrap:wrap;gap:4px">
               <span class="chat-emoji">😊</span><span class="chat-emoji">👍</span><span class="chat-emoji">✅</span>
               <span class="chat-emoji">⚠️</span><span class="chat-emoji">🔧</span><span class="chat-emoji">⚡</span>
               <span class="chat-emoji">📋</span><span class="chat-emoji">📍</span><span class="chat-emoji">📷</span>
@@ -1327,6 +1331,105 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 </div>
 
 <div id="tarea"></div>
+
+<!-- MODAL NOTIFICACIONES + TELEGRAM -->
+<div class="mover" id="m-notif-cfg">
+  <div class="modal" style="max-width:480px">
+    <div class="mh"><h3>🔔 Notificaciones y Alertas</h3><button class="mc" data-close="m-notif-cfg">✕</button></div>
+    <div class="mb">
+
+      <!-- PESTAÑAS -->
+      <div class="tabs" style="margin-bottom:16px">
+        <button class="ltab act" data-ntab="push">📱 Push</button>
+        <button class="ltab" data-ntab="telegram">✈️ Telegram</button>
+        <button class="ltab" data-ntab="eventos">⚙️ Eventos</button>
+      </div>
+
+      <!-- TAB PUSH -->
+      <div id="ntab-push">
+        <div style="background:var(--s3);border-radius:var(--r);padding:14px;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px">📱 Notificaciones del navegador</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:10px">
+            Recibe alertas en tu celular aunque no tengas la pestaña abierta. Funciona en Chrome Android con GitHub Pages (HTTPS).
+          </div>
+          <div id="push-status" style="font-size:12px;margin-bottom:10px;padding:8px;border-radius:var(--r);background:var(--s2)">
+            Estado: verificando...
+          </div>
+          <button class="btn bp" id="btn-req-push" style="width:100%;justify-content:center">
+            🔔 Activar notificaciones
+          </button>
+          <button class="btn bs" id="btn-test-push" style="width:100%;justify-content:center;margin-top:8px">
+            🧪 Enviar notificación de prueba
+          </button>
+        </div>
+        <div class="info-box">
+          <b>Cómo funciona:</b><br>
+          1. Toca "Activar notificaciones" y acepta el permiso<br>
+          2. Cuando llegue un mensaje de chat o cambie una OT, recibirás una alerta aunque Chrome esté minimizado<br>
+          3. Cada usuario debe activarlo en su propio celular
+        </div>
+      </div>
+
+      <!-- TAB TELEGRAM -->
+      <div id="ntab-telegram" style="display:none">
+        <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:12px;background:var(--s3);padding:12px;border-radius:var(--r)">
+          <b style="color:var(--tx)">Cómo configurar el bot:</b><br>
+          1. Abre Telegram y busca <b style="color:var(--ac)">@BotFather</b><br>
+          2. Escribe <b>/newbot</b> y sigue los pasos<br>
+          3. Copia el <b>Token del bot</b> que te da BotFather<br>
+          4. Crea un grupo, añade el bot al grupo<br>
+          5. Envía un mensaje en el grupo, luego abre:<br>
+          <code style="background:var(--s2);padding:2px 6px;border-radius:4px;font-size:11px">https://api.telegram.org/bot[TOKEN]/getUpdates</code><br>
+          6. Copia el <b>chat_id</b> que aparece en el JSON
+        </div>
+        <div class="field">
+          <label>Token del Bot de Telegram</label>
+          <input type="text" id="tg-token" placeholder="1234567890:ABCdefGHIjklMNOpqrSTUvwxYZ"/>
+        </div>
+        <div class="field">
+          <label>Chat ID del grupo</label>
+          <input type="text" id="tg-chatid" placeholder="-1001234567890"/>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <button class="btn bs" id="btn-tg-test" style="flex:1;justify-content:center">🧪 Probar conexión</button>
+          <div id="tg-test-result" style="font-size:12px;padding:8px;flex:1;border-radius:var(--r);background:var(--s3);text-align:center;color:var(--t2)">—</div>
+        </div>
+      </div>
+
+      <!-- TAB EVENTOS -->
+      <div id="ntab-eventos" style="display:none">
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px">Elige qué eventos generan alertas:</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--s3);border-radius:var(--r);cursor:pointer">
+            <input type="checkbox" id="ev-chat" checked style="accent-color:var(--ac);width:16px;height:16px"/>
+            <div><div style="font-size:13px;font-weight:500">💬 Mensajes de chat</div><div style="font-size:11px;color:var(--t2)">Nuevos mensajes cuando no estás en la pestaña</div></div>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--s3);border-radius:var(--r);cursor:pointer">
+            <input type="checkbox" id="ev-ot-nueva" checked style="accent-color:var(--ac);width:16px;height:16px"/>
+            <div><div style="font-size:13px;font-weight:500">📋 OT creada</div><div style="font-size:11px;color:var(--t2)">Cuando se registra una nueva orden de trabajo</div></div>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--s3);border-radius:var(--r);cursor:pointer">
+            <input type="checkbox" id="ev-ot-estado" checked style="accent-color:var(--ac);width:16px;height:16px"/>
+            <div><div style="font-size:13px;font-weight:500">⚙️ Cambio de estado de OT</div><div style="font-size:11px;color:var(--t2)">Pendiente, En Curso, Completado, Observado</div></div>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--s3);border-radius:var(--r);cursor:pointer">
+            <input type="checkbox" id="ev-ot-comp" checked style="accent-color:var(--ac);width:16px;height:16px"/>
+            <div><div style="font-size:13px;font-weight:500">✅ OT completada</div><div style="font-size:11px;color:var(--t2)">Cuando el admin marca una OT como Completada</div></div>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--s3);border-radius:var(--r);cursor:pointer">
+            <input type="checkbox" id="ev-archivo" style="accent-color:var(--ac);width:16px;height:16px"/>
+            <div><div style="font-size:13px;font-weight:500">📎 Archivos subidos</div><div style="font-size:11px;color:var(--t2)">Cuando alguien sube documentos al checklist</div></div>
+          </label>
+        </div>
+      </div>
+
+    </div>
+    <div class="mf">
+      <button class="btn bs" data-close="m-notif-cfg">Cerrar</button>
+      <button class="btn bp" id="btn-save-notif-cfg">💾 Guardar configuración</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL IMPRIMIR -->
 <div class="mover" id="m-print">
@@ -2698,6 +2801,9 @@ function gSearch(v){if(!v)return;ge('ot-q').value=v;nav('ordenes');filterOT()}
 // Los mensajes se guardan en localStorage y se "sincronizan"
 // mostrando todos los mensajes de todos los usuarios en este dispositivo.
 // Para chat real entre dispositivos se necesitaría Firebase/Supabase.
+// ── UTILIDADES ──
+function escapeHtml(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'<br>');}
+
 // ═══════════════════════════════════════════════════════
 // ── CHAT INTERNO MEJORADO ──
 // ═══════════════════════════════════════════════════════
@@ -2740,7 +2846,7 @@ function sendChatMsg(){
   ge('chat-attach-preview').style.display='none';
   ge('chat-emoji-panel').classList.remove('open');
   renderChatMessages();
-  logEvent('CHAT', 'Mensaje enviado en '+(chatCurrentTarget==='general'?'Chat General':'Mensaje directo'), null);
+  try{ logEvent('CHAT', 'Mensaje enviado en '+(chatCurrentTarget==='general'?'Chat General':'Mensaje directo'), null); }catch(e){}
 }
 
 // ── FILTRAR MENSAJES SEGÚN CANAL ACTIVO ──
@@ -2807,7 +2913,7 @@ function renderChatMessages(){
     lastTime = dt;
 
     var u = S.users.find(function(x){return x.id===m.userId;});
-    var rolColor = (ROLES[m.rol]||ROLES.visualizador).color;
+    var rolColor = (typeof ROLES!=='undefined'&&ROLES[m.rol]?ROLES[m.rol].color:'var(--bl)');
     var avatarLetter = (m.nombre||'?')[0].toUpperCase();
 
     // Nombre del remitente (solo en primer mensaje del grupo y si no soy yo)
@@ -2891,7 +2997,7 @@ function renderChatUsers(){
 
   list.innerHTML = filtered.map(function(u){
     var isOnline = u.online;
-    var rolColor = (ROLES[u.rol]||ROLES.visualizador).color;
+    var rolColor = (typeof ROLES!=='undefined'&&ROLES[u.rol]?ROLES[u.rol].color:'var(--bl)');
     var isCurrent = chatCurrentTarget===u.id;
     // Unread DMs
     var unread = allMsgs.filter(function(m){ return m.userId===u.id && m.target===myId; }).length;
@@ -2945,6 +3051,7 @@ function switchChatTo(target){
 
 // ── INIT CHAT ──
 function initChat(){
+  if(!S.historial) S.historial=DB.load('historial',[]);
   lastChatCount = loadChatMsgs().length;
   chatCurrentTarget = 'general';
   switchChatTo('general');
@@ -3653,6 +3760,293 @@ function saveCfg(){
   closeM('m-config');
   toast('✅ Configuración guardada — nombre actualizado en toda la plataforma','success');
   logEvent('CONFIG_CAMBIADA','Configuración de plataforma actualizada: '+cfg.nombre, null);
+}
+
+
+// ═══════════════════════════════════════════════════════
+// ── NOTIFICACIONES PUSH + TELEGRAM ──
+// ═══════════════════════════════════════════════════════
+var NOTIF_CFG_KEY = 'ep_notif_cfg';
+var swRegistration = null;
+
+function loadNotifCfg(){
+  try{
+    return Object.assign({
+      tgToken:'', tgChatId:'',
+      evChat:true, evOtNueva:true, evOtEstado:true, evOtComp:true, evArchivo:false
+    }, JSON.parse(localStorage.getItem(NOTIF_CFG_KEY)||'{}'));
+  }catch(e){ return {tgToken:'',tgChatId:'',evChat:true,evOtNueva:true,evOtEstado:true,evOtComp:true,evArchivo:false}; }
+}
+function saveNotifCfg(cfg){
+  try{ localStorage.setItem(NOTIF_CFG_KEY, JSON.stringify(cfg)); }catch(e){}
+}
+
+// ── SERVICE WORKER (inline como blob) ──
+var SW_CODE = [
+  "self.addEventListener('push', function(e){",
+  "  var data = e.data ? e.data.json() : {title:'ElectricaPro',body:'Nueva notificación'};",
+  "  e.waitUntil(self.registration.showNotification(data.title||'ElectricaPro',{",
+  "    body: data.body||'',",
+  "    icon: data.icon||'/favicon.ico',",
+  "    badge: data.icon||'/favicon.ico',",
+  "    tag: data.tag||'ep-notif',",
+  "    data: data",
+  "  }));",
+  "});",
+  "self.addEventListener('notificationclick', function(e){",
+  "  e.notification.close();",
+  "  e.waitUntil(clients.openWindow(e.notification.data&&e.notification.data.url ? e.notification.data.url : '/'));",
+  "});"
+].join('\n');
+
+// ── REGISTRAR SERVICE WORKER ──
+function registerSW(){
+  if(!('serviceWorker' in navigator)){
+    console.log('SW not supported');
+    return Promise.resolve(null);
+  }
+  // Crear SW como blob URL (funciona en GitHub Pages HTTPS)
+  var blob = new Blob([SW_CODE], {type:'application/javascript'});
+  var swUrl = URL.createObjectURL(blob);
+  return navigator.serviceWorker.register(swUrl)
+    .then(function(reg){
+      swRegistration = reg;
+      console.log('SW registered');
+      return reg;
+    })
+    .catch(function(err){
+      console.log('SW error:', err);
+      return null;
+    });
+}
+
+// ── SOLICITAR PERMISO DE NOTIFICACIONES ──
+function requestPushPermission(){
+  if(!('Notification' in window)){
+    updatePushStatus('❌ Tu navegador no soporta notificaciones push');
+    return;
+  }
+  if(Notification.permission === 'granted'){
+    updatePushStatus('✅ Notificaciones ya activadas');
+    toast('Las notificaciones ya están activadas','success');
+    return;
+  }
+  if(Notification.permission === 'denied'){
+    updatePushStatus('❌ Permiso denegado. Ve a Configuración del sitio en Chrome y permite las notificaciones.');
+    toast('Permiso denegado. Actívalo en la configuración del sitio.','warn');
+    return;
+  }
+  Notification.requestPermission().then(function(perm){
+    if(perm === 'granted'){
+      updatePushStatus('✅ ¡Notificaciones activadas correctamente!');
+      toast('Notificaciones activadas','success');
+      registerSW();
+      // Guardar que este usuario las activó
+      try{ localStorage.setItem('ep_push_enabled','1'); }catch(e){}
+    } else {
+      updatePushStatus('❌ Permiso denegado por el usuario');
+    }
+  });
+}
+
+function updatePushStatus(msg){
+  var el = ge('push-status');
+  if(el) el.textContent = 'Estado: ' + msg;
+}
+
+function checkPushStatus(){
+  var el = ge('push-status');
+  if(!el) return;
+  if(!('Notification' in window)){
+    updatePushStatus('❌ No soportado en este navegador');
+  } else if(Notification.permission === 'granted'){
+    updatePushStatus('✅ Activadas y funcionando');
+  } else if(Notification.permission === 'denied'){
+    updatePushStatus('❌ Bloqueadas — activa en Configuración del sitio');
+  } else {
+    updatePushStatus('⚪ No activadas — toca "Activar notificaciones"');
+  }
+}
+
+// ── ENVIAR NOTIFICACIÓN LOCAL (sin servidor) ──
+function sendPushNotification(title, body, tag){
+  var cfg = loadNotifCfg();
+  // Push local (Notification API)
+  if('Notification' in window && Notification.permission === 'granted'){
+    try{
+      // Intentar via SW primero, si no directamente
+      if(swRegistration){
+        swRegistration.showNotification(title, {
+          body: body,
+          icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="%23f0a500" fill-opacity=".9"/><path d="M28 8L14 26h12l-6 14 20-22H28L34 8H28z" fill="%23000"/></svg>',
+          tag: tag||'ep-general',
+          vibrate: [200, 100, 200]
+        });
+      } else {
+        new Notification(title, {body:body, tag:tag||'ep-general'});
+      }
+    }catch(e){ console.log('Notif error:', e); }
+  }
+  // Telegram (siempre si está configurado)
+  sendTelegramMsg(title + '\n' + body);
+}
+
+// ── TELEGRAM BOT API ──
+function sendTelegramMsg(text){
+  var cfg = loadNotifCfg();
+  if(!cfg.tgToken || !cfg.tgChatId) return;
+  var appNm = (loadConfig&&loadConfig().nombre)||'ElectricaPro';
+  var fullText = '[' + appNm + '] ' + text;
+  fetch('https://api.telegram.org/bot' + cfg.tgToken + '/sendMessage', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      chat_id: cfg.tgChatId,
+      text: fullText,
+      parse_mode: 'HTML'
+    })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if(!d.ok) console.log('Telegram error:', d.description);
+  })
+  .catch(function(e){ console.log('Telegram fetch error:', e); });
+}
+
+function testTelegram(){
+  var token = ge('tg-token').value.trim();
+  var chatId = ge('tg-chatid').value.trim();
+  var res = ge('tg-test-result');
+  if(!token||!chatId){ if(res) res.textContent='Ingresa token y chat_id'; return; }
+  if(res){ res.textContent='⏳ Enviando...'; res.style.color='var(--t2)'; }
+  var appNm = (typeof loadConfig==='function'&&loadConfig().nombre)||'ElectricaPro';
+  fetch('https://api.telegram.org/bot'+token+'/sendMessage',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({chat_id:chatId, text:'✅ ['+appNm+'] Conexión exitosa. Las alertas llegarán aquí.'})
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(res){
+      res.textContent = d.ok ? '✅ Conectado correctamente' : '❌ Error: '+(d.description||'revisar datos');
+      res.style.color = d.ok ? 'var(--gn)' : 'var(--rd)';
+    }
+  })
+  .catch(function(){
+    if(res){ res.textContent='❌ Error de conexión'; res.style.color='var(--rd)'; }
+  });
+}
+
+// ── ABRIR MODAL NOTIFICACIONES ──
+function openNotifCfg(){
+  var cfg = loadNotifCfg();
+  ge('tg-token').value = cfg.tgToken||'';
+  ge('tg-chatid').value = cfg.tgChatId||'';
+  ge('ev-chat').checked    = cfg.evChat!==false;
+  ge('ev-ot-nueva').checked  = cfg.evOtNueva!==false;
+  ge('ev-ot-estado').checked = cfg.evOtEstado!==false;
+  ge('ev-ot-comp').checked   = cfg.evOtComp!==false;
+  ge('ev-archivo').checked   = !!cfg.evArchivo;
+  // Switch to first tab
+  switchNTab('push');
+  checkPushStatus();
+  openM('m-notif-cfg');
+}
+
+function switchNTab(tab){
+  ['push','telegram','eventos'].forEach(function(t){
+    var panel=ge('ntab-'+t);
+    var btn=document.querySelector('[data-ntab="'+t+'"]');
+    if(panel) panel.style.display=t===tab?'block':'none';
+    if(btn) btn.classList.toggle('act',t===tab);
+  });
+}
+
+function saveNotifCfgUI(){
+  var cfg = {
+    tgToken:  ge('tg-token').value.trim(),
+    tgChatId: ge('tg-chatid').value.trim(),
+    evChat:       ge('ev-chat').checked,
+    evOtNueva:    ge('ev-ot-nueva').checked,
+    evOtEstado:   ge('ev-ot-estado').checked,
+    evOtComp:     ge('ev-ot-comp').checked,
+    evArchivo:    ge('ev-archivo').checked,
+  };
+  saveNotifCfg(cfg);
+  closeM('m-notif-cfg');
+  toast('✅ Configuración de alertas guardada','success');
+}
+
+// ── HOOKS EN FUNCIONES EXISTENTES ──
+// Notificar nuevo mensaje de chat
+var _origSendChatMsg = sendChatMsg;
+sendChatMsg = function(){
+  _origSendChatMsg();
+  var cfg = loadNotifCfg();
+  if(!cfg.evChat) return;
+  // Solo notificar si NO estamos en la página de chat
+  var chatPg=ge('page-chat');
+  if(chatPg&&chatPg.classList.contains('act')) return;
+  sendPushNotification(
+    '💬 Nuevo mensaje de ' + (S.user?S.user.nombre:'alguien'),
+    ge('chat-input') ? '' : '',
+    'chat-msg'
+  );
+};
+
+// Notificar nueva OT
+var _origSaveOT2 = saveOT;
+saveOT = function(){
+  var isNew = !S.editOT;
+  var otNm = ge('f-ot') ? ge('f-ot').value.trim() : '';
+  _origSaveOT2();
+  if(!isNew) return;
+  var cfg = loadNotifCfg();
+  if(!cfg.evOtNueva) return;
+  sendPushNotification(
+    '📋 Nueva OT: ' + otNm,
+    'Creada por ' + (S.user?S.user.nombre:'') + ' · Zona: ' + (ge('f-zona')?ge('f-zona').value:''),
+    'ot-nueva'
+  );
+};
+
+// Notificar cambio de estado
+var _origSaveStatus2 = saveStatus;
+saveStatus = function(){
+  var otId = S.statusOTId;
+  var nuevoEst = ge('st-sel') ? ge('st-sel').value : '';
+  _origSaveStatus2();
+  var cfg = loadNotifCfg();
+  var isComp = nuevoEst === 'Completado';
+  if(isComp && !cfg.evOtComp) return;
+  if(!isComp && !cfg.evOtEstado) return;
+  var o = S.ordenes.find(function(x){return x.id===otId;});
+  if(!o) return;
+  var icon = nuevoEst==='Completado'?'✅':nuevoEst==='Observado'?'⚠️':'⚡';
+  sendPushNotification(
+    icon + ' OT ' + o.ot + ' → ' + nuevoEst,
+    'Actualizado por ' + (S.user?S.user.nombre:''),
+    'ot-estado'
+  );
+};
+
+// Notificar archivos subidos
+var _origSaveSubFiles2 = saveSubFiles;
+saveSubFiles = function(){
+  var n = S.upFiles.length, sf = S.upSF, otId = S.upOTId;
+  _origSaveSubFiles2();
+  var cfg = loadNotifCfg();
+  if(!cfg.evArchivo) return;
+  var o = S.ordenes.find(function(x){return x.id===otId;});
+  sendPushNotification(
+    '📎 ' + n + ' archivo(s) en ' + sf,
+    'OT: ' + (o?o.ot:'') + ' · Por: ' + (S.user?S.user.nombre:''),
+    'archivo'
+  );
+};
+
+// Iniciar SW al cargar la app (si el permiso ya fue dado antes)
+if(typeof localStorage !== 'undefined' && localStorage.getItem('ep_push_enabled')==='1'){
+  if(typeof registerSW === 'function') registerSW();
 }
 
 // ═══ EVENT LISTENERS ═══
