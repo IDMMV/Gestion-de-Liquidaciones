@@ -340,6 +340,14 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 }
 /* ── FILTROS DASHBOARD ── */
 .filter-chip{display:inline-flex;align-items:center;gap:5px;background:var(--gl);border:1px solid var(--ac);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--ac)}
+/* Galería */
+.galeria-flt.act{background:var(--ac);color:#000;border-color:var(--ac)}
+#galeria-grid img{transition:transform .2s}
+#galeria-grid img:hover{transform:scale(1.03)}
+/* QR */
+#qr-canvas-wrap{box-shadow:0 4px 20px rgba(0,0,0,.15)}
+/* Llegada bar */
+#cl-llegada-bar{border-top:2px solid rgba(240,165,0,.4)}
 /* Notif config */
 #m-notif-cfg input[type=checkbox]{accent-color:var(--ac)}
 [data-ntab].act{color:var(--ac);border-bottom-color:var(--ac);font-weight:600}
@@ -510,7 +518,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
           <div style="display:flex;gap:10px;align-items:center">
             <div id="cfg-logo-preview" style="width:52px;height:52px;border-radius:12px;background:var(--s3);border:1px solid var(--br);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden">⚡</div>
             <div style="flex:1">
-              <label class="btn bs" style="cursor:pointer;font-size:12px;display:inline-flex">
+              <label class="btn bs" style="cursor:pointer;font-size:12px;display:inline-flex;align-items:center;gap:6px">
                 📷 Subir logo
                 <input type="file" id="cfg-logo-file" accept="image/*" style="display:none"/>
               </label>
@@ -583,6 +591,10 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       <button id="btn-fwd" title="Adelante" disabled>&#8594;</button>
     </div>
     <div class="tlogo" id="topbar-brand-name">⚡ Electrica<span>Pro</span></div>
+    <div id="network-status" style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);flex-shrink:0">
+      <span id="network-dot" style="width:7px;height:7px;border-radius:50%;background:var(--gn);flex-shrink:0"></span>
+      <span id="network-lbl" class="tb-desktop" style="white-space:nowrap">En línea</span>
+    </div>
     <div class="tsep"></div>
     <!-- Buscador solo en desktop -->
     <input type="text" id="gsearch" placeholder="🔍 Buscar OT..." class="tb-desktop"/>
@@ -638,10 +650,12 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
     <div class="nsec" id="anav" style="display:none">
       <div class="nlbl">Administración</div>
       <button class="ni" data-page="usuarios"><span class="ico">👥</span> Usuarios</button>
+      <button class="ni" id="sb-dynamic-fields" style="display:flex"><span class="ico">📝</span> Campos personalizados OT</button>
     </div>
     <div class="nsec">
       <div class="nlbl">Cuenta</div>
       <button class="ni" id="sb-notif-cfg"><span class="ico">🔔</span> Notificaciones</button>
+
       <button class="ni" id="sb-chpw"><span class="ico">🔑</span> Cambiar contraseña</button>
       <button class="ni" id="sb-logout"><span class="ico">↩</span> Cerrar sesión</button>
     </div>
@@ -767,6 +781,21 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
           <div class="card">
             <div class="ch"><h3>📁 Completitud del Checklist</h3></div>
             <div style="padding:15px" id="chart-checklist"></div>
+          </div>
+        </div>
+      </div>
+      <!-- FILA MO: Gráfico Mano de Obra -->
+      <div class="row" style="margin-bottom:14px">
+        <div class="col">
+          <div class="card">
+            <div class="ch"><h3>💰 Mano de Obra: Campo vs Liquidación</h3><span id="mo-total-diff" class="badge" style="margin-left:auto;font-size:11px"></span></div>
+            <div style="padding:15px" id="chart-mo"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="ch"><h3>📊 Análisis M.O. por OT</h3></div>
+            <div style="padding:15px;max-height:280px;overflow-y:auto" id="chart-mo-detail"></div>
           </div>
         </div>
       </div>
@@ -1028,6 +1057,23 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
           <div style="font-size:11px;color:var(--or);margin-top:4px" id="f-est-note"></div>
         </div>
         <div class="field s2"><label>Descripción</label><textarea id="f-desc" placeholder="Detalles del trabajo..."></textarea></div>
+        <!-- MANO DE OBRA -->
+        <div class="field">
+          <label>💰 M.O. de Campo (S/)</label>
+          <input type="number" id="f-mo-campo" placeholder="0.00" min="0" step="0.01"/>
+          <div style="font-size:10px;color:var(--t2);margin-top:3px">Mano de obra real ejecutada en campo</div>
+        </div>
+        <div class="field">
+          <label>📋 M.O. de Liquidación (S/)</label>
+          <input type="number" id="f-mo-liq" placeholder="0.00" min="0" step="0.01"/>
+          <div style="font-size:10px;color:var(--t2);margin-top:3px">Mano de obra liquidada con adicionales</div>
+        </div>
+        <div class="field s2">
+          <label>📊 Diferencia (Liquidación − Campo)</label>
+          <div id="f-mo-diff" style="padding:10px 13px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);font-size:15px;font-weight:700;text-align:center">S/ 0.00</div>
+        </div>
+        <!-- CAMPOS DINÁMICOS -->
+        <div id="f-dynamic-fields" class="s2" style="display:contents"></div>
         <div class="field s2">
           <label>GPS / Ubicación</label>
           <div style="display:flex;gap:7px;align-items:center">
@@ -1067,7 +1113,11 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       <div class="divider" style="margin:0 0 12px"></div>
       <div class="cl-grid" id="cl-grid"></div>
     </div>
-    <div class="mf"><button class="btn bs" data-close="m-checklist">Cerrar</button><button class="btn bg2" id="btn-exp-cl" style="font-size:12px">📥 Exportar</button></div>
+    <div id="cl-llegada-bar" style="display:none;padding:10px 14px;background:rgba(240,165,0,.08);border-top:1px solid rgba(240,165,0,.3);font-size:12px;color:var(--or);display:flex;align-items:center;gap:8px">
+      <span>⚠️ GPS pendiente de confirmación</span>
+      <button class="btn bp" id="btn-cl-confirmar-llegada" style="font-size:11px;padding:5px 12px;margin-left:auto">📍 Confirmar llegada</button>
+    </div>
+    <div class="mf"><button class="btn bs" data-close="m-checklist">Cerrar</button><button class="btn bs" id="btn-cl-galeria" style="font-size:12px">📷 Galería</button><button class="btn bg2" id="btn-exp-cl" style="font-size:12px">📥 Exportar</button></div>
   </div>
 </div>
 
@@ -1332,6 +1382,120 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 
 <div id="tarea"></div>
 
+<!-- MODAL CONFIRMACIÓN LLEGADA AL PUNTO -->
+<div class="mover" id="m-llegada">
+  <div class="modal" style="max-width:400px">
+    <div class="mh"><h3>📍 Confirmación de Llegada</h3></div>
+    <div class="mb">
+      <div style="text-align:center;padding:10px 0 20px">
+        <div style="font-size:48px;margin-bottom:12px">🏗️</div>
+        <div id="llegada-ot-nm" style="font-size:16px;font-weight:700;color:var(--ac);margin-bottom:8px"></div>
+        <div style="font-size:14px;color:var(--tx);font-weight:600;margin-bottom:6px">¿Estás ahora en el punto de trabajo?</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6">Si confirmas tu llegada, se registrará automáticamente tu ubicación GPS y podrás adjuntar los archivos del checklist.</div>
+      </div>
+      <div id="llegada-gps-status" style="display:none;margin-bottom:12px;padding:10px;border-radius:var(--r);font-size:12px;text-align:center"></div>
+    </div>
+    <div class="mf" style="flex-direction:column;gap:8px">
+      <button class="btn bp" id="btn-llegada-si" style="width:100%;justify-content:center;padding:14px;font-size:15px">
+        ✅ Sí, estoy en el punto — Registrar llegada
+      </button>
+      <button class="btn bs" id="btn-llegada-no" style="width:100%;justify-content:center;padding:12px">
+        ⏳ No, aún no llego — Continuar sin GPS
+      </button>
+      <button class="btn bs" data-close="m-llegada" style="width:100%;justify-content:center;font-size:12px;color:var(--t2)">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL QR DE OT -->
+<div class="mover" id="m-qr">
+  <div class="modal" style="max-width:340px">
+    <div class="mh"><h3>📱 Código QR</h3><button class="mc" data-close="m-qr">✕</button></div>
+    <div class="mb" style="text-align:center">
+      <div id="qr-ot-nm" style="font-size:14px;font-weight:700;color:var(--ac);margin-bottom:14px"></div>
+      <div id="qr-canvas-wrap" style="display:inline-block;padding:16px;background:#fff;border-radius:12px;margin-bottom:14px">
+        <canvas id="qr-canvas" width="200" height="200"></canvas>
+      </div>
+      <div style="font-size:11px;color:var(--t2);margin-bottom:12px">Escanea con la cámara del celular para ir directo a esta OT</div>
+      <div id="qr-url" style="font-size:10px;color:var(--t3);word-break:break-all;background:var(--s3);padding:6px 10px;border-radius:var(--r)"></div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" data-close="m-qr">Cerrar</button>
+      <button class="btn bp" id="btn-qr-download">⬇ Descargar QR</button>
+      <button class="btn bs" id="btn-qr-share">📤 Compartir</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL GALERÍA DE FOTOS POR OT -->
+<div class="mover" id="m-galeria">
+  <div class="modal mlg">
+    <div class="mh">
+      <h3>📷 Galería de Fotos</h3>
+      <span id="galeria-count" class="badge b-blue" style="margin-left:6px"></span>
+      <button class="mc" data-close="m-galeria">✕</button>
+    </div>
+    <div class="mb">
+      <div id="galeria-ot-info" style="margin-bottom:12px;font-size:12px;color:var(--t2)"></div>
+      <div id="galeria-filter" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        <button class="btn bs galeria-flt act" data-flt="">Todas</button>
+      </div>
+      <div id="galeria-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px"></div>
+      <div id="galeria-empty" style="display:none;text-align:center;padding:30px;color:var(--t2)">
+        <div style="font-size:36px;margin-bottom:8px">📷</div>
+        <p>Sin fotos en esta OT aún</p>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bs" data-close="m-galeria">Cerrar</button></div>
+  </div>
+</div>
+
+<!-- MODAL CAMPOS DINÁMICOS -->
+<div class="mover" id="m-dynamic-fields">
+  <div class="modal" style="max-width:480px">
+    <div class="mh"><h3>⚙️ Campos personalizados de OT</h3><button class="mc" data-close="m-dynamic-fields">✕</button></div>
+    <div class="mb">
+      <div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">
+        Agrega campos personalizados que aparecerán en el formulario de OT, en la exportación Excel y en los reportes impresos.
+      </div>
+      <!-- Lista de campos existentes -->
+      <div id="dynamic-fields-list" style="margin-bottom:14px"></div>
+      <!-- Formulario nuevo campo -->
+      <div style="background:var(--s3);border:1px solid var(--br);border-radius:var(--r);padding:14px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px">➕ Nuevo campo</div>
+        <div class="fg">
+          <div class="field"><label>Nombre del campo *</label><input type="text" id="df-nombre" placeholder="Ej: Contrato, Partida..."/></div>
+          <div class="field"><label>Tipo de dato</label>
+            <select id="df-tipo">
+              <option value="texto">Texto</option>
+              <option value="numero">Número (S/)</option>
+              <option value="fecha">Fecha</option>
+              <option value="lista">Lista de opciones</option>
+              <option value="si_no">Sí / No</option>
+            </select>
+          </div>
+          <div class="field s2" id="df-opciones-wrap" style="display:none">
+            <label>Opciones (separadas por coma)</label>
+            <input type="text" id="df-opciones" placeholder="Opción 1, Opción 2, Opción 3"/>
+          </div>
+          <div class="field s2">
+            <label>Placeholder / Ayuda</label>
+            <input type="text" id="df-placeholder" placeholder="Texto de ayuda..."/>
+          </div>
+          <div class="field s2" style="display:flex;align-items:center;gap:10px">
+            <input type="checkbox" id="df-required" style="accent-color:var(--ac);width:16px;height:16px"/>
+            <label for="df-required" style="font-size:13px;cursor:pointer">Campo obligatorio</label>
+          </div>
+        </div>
+        <button class="btn bp" id="btn-add-dynamic-field" style="width:100%;justify-content:center;margin-top:8px">➕ Agregar campo</button>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bs" data-close="m-dynamic-fields">Cerrar</button></div>
+  </div>
+</div>
+
 <!-- MODAL NOTIFICACIONES + TELEGRAM -->
 <div class="mover" id="m-notif-cfg">
   <div class="modal" style="max-width:480px">
@@ -1510,8 +1674,19 @@ function loadUsers(){
   else u[i]={...ADM,...u[i],activo:true,id:'u0',username:'admin',password:u[i].password||'admin123'};
   return u;
 }
+// ── RESTAURAR SESIÓN GUARDADA ──
+function restoreSession(){
+  try{
+    var sid=localStorage.getItem('ep_session');
+    if(!sid) return null;
+    var users=loadUsers();
+    var u=users.find(function(x){return x.id===sid&&x.activo;});
+    return u||null;
+  }catch(e){return null;}
+}
+var _restoredUser=restoreSession();
 const S={
-  user:null,users:loadUsers(),
+  user:_restoredUser,users:loadUsers(),
   ordenes:DB.load('ordenes',[]),
   files:DB.load('files',[]),
   notifs:DB.load('notifs',[]),
@@ -1524,7 +1699,28 @@ const S={
   clOTId:null,statusOTId:null,
   sfViewOTId:null,sfViewSF:null,
 };
-function saveAll(){DB.save('users',S.users);DB.save('ordenes',S.ordenes);DB.save('files',S.files);DB.save('notifs',S.notifs)}
+function saveAll(){
+  // Siempre guardar en localStorage (funciona offline)
+  DB.save('users',S.users);
+  DB.save('ordenes',S.ordenes);
+  DB.save('files',S.files);
+  DB.save('notifs',S.notifs);
+  // Marcar timestamp del último guardado
+  try{localStorage.setItem('ep_lastsave',new Date().toISOString());}catch(e){}
+  // Indicador visual de estado de red
+  updateNetworkStatus();
+}
+function updateNetworkStatus(){
+  var isOnline = navigator.onLine;
+  var dot = ge('network-dot');
+  var lbl = ge('network-lbl');
+  if(dot){ dot.style.background = isOnline ? 'var(--gn)' : 'var(--or)'; }
+  if(lbl){ lbl.textContent = isOnline ? 'En línea' : 'Sin conexión — datos guardados localmente'; }
+  // Si hay Supabase configurado y hay red, intentar sync
+  if(isOnline && typeof syncWithSupabase === 'function'){
+    syncWithSupabase();
+  }
+}
 
 // ── UTILS ──
 const ge=id=>document.getElementById(id);
@@ -1690,11 +1886,14 @@ function doLogin(){
   const found=S.users.find(x=>x.username===u&&x.password===p&&x.activo);
   ge('li-err').style.display=found?'none':'block';
   if(!found)return;
-  S.user=found;found.online=true;found.lastSeen=new Date().toISOString();saveAll();showApp();
+  S.user=found;found.online=true;found.lastSeen=new Date().toISOString();saveAll();
+  try{localStorage.setItem('ep_session',found.id);}catch(e){}
+  showApp();
 }
 function doLogout(){
   if(chatInterval){clearInterval(chatInterval);chatInterval=null;}
   if(S.user){S.user.online=false;S.user.lastSeen=new Date().toISOString();saveAll()}
+  try{localStorage.removeItem('ep_session');}catch(e){}
   if(S.camStream)S.camStream.getTracks().forEach(t=>t.stop());
   S.user=null;ge('app').style.display='none';ge('login-screen').style.display='flex';
   ge('li-user').value='';ge('li-pass').value='';ge('li-err').style.display='none';
@@ -1951,6 +2150,78 @@ function renderDashData(){
     }).join('')+
   '</div>';
 
+  // ── GRÁFICO MANO DE OBRA ──
+  var moOts = ots.filter(function(o){ return (o.moCampo||0)>0 || (o.moLiq||0)>0; });
+  var totalCampo = moOts.reduce(function(a,o){ return a+(o.moCampo||0); },0);
+  var totalLiq   = moOts.reduce(function(a,o){ return a+(o.moLiq||0); },0);
+  var totalDiff  = totalLiq - totalCampo;
+  // Badge total diferencia
+  var moDiffEl = ge('mo-total-diff');
+  if(moDiffEl){
+    moDiffEl.textContent = (totalDiff>=0?'▲ ':'▼ ')+'S/ '+Math.abs(totalDiff).toFixed(2)+' diferencia total';
+    moDiffEl.className='badge '+(totalDiff>=0?'b-green':'b-red');
+  }
+  // Gráfico barras comparativas
+  var moChartEl = ge('chart-mo');
+  if(moChartEl){
+    if(!moOts.length){
+      moChartEl.innerHTML='<p style="color:var(--t2);font-size:12px;text-align:center;padding:20px">Sin datos de Mano de Obra aún.<br>Ingresa MO Campo y MO Liquidación al crear o editar una OT.</p>';
+    } else {
+      var maxMO = Math.max(totalCampo, totalLiq, 1);
+      moChartEl.innerHTML=
+        '<div style="display:flex;gap:14px;align-items:flex-end;height:120px;margin-bottom:12px">'+
+          '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">'+
+            '<span style="font-size:12px;font-weight:600;color:var(--bl)">S/ '+totalCampo.toFixed(0)+'</span>'+
+            '<div style="height:'+Math.round(totalCampo/maxMO*100)+'px;background:var(--bl);border-radius:6px 6px 0 0;width:100%;min-height:4px;transition:height .5s"></div>'+
+            '<span style="font-size:11px;color:var(--t2)">MO Campo</span>'+
+          '</div>'+
+          '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">'+
+            '<span style="font-size:12px;font-weight:600;color:var(--gn)">S/ '+totalLiq.toFixed(0)+'</span>'+
+            '<div style="height:'+Math.round(totalLiq/maxMO*100)+'px;background:var(--gn);border-radius:6px 6px 0 0;width:100%;min-height:4px;transition:height .5s"></div>'+
+            '<span style="font-size:11px;color:var(--t2)">MO Liquidación</span>'+
+          '</div>'+
+          '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">'+
+            '<span style="font-size:12px;font-weight:600;color:'+(totalDiff>=0?'var(--gn)':'var(--rd)')+'">'+
+              (totalDiff>=0?'▲ ':'▼ ')+'S/ '+Math.abs(totalDiff).toFixed(0)+
+            '</span>'+
+            '<div style="height:'+Math.round(Math.abs(totalDiff)/maxMO*100)+'px;background:'+(totalDiff>=0?'var(--gn)':'var(--rd)')+';border-radius:6px 6px 0 0;width:100%;min-height:4px;transition:height .5s"></div>'+
+            '<span style="font-size:11px;color:var(--t2)">Diferencia</span>'+
+          '</div>'+
+        '</div>'+
+        '<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px">'+
+          '<span style="color:var(--bl)">■ Campo: S/ '+totalCampo.toFixed(2)+'</span>'+
+          '<span style="color:var(--gn)">■ Liquidación: S/ '+totalLiq.toFixed(2)+'</span>'+
+          '<span style="color:'+(totalDiff>=0?'var(--gn)':'var(--rd)')+'">'+(totalDiff>=0?'▲ Adicionales a favor':'▼ Ejecutado sobre liquidado')+': S/ '+Math.abs(totalDiff).toFixed(2)+'</span>'+
+        '</div>';
+    }
+  }
+  // Detalle MO por OT
+  var moDetailEl = ge('chart-mo-detail');
+  if(moDetailEl){
+    if(!moOts.length){
+      moDetailEl.innerHTML='<p style="color:var(--t2);font-size:12px;text-align:center;padding:10px">Sin datos</p>';
+    } else {
+      moDetailEl.innerHTML = moOts.map(function(o){
+        var diff = o.moDiff||0;
+        var col = diff>=0?'var(--gn)':'var(--rd)';
+        return '<div style="padding:8px 0;border-bottom:1px solid var(--br)">'+
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">'+
+            '<span style="font-size:12px;font-weight:600">'+o.ot+'</span>'+
+            '<span style="font-size:11px;color:'+col+';font-weight:600">'+(diff>=0?'▲':'▼')+' S/ '+Math.abs(diff).toFixed(2)+'</span>'+
+          '</div>'+
+          '<div style="display:flex;gap:8px;font-size:10px;color:var(--t2)">'+
+            '<span>🔵 Campo: S/ '+(o.moCampo||0).toFixed(2)+'</span>'+
+            '<span>🟢 Liq: S/ '+(o.moLiq||0).toFixed(2)+'</span>'+
+          '</div>'+
+          '<div style="display:grid;grid-template-columns:'+(o.moCampo||0)+'fr '+(o.moLiq||0)+'fr;gap:3px;margin-top:5px;height:6px">'+
+            '<div style="background:var(--bl);border-radius:3px;min-width:2px"></div>'+
+            '<div style="background:var(--gn);border-radius:3px;min-width:2px"></div>'+
+          '</div>'+
+        '</div>';
+      }).join('');
+    }
+  }
+
   // ── INDICADORES DE TIEMPO ──
   const today=new Date();
   const pendOld=ots.filter(function(o){
@@ -2085,7 +2356,7 @@ function filterOT(){
       '<td><button class="ot-cl-pill" data-ocl="'+o.id+'">📁 '+clD+'/'+CHECKLIST.length+'</button></td>'+
       '<td><div style="display:flex;gap:3px;flex-wrap:wrap">'+
         '<button class="btn bi" data-otv="'+o.id+'" title="Ver detalle" style="font-size:14px">👁</button>'+
-        (canDo('editOT',o.userId)?'<button class="btn bi" data-ote="'+o.id+'" title="Editar" style="font-size:14px">✏️</button>':'')+(canDo('statusOT',o.userId)?'<button class="btn bi" data-ost="'+o.id+'" title="Estado" style="font-size:14px;color:var(--bl)">⚙️</button>':'')+(canDo('deleteOT',o.userId)?'<button class="btn bi" data-otdel="'+o.id+'" title="Eliminar" style="font-size:14px;color:var(--rd)">🗑</button>':'')+
+        '<button class="btn bi" data-qr="'+o.id+'" title="Ver QR" style="font-size:14px">📱</button>'+'<button class="btn bi" data-galeria="'+o.id+'" title="Galería fotos" style="font-size:14px">📷</button>'+(canDo('editOT',o.userId)?'<button class="btn bi" data-ote="'+o.id+'" title="Editar" style="font-size:14px">✏️</button>':'')+(canDo('statusOT',o.userId)?'<button class="btn bi" data-ost="'+o.id+'" title="Estado" style="font-size:14px;color:var(--bl)">⚙️</button>':'')+(canDo('deleteOT',o.userId)?'<button class="btn bi" data-otdel="'+o.id+'" title="Eliminar" style="font-size:14px;color:var(--rd)">🗑</button>':'')+
       '</div></td>'+
     '</tr>';
   }).join('');
@@ -2096,6 +2367,10 @@ function openNewOT(){
   ge('f-ot').value='';ge('f-fecha').value=new Date().toISOString().split('T')[0];
   ge('f-sup').value='';ge('f-ali').value='';ge('f-cir').value='';ge('f-zona').value='';
   ge('f-est').value='Pendiente';ge('f-desc').value='';ge('f-gps').value='';
+  ge('f-mo-campo').value='';ge('f-mo-liq').value='';
+  if(ge('f-prellenada')) ge('f-prellenada').checked=false;
+  ge('f-mo-diff').textContent='S/ 0.00';ge('f-mo-diff').style.color='var(--t2)';
+  renderDynamicFieldsInForm(null);
   ge('f-est-note').textContent='';
   updateEstNote();openM('m-orden');
 }
@@ -2106,6 +2381,10 @@ function editOT(id){
   ge('f-ot').value=o.ot||'';ge('f-fecha').value=o.fecha||'';ge('f-sup').value=o.supervisor||'';
   ge('f-ali').value=o.alimentador||'';ge('f-cir').value=o.circuito||'';ge('f-zona').value=o.zona||'';
   ge('f-est').value=o.estado||'Pendiente';ge('f-desc').value=o.desc||'';ge('f-gps').value=o.gps||'';
+  ge('f-mo-campo').value=o.moCampo||'';
+  ge('f-mo-liq').value=o.moLiq||'';
+  calcMODiff();
+  renderDynamicFieldsInForm(o);
   ge('f-est-note').textContent='';updateEstNote();openM('m-orden');
 }
 function saveOT(){
@@ -2119,6 +2398,9 @@ function saveOT(){
   let est=ge('f-est').value;
   if(est==='Completado'&&!canDo('complete',S.user.id)){est='En Curso';toast('Estado cambiado a "En Curso"','warn')}
   const isNew=!S.editOT;
+  var moCampo = parseFloat(ge('f-mo-campo').value)||0;
+  var prellenada = ge('f-prellenada').checked;
+  var moLiq   = parseFloat(ge('f-mo-liq').value)||0;
   const d={
     id:S.editOT||'ot_'+Date.now(),
     ot,fecha,supervisor:sup,
@@ -2128,6 +2410,11 @@ function saveOT(){
     estado:est,
     desc:ge('f-desc').value.trim(),
     gps:ge('f-gps').value,
+    moCampo: moCampo,
+    moLiq:   moLiq,
+    moDiff:  moLiq - moCampo,
+    prellenada: prellenada,
+    dynamicFields: getDynamicFieldValues(),
     userId:S.user.id,
     updated:new Date().toISOString()
   };
@@ -2161,6 +2448,13 @@ function openChecklist(otId){
   const o=S.ordenes.find(x=>x.id===otId);if(!o)return;
   S.clOTId=otId;S.expOT=otId;
   ge('cl-title').textContent='Checklist: '+o.ot;
+  // Badge si la OT fue prellenada (tiene datos de campo pero sin archivos aún)
+  var clStatusEl=ge('cl-status');
+  var oFiles=S.files.filter(function(f){return f.otId===otId;});
+  if(o.prellenada&&!oFiles.length){
+    clStatusEl.textContent='📋 Prellenada — adjuntar archivos';
+    clStatusEl.className='badge b-blue';
+  }
   ge('cl-status').className='badge '+ebadge(o.estado);ge('cl-status').textContent=o.estado;
   const ow=S.users.find(x=>x.id===o.userId);
   ge('cl-ot-info').innerHTML=
@@ -3130,13 +3424,18 @@ function buildPrintOT(otId,withChecklist){
   const oF=S.files.filter(f=>f.otId===otId);
   const imgs=oF.filter(f=>isImg(f.name)).slice(0,8);
   const clD=CHECKLIST.filter(sf=>oF.some(f=>f.subFolder===sf)).length;
+  var dynF = loadDynamicFields();
+  var dynPrintRows = dynF.map(function(f){ return [f.nombre,(o.dynamicFields&&o.dynamicFields[f.id])||'—']; });
   const fields=[
     ['N° Orden de Trabajo',o.ot||'—'],['Fecha',o.fecha||'—'],
     ['Supervisor Responsable',o.supervisor||'—'],['Estado',o.estado||'—'],
     ['Alimentador',o.alimentador||'—'],['Circuito',o.circuito||'—'],
     ['Zona',o.zona||'—'],['Usuario',ow?ow.nombre:'—'],
     ['GPS / Ubicación',o.gps||'—'],['Descripción',o.desc||'—'],
-  ];
+    ['M.O. de Campo',  'S/ '+(o.moCampo||0).toFixed(2)],
+    ['M.O. de Liquidación','S/ '+(o.moLiq||0).toFixed(2)],
+    ['Diferencia M.O.',(o.moDiff>=0?'▲ ':'▼ ')+'S/ '+Math.abs(o.moDiff||0).toFixed(2)],
+  ].concat(dynPrintRows);
   let html='<div class="print-doc">'+
     printHeader('Orden de Trabajo: '+o.ot,'Estado: '+o.estado+(withChecklist?' · Checklist: '+clD+'/'+CHECKLIST.length:''))+
     '<div class="print-section">'+
@@ -4049,6 +4348,362 @@ if(typeof localStorage !== 'undefined' && localStorage.getItem('ep_push_enabled'
   if(typeof registerSW === 'function') registerSW();
 }
 
+
+// ═══════════════════════════════════════════════════════
+// ── CAMPOS DINÁMICOS DE OT ──
+// ═══════════════════════════════════════════════════════
+var DF_KEY = 'ep_dynamic_fields';
+
+function loadDynamicFields(){
+  try{ return JSON.parse(localStorage.getItem(DF_KEY)||'[]'); }catch(e){ return []; }
+}
+function saveDynamicFields(fields){
+  try{ localStorage.setItem(DF_KEY, JSON.stringify(fields)); }catch(e){}
+}
+
+// Renderizar campos dinámicos en el formulario OT
+function renderDynamicFieldsInForm(otData){
+  var container = ge('f-dynamic-fields');
+  if(!container) return;
+  var fields = loadDynamicFields();
+  if(!fields.length){ container.innerHTML=''; return; }
+  container.innerHTML = fields.map(function(f){
+    var val = otData&&otData.dynamicFields ? (otData.dynamicFields[f.id]||'') : '';
+    var input = '';
+    if(f.tipo==='texto'){
+      input = '<input type="text" id="df-val-'+f.id+'" value="'+escapeHtml(val)+'" placeholder="'+(f.placeholder||'')+'" style="width:100%"/>';
+    } else if(f.tipo==='numero'){
+      input = '<input type="number" id="df-val-'+f.id+'" value="'+val+'" placeholder="'+(f.placeholder||'0.00')+'" min="0" step="0.01" style="width:100%"/>';
+    } else if(f.tipo==='fecha'){
+      input = '<input type="date" id="df-val-'+f.id+'" value="'+val+'" style="width:100%"/>';
+    } else if(f.tipo==='lista'){
+      var opts = (f.opciones||'').split(',').map(function(o){ return o.trim(); });
+      input = '<select id="df-val-'+f.id+'" style="width:100%"><option value="">-- Selecciona --</option>'+
+        opts.map(function(o){ return '<option value="'+o+'"'+(val===o?' selected':'')+'>'+o+'</option>'; }).join('')+
+      '</select>';
+    } else if(f.tipo==='si_no'){
+      input = '<select id="df-val-'+f.id+'" style="width:100%"><option value=""'+(val===''?' selected':'')+'></option><option value="Si"'+(val==='Si'?' selected':'')+'>Sí</option><option value="No"'+(val==='No'?' selected':'')+'>No</option></select>';
+    }
+    return '<div class="field'+(f.tipo==='texto'||f.tipo==='lista'||f.tipo==='si_no'?' s2':'')+'">'+
+      '<label>'+(f.nombre)+(f.required?' *':'')+'</label>'+input+'</div>';
+  }).join('');
+}
+
+// Leer valores dinámicos del formulario
+function getDynamicFieldValues(){
+  var fields = loadDynamicFields();
+  var vals = {};
+  fields.forEach(function(f){
+    var el = ge('df-val-'+f.id);
+    if(el) vals[f.id] = el.value;
+  });
+  return vals;
+}
+
+// ── GESTIÓN DE CAMPOS DINÁMICOS (admin) ──
+function openDynamicFieldsModal(){
+  renderDynamicFieldsList();
+  ge('df-nombre').value=''; ge('df-tipo').value='texto';
+  ge('df-placeholder').value=''; ge('df-opciones').value='';
+  ge('df-required').checked=false;
+  ge('df-opciones-wrap').style.display='none';
+  openM('m-dynamic-fields');
+}
+
+function renderDynamicFieldsList(){
+  var fields = loadDynamicFields();
+  var list = ge('dynamic-fields-list');
+  if(!fields.length){
+    list.innerHTML='<div style="text-align:center;padding:16px;color:var(--t2);font-size:13px">Sin campos personalizados aún.</div>';
+    return;
+  }
+  list.innerHTML = '<div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:8px">Campos existentes ('+fields.length+'):</div>'+
+    fields.map(function(f,i){
+      var tipoLabels={texto:'Texto',numero:'Número',fecha:'Fecha',lista:'Lista',si_no:'Sí/No'};
+      return '<div style="display:flex;align-items:center;gap:8px;padding:9px 11px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);margin-bottom:6px">'+
+        '<div style="flex:1">'+
+          '<div style="font-size:13px;font-weight:600">'+f.nombre+(f.required?' <span style="color:var(--rd)">*</span>':'')+'</div>'+
+          '<div style="font-size:11px;color:var(--t2)">'+tipoLabels[f.tipo]+(f.opciones?' · '+f.opciones:'')+'</div>'+
+        '</div>'+
+        '<button class="btn bi" data-del-df="'+f.id+'" style="font-size:12px;color:var(--rd)" title="Eliminar">🗑</button>'+
+      '</div>';
+    }).join('');
+}
+
+function addDynamicField(){
+  var nombre = ge('df-nombre').value.trim();
+  if(!nombre){ toast('Ingresa el nombre del campo','error'); return; }
+  var fields = loadDynamicFields();
+  var newField = {
+    id: 'df_'+Date.now(),
+    nombre: nombre,
+    tipo: ge('df-tipo').value,
+    placeholder: ge('df-placeholder').value.trim(),
+    opciones: ge('df-opciones').value.trim(),
+    required: ge('df-required').checked,
+    created: new Date().toISOString()
+  };
+  fields.push(newField);
+  saveDynamicFields(fields);
+  renderDynamicFieldsList();
+  renderDynamicFieldsInForm(null);
+  ge('df-nombre').value=''; ge('df-placeholder').value=''; ge('df-opciones').value='';
+  toast('✅ Campo "'+nombre+'" agregado. Aparece en el formulario de OT, Excel e impresión.','success');
+  logEvent('CAMPO_AGREGADO','Campo dinámico agregado: '+nombre,null);
+}
+
+function delDynamicField(id){
+  if(!confirm('¿Eliminar este campo? Se perderán los datos en OT existentes.')) return;
+  var fields = loadDynamicFields().filter(function(f){ return f.id!==id; });
+  saveDynamicFields(fields);
+  renderDynamicFieldsList();
+  toast('Campo eliminado','info');
+}
+
+// ── CÁLCULO MO DIFERENCIA ──
+function calcMODiff(){
+  var campo = parseFloat(ge('f-mo-campo').value)||0;
+  var liq   = parseFloat(ge('f-mo-liq').value)||0;
+  var diff  = liq - campo;
+  var el = ge('f-mo-diff');
+  if(!el) return;
+  var color = diff>0?'var(--gn)':diff<0?'var(--rd)':'var(--t2)';
+  var icon  = diff>0?'▲ ':diff<0?'▼ ':'= ';
+  el.style.color = color;
+  el.style.borderColor = color;
+  el.textContent = icon+'S/ '+Math.abs(diff).toFixed(2)+(diff>0?' (adicionales a favor)':diff<0?' (ejecutado sobre lo liquidado)':' (sin diferencia)');
+}
+
+
+// ═══════════════════════════════════════════════════════
+// ── QR CODE GENERATOR (sin librería externa) ──
+// ═══════════════════════════════════════════════════════
+// QR simplificado via API gratuita (no requiere JS extra)
+function openQR(otId){
+  var o = S.ordenes.find(function(x){return x.id===otId;});
+  if(!o) return;
+  // URL que apunta directamente a esta OT
+  var baseUrl = location.href.split('?')[0];
+  var otUrl = baseUrl + '?ot=' + encodeURIComponent(o.ot);
+  ge('qr-ot-nm').textContent = o.ot + ' — ' + (o.zona||'') + ' · ' + (o.alimentador||'');
+  ge('qr-url').textContent = otUrl;
+  // Dibujar QR usando Google Charts API
+  var canvas = ge('qr-canvas');
+  var img = new Image();
+  img.crossOrigin='anonymous';
+  img.onload = function(){
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,200,200);
+    ctx.drawImage(img,0,0,200,200);
+  };
+  img.onerror = function(){
+    // Fallback: mostrar URL como texto
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,200,200);
+    ctx.fillStyle='#000'; ctx.font='10px monospace'; ctx.textAlign='center';
+    ctx.fillText('QR no disponible',100,90);
+    ctx.fillText('sin internet',100,110);
+  };
+  img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(otUrl);
+  openM('m-qr');
+}
+
+function downloadQR(){
+  var canvas = ge('qr-canvas');
+  var link = document.createElement('a');
+  link.download = 'QR_' + (ge('qr-ot-nm').textContent||'OT') + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  toast('QR descargado','success');
+}
+
+function shareQR(){
+  var url = ge('qr-url').textContent;
+  if(navigator.share){
+    navigator.share({title:'OT ElectricaPro', text:'Accede a la OT:', url:url})
+      .catch(function(){});
+  } else {
+    navigator.clipboard.writeText(url).then(function(){
+      toast('URL copiada al portapapeles','success');
+    }).catch(function(){
+      toast('URL: '+url,'info');
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// ── GALERÍA DE FOTOS POR OT ──
+// ═══════════════════════════════════════════════════════
+function openGaleria(otId){
+  var o = S.ordenes.find(function(x){return x.id===otId;});
+  if(!o) return;
+  var allImgs = S.files.filter(function(f){return f.otId===otId && isImg(f.name);});
+  ge('galeria-count').textContent = allImgs.length + ' fotos';
+  ge('galeria-ot-info').textContent = 'OT: '+o.ot+' · '+o.zona+' · '+o.alimentador;
+  // Filtros por subcarpeta
+  var subcarpetas = [...new Set(allImgs.map(function(f){return f.subFolder;}))];
+  ge('galeria-filter').innerHTML = '<button class="btn bs galeria-flt act" data-flt="">Todas ('+allImgs.length+')</button>'+
+    subcarpetas.map(function(sf){
+      var n = allImgs.filter(function(f){return f.subFolder===sf;}).length;
+      return '<button class="btn bs galeria-flt" data-flt="'+encodeURIComponent(sf)+'">'+sf.slice(0,20)+(sf.length>20?'…':'')+' ('+n+')</button>';
+    }).join('');
+  renderGaleria(allImgs, '');
+  openM('m-galeria');
+}
+
+function renderGaleria(imgs, filtro){
+  var grid = ge('galeria-grid');
+  var empty = ge('galeria-empty');
+  var filtered = filtro ? imgs.filter(function(f){return f.subFolder===decodeURIComponent(filtro);}) : imgs;
+  if(!filtered.length){ grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML = filtered.map(function(f){
+    return '<div style="position:relative;border-radius:8px;overflow:hidden;cursor:pointer;aspect-ratio:1;background:var(--s3)" data-sfiv="'+f.id+'">'+
+      '<img src="'+f.data+'" style="width:100%;height:100%;object-fit:cover" loading="lazy"/>'+
+      '<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);padding:4px 6px;font-size:9px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+
+        f.subFolder.slice(0,20)+
+      '</div>'+
+      (f.gps?'<div style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.6);border-radius:4px;padding:2px 4px;font-size:9px">📍</div>':'')+
+    '</div>';
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// ── CONFIRMACIÓN DE LLEGADA AL PUNTO ──
+// ═══════════════════════════════════════════════════════
+var _llegadaOtId = null;
+
+function openLlegada(otId){
+  var o = S.ordenes.find(function(x){return x.id===otId;});
+  if(!o) return;
+  _llegadaOtId = otId;
+  ge('llegada-ot-nm').textContent = o.ot + ' — ' + (o.zona||'') + (o.alimentador?' · '+o.alimentador:'');
+  ge('llegada-gps-status').style.display='none';
+  ge('btn-llegada-si').disabled=false;
+  ge('btn-llegada-si').textContent='✅ Sí, estoy en el punto — Registrar llegada';
+  openM('m-llegada');
+}
+
+function confirmarLlegadaSi(){
+  var btn = ge('btn-llegada-si');
+  var statusEl = ge('llegada-gps-status');
+  btn.disabled=true;
+  btn.textContent='⏳ Obteniendo GPS...';
+  statusEl.style.display='block';
+  statusEl.style.background='rgba(56,139,253,.1)';
+  statusEl.style.color='var(--bl)';
+  statusEl.textContent='⏳ Obteniendo tu ubicación GPS...';
+  if(!navigator.geolocation){
+    statusEl.textContent='❌ GPS no disponible — llegada registrada sin coordenadas';
+    statusEl.style.color='var(--or)';
+    registrarLlegada(null, true);
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      var lat=pos.coords.latitude.toFixed(6);
+      var lng=pos.coords.longitude.toFixed(6);
+      var gps=lat+', '+lng;
+      statusEl.style.background='rgba(63,185,80,.1)';
+      statusEl.style.color='var(--gn)';
+      statusEl.textContent='✅ GPS registrado: '+gps;
+      registrarLlegada(gps, true);
+    },
+    function(err){
+      statusEl.style.background='rgba(240,165,0,.1)';
+      statusEl.style.color='var(--or)';
+      statusEl.textContent='⚠️ No se pudo obtener GPS — llegada registrada sin coordenadas';
+      registrarLlegada(null, true);
+    },
+    {enableHighAccuracy:true, timeout:15000, maximumAge:0}
+  );
+}
+
+function confirmarLlegadaNo(){
+  registrarLlegada(null, false);
+}
+
+function registrarLlegada(gps, enPunto){
+  var o = S.ordenes.find(function(x){return x.id===_llegadaOtId;});
+  if(!o) return;
+  o.llegada = {
+    userId: S.user.id,
+    nombre: S.user.nombre,
+    time: new Date().toISOString(),
+    enPunto: enPunto,
+    gps: gps
+  };
+  if(gps && !o.gps) o.gps = gps; // Solo guardar GPS si no tenía uno ya
+  if(enPunto) o.estado = o.estado==='Pendiente' ? 'En Curso' : o.estado;
+  o.updated = new Date().toISOString();
+  saveAll();
+  logEvent('LLEGADA', (enPunto?'Llegada confirmada':'Llegada pendiente')+' en '+o.ot+(gps?' · GPS: '+gps:''), _llegadaOtId);
+  setTimeout(function(){
+    closeM('m-llegada');
+    openChecklist(_llegadaOtId);
+    if(enPunto) toast('✅ Llegada registrada — checklist habilitado','success');
+    else toast('⚠️ Continuando sin GPS — recuerda confirmar cuando llegues','warn');
+  }, enPunto&&gps?1500:500);
+}
+
+// ── MODIFICAR openChecklist para pedir confirmación si rol es supervisor/tecnico ──
+var _origOpenChecklist = openChecklist;
+openChecklist = function(otId){
+  var o = S.ordenes.find(function(x){return x.id===otId;});
+  var u = S.user;
+  // Si es campo (supervisor o tecnico) y no ha confirmado llegada, preguntar
+  var roleNeedsConfirm = u.rol==='supervisor'||u.rol==='tecnico'||u.rol==='inspector';
+  var yaConfirmo = o&&o.llegada&&o.llegada.userId===u.id;
+  if(roleNeedsConfirm && !yaConfirmo && o&&o.estado!=='Completado'){
+    openLlegada(otId);
+    return;
+  }
+  _origOpenChecklist(otId);
+  // Mostrar barra de GPS pendiente si no hay coordenadas
+  setTimeout(function(){
+    var bar = ge('cl-llegada-bar');
+    if(bar){
+      var sinGps = o && !o.gps;
+      var llegadaPendiente = o && o.llegada && !o.llegada.enPunto;
+      bar.style.display = (sinGps||llegadaPendiente) ? 'flex' : 'none';
+    }
+  }, 100);
+};
+
+// ── FUNCIÓN fmtLast (formatea última vez visto) ──
+function fmtLast(iso){
+  if(!iso) return 'nunca';
+  var d = new Date(iso);
+  var diff = (Date.now()-d)/60000;
+  if(diff<2)  return 'ahora';
+  if(diff<60) return Math.round(diff)+'min';
+  if(diff<1440) return Math.round(diff/60)+'h';
+  return Math.round(diff/1440)+'d';
+}
+
+// ── RECORDATORIOS AUTOMÁTICOS POR TELEGRAM ──
+function checkRecordatorios(){
+  var cfg = loadNotifCfg();
+  if(!cfg.tgToken||!cfg.tgChatId) return;
+  var hoy = new Date();
+  S.ordenes.forEach(function(o){
+    if(o.estado!=='Pendiente'||!o.created) return;
+    var dias = (hoy-new Date(o.created))/86400000;
+    // Avisar si lleva más de 7 días pendiente y no se avisó hoy
+    var lastKey = 'ep_rec_'+o.id;
+    var lastAlert = localStorage.getItem(lastKey);
+    var hoyStr = hoy.toDateString();
+    if(dias>=7 && lastAlert!==hoyStr){
+      sendTelegramMsg('RECORDATORIO: OT '+o.ot+' lleva '+Math.floor(dias)+' dias en Pendiente. Zona: '+(o.zona||'-')+' · Alimentador: '+(o.alimentador||'-'));
+      localStorage.setItem(lastKey, hoyStr);
+    }
+  });
+}
+
+// Verificar recordatorios al iniciar y cada hora
+setTimeout(checkRecordatorios, 5000);
+setInterval(checkRecordatorios, 3600000);
+
 // ═══ EVENT LISTENERS ═══
 
 // Login
@@ -4076,6 +4731,76 @@ ge('sb-chpw').addEventListener('click',openChPw);
 ge('sb-logout').addEventListener('click',doLogout);
 ge('sb-notif-cfg').addEventListener('click', openNotifCfg);
 
+// ── RED: detectar online/offline ──
+window.addEventListener('online',  function(){ updateNetworkStatus(); toast('Conexión restaurada','success'); });
+window.addEventListener('offline', function(){ updateNetworkStatus(); toast('Sin conexión — trabajando offline','warn'); });
+
+// Logo: handled by label wrapping input
+ge('sb-dynamic-fields').addEventListener('click', openDynamicFieldsModal);
+
+// ── QR ──
+ge('btn-qr-download').addEventListener('click', downloadQR);
+ge('btn-qr-share').addEventListener('click', shareQR);
+
+// ── GALERÍA filtros ──
+ge('galeria-filter').addEventListener('click', function(e){
+  var btn = e.target.closest('.galeria-flt');
+  if(!btn) return;
+  document.querySelectorAll('.galeria-flt').forEach(function(b){b.classList.remove('act');});
+  btn.classList.add('act');
+  var otId = S.clOTId;
+  var allImgs = S.files.filter(function(f){return f.otId===otId&&isImg(f.name);});
+  renderGaleria(allImgs, btn.dataset.flt||'');
+});
+
+// ── GALERÍA click en foto (abrir visor) ──
+ge('galeria-grid').addEventListener('click', function(e){
+  var item = e.target.closest('[data-sfiv]');
+  if(!item) return;
+  var imgs = S.files.filter(function(f){return f.otId===S.clOTId&&isImg(f.name);});
+  S.ivList = imgs;
+  S.ivIdx = imgs.findIndex(function(f){return f.id===item.dataset.sfiv;});
+  if(S.ivIdx<0) S.ivIdx=0;
+  renderIV(); ge('iv').classList.add('open');
+});
+
+// ── LLEGADA: botones ──
+ge('btn-llegada-si').addEventListener('click', confirmarLlegadaSi);
+ge('btn-llegada-no').addEventListener('click', confirmarLlegadaNo);
+
+// ── LLEGADA: desde checklist bar ──
+ge('btn-cl-confirmar-llegada').addEventListener('click', function(){
+  closeM('m-checklist');
+  openLlegada(S.clOTId);
+});
+
+// ── GALERÍA desde checklist ──
+ge('btn-cl-galeria').addEventListener('click', function(){
+  openGaleria(S.clOTId);
+});
+
+// ── QR y Galería desde tabla OT ──
+document.addEventListener('click', function(e){
+  var qrBtn = e.target.closest('[data-qr]');
+  if(qrBtn){ openQR(qrBtn.dataset.qr); return; }
+  var galBtn = e.target.closest('[data-galeria]');
+  if(galBtn){ openGaleria(galBtn.dataset.galeria); return; }
+});
+
+// MO diferencia en tiempo real
+ge('f-mo-campo').addEventListener('input', calcMODiff);
+ge('f-mo-liq').addEventListener('input', calcMODiff);
+
+// Agregar campo dinámico
+ge('btn-add-dynamic-field').addEventListener('click', addDynamicField);
+ge('df-tipo').addEventListener('change', function(){
+  ge('df-opciones-wrap').style.display = this.value==='lista' ? 'block' : 'none';
+});
+ge('dynamic-fields-list').addEventListener('click', function(e){
+  var t = e.target.closest('[data-del-df]');
+  if(t) delDynamicField(t.dataset.delDf);
+});
+
 // Notificaciones modal
 ge('btn-save-notif-cfg').addEventListener('click', saveNotifCfgUI);
 ge('btn-req-push').addEventListener('click', requestPushPermission);
@@ -4088,9 +4813,18 @@ document.querySelectorAll('[data-ntab]').forEach(function(btn){
   btn.addEventListener('click', function(){ switchNTab(btn.dataset.ntab); });
 });
 
+// Config modal tabs (data-ctab)
+document.querySelectorAll('[data-ctab]').forEach(function(btn){
+  btn.addEventListener('click', function(){ switchCTab(btn.dataset.ctab); });
+});
+
 // Config top button
 var cfgTopBtn = ge('btn-config-top');
 if(cfgTopBtn) cfgTopBtn.addEventListener('click', openConfig);
+
+// Config modal save button
+var cfgSaveBtn = ge('btn-save-config');
+if(cfgSaveBtn) cfgSaveBtn.addEventListener('click', saveCfg);
 
 // Modals close
 qa('[data-close]').forEach(btn=>btn.addEventListener('click',()=>closeM(btn.dataset.close)));
@@ -4476,6 +5210,15 @@ if(!S.ordenes.length){
 
 // Apply brand config on page load
 try{applyConfig();}catch(e){}
+
+// Auto-login si hay sesión guardada
+if(S.user){
+  try{
+    ge('login-screen').style.display='none';
+    ge('app').style.display='flex';
+    showApp();
+  }catch(e){}
+}
 
 })();
 </script>
