@@ -4074,6 +4074,23 @@ ge('user-badge-top').addEventListener('click',()=>nav('perfil'));
 qa('.ni[data-page]').forEach(btn=>btn.addEventListener('click',()=>nav(btn.dataset.page)));
 ge('sb-chpw').addEventListener('click',openChPw);
 ge('sb-logout').addEventListener('click',doLogout);
+ge('sb-notif-cfg').addEventListener('click', openNotifCfg);
+
+// Notificaciones modal
+ge('btn-save-notif-cfg').addEventListener('click', saveNotifCfgUI);
+ge('btn-req-push').addEventListener('click', requestPushPermission);
+ge('btn-test-push').addEventListener('click', function(){
+  sendPushNotification('Prueba de ElectricaPro', 'Las notificaciones funcionan correctamente', 'test');
+  toast('Notificacion de prueba enviada','info');
+});
+ge('btn-tg-test').addEventListener('click', testTelegram);
+document.querySelectorAll('[data-ntab]').forEach(function(btn){
+  btn.addEventListener('click', function(){ switchNTab(btn.dataset.ntab); });
+});
+
+// Config top button
+var cfgTopBtn = ge('btn-config-top');
+if(cfgTopBtn) cfgTopBtn.addEventListener('click', openConfig);
 
 // Modals close
 qa('[data-close]').forEach(btn=>btn.addEventListener('click',()=>closeM(btn.dataset.close)));
