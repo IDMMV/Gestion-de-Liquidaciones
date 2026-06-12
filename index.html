@@ -231,9 +231,62 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 .pw-eye:hover{color:var(--ac)}
 /* ── GPS TABS ── */
 #m-gps .ltab{padding:7px 14px;font-size:13px;background:none;border-top:none;border-left:none;border-right:none}
-/* ── CHAT ── */
+/* ── CHAT MEJORADO ── */
+#chat-layout{display:grid;grid-template-columns:260px 1fr;height:calc(100vh - 160px);min-height:500px;border-radius:var(--rl);overflow:hidden;border:1px solid var(--br);background:var(--s)}
+/* Panel izquierdo */
+#chat-left-panel{display:flex;flex-direction:column;border-right:1px solid var(--br);overflow:hidden;background:var(--s2)}
+.chat-left-header{padding:14px 12px 6px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--br)}
+.chat-left-header h3{font-size:14px;font-weight:700;flex:1}
+.chat-channel-btn{display:flex;align-items:center;gap:10px;padding:9px 10px;cursor:pointer;transition:background .15s;border-left:3px solid transparent}
+.chat-channel-btn:hover{background:var(--s3)}
+.chat-channel-btn.active{background:var(--gl);border-left-color:var(--ac)}
+.chat-ch-icon{font-size:20px;width:34px;height:34px;border-radius:50%;background:var(--s3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-ch-info{flex:1;min-width:0}
+.chat-ch-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-ch-last{font-size:11px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-badge-count{background:var(--rd);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;flex-shrink:0}
+.chat-user-item{display:flex;align-items:center;gap:9px;padding:8px 10px;cursor:pointer;transition:background .15s;border-left:3px solid transparent}
+.chat-user-item:hover{background:var(--s3)}
+.chat-user-item.active{background:var(--gl);border-left-color:var(--ac)}
+.chat-u-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.chat-u-av .chat-u-dot{position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:50%;border:2px solid var(--s2)}
+/* Panel derecho */
+#chat-right-panel{display:flex;flex-direction:column;overflow:hidden}
+#chat-header{padding:10px 14px;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:10px;background:var(--s);min-height:54px}
+#chat-header-av{width:36px;height:36px;border-radius:50%;background:var(--ac);color:#000;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+#chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:2px;background:var(--bg)}
 #chat-messages::-webkit-scrollbar{width:4px}
-#page-chat textarea:focus{outline:none;border-color:var(--ac)}
+/* Burbujas */
+.chat-msg-group{margin-bottom:10px}
+.chat-msg-group.me{align-items:flex-end}
+.chat-msg-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:2px}
+.chat-msg-row.me{flex-direction:row-reverse}
+.chat-av-small{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.chat-bubble{padding:9px 13px;border-radius:18px;font-size:13px;word-break:break-word;max-width:320px;line-height:1.45;position:relative;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.chat-bubble.me{background:var(--ac);color:#000;border-bottom-right-radius:4px}
+.chat-bubble.other{background:var(--s);color:var(--tx);border-bottom-left-radius:4px;border:1px solid var(--br)}
+.chat-bubble img{max-width:200px;border-radius:10px;display:block;margin-top:4px;cursor:pointer}
+.chat-meta{font-size:10px;color:var(--t3);margin-top:2px;display:flex;align-items:center;gap:4px}
+.chat-meta.me{justify-content:flex-end}
+.chat-sender-name{font-size:11px;color:var(--t2);font-weight:600;margin-bottom:3px;padding-left:4px}
+.chat-date-divider{text-align:center;margin:12px 0;font-size:11px;color:var(--t3);display:flex;align-items:center;gap:8px}
+.chat-date-divider::before,.chat-date-divider::after{content:'';flex:1;height:1px;background:var(--br)}
+.chat-system-msg{text-align:center;font-size:11px;color:var(--t3);padding:4px 0;font-style:italic}
+/* Emojis */
+.chat-emoji{font-size:22px;cursor:pointer;padding:3px;border-radius:5px;transition:transform .1s;display:inline-block}
+.chat-emoji:hover{transform:scale(1.3);background:var(--s3)}
+#chat-emoji-panel{display:none}
+#chat-emoji-panel.open{display:flex}
+/* Input area */
+#chat-input-area{background:var(--s)}
+#chat-input:focus{outline:none;border-color:var(--ac)}
+#page-chat textarea:focus{outline:none}
+/* Responsive chat */
+@media(max-width:640px){
+  #chat-layout{grid-template-columns:1fr;height:calc(100vh - 140px)}
+  #chat-left-panel{display:none}
+  #chat-left-panel.show-mobile{display:flex;position:fixed;inset:0;top:var(--th);z-index:120;width:100%}
+}
 /* ── MISC ── */
 .divider{height:1px;background:var(--br);margin:12px 0}
 .tmuted{color:var(--t2);font-size:12px;display:block;margin-bottom:3px}
@@ -256,6 +309,10 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 .info-box b{color:var(--ac)}
 
 /* ── RESPONSIVE ── */
+/* ── tb-desktop / tb-mobile ── */
+.tb-desktop{display:flex}
+.tb-mobile{display:none}
+
 @media(max-width:768px){
   :root{--sw:260px}
   .mapa-layout{grid-template-columns:1fr!important;height:auto!important}
@@ -263,23 +320,23 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
   #sidebar{transform:translateX(calc(-1 * var(--sw)))}
   #sidebar.show-mobile{transform:translateX(0)}
   #main{margin-left:0!important;padding:14px}
-  #gsearch{width:120px}
-  #gsearch:focus{width:160px}
-  .ubadge .unm{display:none}
-  #btn-logout-top span{display:none}
   .fg{grid-template-columns:1fr}
   .sgrid{grid-template-columns:repeat(2,1fr)}
   .cl-grid{grid-template-columns:1fr}
   table{font-size:12px}
   th,td{padding:7px 9px}
-  #topbar{gap:4px;padding:0 8px}
+  /* Topbar móvil: ocultar elementos desktop, mostrar móvil */
+  #topbar{gap:6px;padding:0 10px}
+  .tb-desktop{display:none!important}
+  .tb-mobile{display:flex!important}
+  /* Avatar sin nombre en móvil */
+  .ubadge{padding:4px 6px}
 }
 @media(max-width:480px){
   .sgrid{grid-template-columns:1fr 1fr}
   .ph{flex-direction:column}
   .ph-right{width:100%}
-  .tlogo{display:none}
-  #gsearch{width:100px}
+  .tlogo{font-size:13px}
 }
 /* ── FILTROS DASHBOARD ── */
 .filter-chip{display:inline-flex;align-items:center;gap:5px;background:var(--gl);border:1px solid var(--ac);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--ac)}
@@ -515,24 +572,51 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 
 <div id="app">
   <div id="topbar">
+    <!-- Siempre visible -->
     <button id="sbtg" title="Menú">☰</button>
-    <div class="nav-history">
+    <div class="nav-history tb-desktop">
       <button id="btn-back" title="Atrás" disabled>&#8592;</button>
       <div class="nav-sep"></div>
       <button id="btn-fwd" title="Adelante" disabled>&#8594;</button>
     </div>
     <div class="tlogo" id="topbar-brand-name">⚡ Electrica<span>Pro</span></div>
     <div class="tsep"></div>
-    <input type="text" id="gsearch" placeholder="🔍 Buscar OT..."/>
-    <button id="theme-btn" title="Cambiar tema">🌙</button>
-    <button id="btn-print-top" class="btn bi" title="Imprimir" style="width:34px;height:34px">🖨️</button>
-    <button id="btn-config-top" class="btn bi" title="Configurar plataforma" style="width:34px;height:34px;display:none">⚙️</button>
+    <!-- Buscador solo en desktop -->
+    <input type="text" id="gsearch" placeholder="🔍 Buscar OT..." class="tb-desktop"/>
+    <!-- Botones desktop -->
+    <button id="theme-btn" title="Cambiar tema" class="tb-desktop">🌙</button>
+    <button id="btn-print-top" class="btn bi tb-desktop" title="Imprimir" style="width:34px;height:34px">🖨️</button>
+    <button id="btn-config-top" class="btn bi tb-desktop" title="Configurar" style="width:34px;height:34px;display:none">⚙️</button>
+    <!-- Campana siempre visible -->
     <button class="btn bi nbell" id="btn-notif" style="position:relative;width:34px;height:34px">🔔<span class="ndot" id="ndot"></span></button>
+    <!-- Avatar siempre visible -->
     <div class="ubadge" id="user-badge-top">
       <div class="uav" id="tb-av">A</div>
-      <span class="unm" id="tb-nm">Admin</span>
+      <span class="unm tb-desktop" id="tb-nm">Admin</span>
     </div>
-    <button id="btn-logout-top" class="btn bs" style="font-size:12px">↩ <span>Salir</span></button>
+    <!-- Logout desktop -->
+    <button id="btn-logout-top" class="btn bs tb-desktop" style="font-size:12px">↩ <span>Salir</span></button>
+    <!-- Menú móvil (⋮) -->
+    <button id="btn-mobile-menu" class="btn bi tb-mobile" style="width:34px;height:34px;font-size:18px" title="Más opciones">⋮</button>
+  </div>
+
+  <!-- Menú desplegable móvil -->
+  <div id="mobile-menu" style="display:none;position:fixed;top:var(--th);right:0;left:0;z-index:180;background:var(--s);border-bottom:1px solid var(--br);padding:10px 14px;box-shadow:var(--sh)">
+    <!-- Buscador -->
+    <input type="text" id="gsearch-mobile" placeholder="🔍 Buscar OT..." style="width:100%;padding:9px 14px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:14px;font-family:inherit;margin-bottom:10px"/>
+    <!-- Nav atrás/adelante -->
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button id="btn-back-m" class="btn bs" style="flex:1;justify-content:center;font-size:16px" disabled>← Atrás</button>
+      <button id="btn-fwd-m"  class="btn bs" style="flex:1;justify-content:center;font-size:16px" disabled>Adelante →</button>
+    </div>
+    <!-- Acciones -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button id="btn-theme-m" class="btn bs" style="justify-content:center">🌙 Tema</button>
+      <button id="btn-print-m" class="btn bs" style="justify-content:center">🖨️ Imprimir</button>
+      <button id="btn-wa-m"    class="btn bs" style="justify-content:center;background:#25d366;border-color:#25d366;color:#000">📱 WhatsApp</button>
+      <button id="btn-config-m" class="btn bs" style="justify-content:center;display:none">⚙️ Config</button>
+      <button id="btn-logout-m" class="btn bd" style="justify-content:center;grid-column:1/-1">↩ Cerrar sesión</button>
+    </div>
   </div>
 
   <div id="sb-overlay"></div>
@@ -822,34 +906,88 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
     <!-- CHAT -->
 
     <div class="page" id="page-chat">
-      <div class="ph">
-        <div><h2>💬 Chat Interno</h2><div class="sub">Mensajes en tiempo real entre el equipo</div></div>
-        <div class="ph-right">
-          <span id="chat-online-count" style="font-size:12px;color:var(--gn)"></span>
-        </div>
-      </div>
-      <div style="display:flex;gap:16px;height:calc(100vh - 200px);min-height:400px">
-        <!-- Lista de usuarios online -->
-        <div style="width:200px;flex-shrink:0">
-          <div class="card" style="height:100%;display:flex;flex-direction:column">
-            <div class="ch"><h3>👥 Equipo</h3></div>
-            <div id="chat-users-list" style="flex:1;overflow-y:auto;padding:8px"></div>
+      <!-- CHAT LAYOUT -->
+      <div id="chat-layout">
+        <!-- PANEL IZQUIERDO: usuarios -->
+        <div id="chat-left-panel">
+          <div class="chat-left-header">
+            <h3>💬 Chat del Equipo</h3>
+            <span id="chat-online-count" class="badge b-green" style="font-size:10px"></span>
           </div>
-        </div>
-        <!-- Panel de mensajes -->
-        <div style="flex:1;display:flex;flex-direction:column;min-width:0">
-          <div class="card" style="flex:1;display:flex;flex-direction:column;overflow:hidden">
-            <div class="ch">
-              <h3 id="chat-room-name">💬 Chat General</h3>
-              <span id="chat-room-badge" class="badge b-green" style="margin-left:6px;font-size:10px"></span>
+          <!-- Buscador de usuarios -->
+          <div style="padding:8px">
+            <input type="text" id="chat-user-search" placeholder="🔍 Buscar usuario..." 
+              style="width:100%;padding:7px 10px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit"/>
+          </div>
+          <!-- Canal general destacado -->
+          <div id="chat-general-btn" class="chat-channel-btn active">
+            <div class="chat-ch-icon">💬</div>
+            <div class="chat-ch-info">
+              <div class="chat-ch-name">General</div>
+              <div class="chat-ch-last" id="chat-general-last">Todos los miembros</div>
             </div>
-            <!-- Mensajes -->
-            <div id="chat-messages" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px"></div>
-            <!-- Input -->
-            <div style="padding:10px;border-top:1px solid var(--br);display:flex;gap:8px;align-items:flex-end">
-              <textarea id="chat-input" placeholder="Escribe un mensaje... (Enter para enviar)" 
-                style="flex:1;resize:none;min-height:38px;max-height:100px;padding:8px 12px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:13px;font-family:inherit;overflow-y:auto" rows="1"></textarea>
-              <button class="btn bp" id="btn-chat-send" style="padding:9px 16px;flex-shrink:0">➤</button>
+            <span class="chat-badge-count" id="chat-general-badge" style="display:none"></span>
+          </div>
+          <div style="padding:4px 10px 4px;font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:6px">Miembros del equipo</div>
+          <div id="chat-users-list"></div>
+        </div>
+
+        <!-- PANEL DERECHO: mensajes -->
+        <div id="chat-right-panel">
+          <!-- Header del chat -->
+          <div id="chat-header">
+            <div id="chat-header-av"></div>
+            <div>
+              <div id="chat-header-name" style="font-weight:700;font-size:14px">Chat General</div>
+              <div id="chat-header-status" style="font-size:11px;color:var(--gn)"></div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:6px">
+              <button class="btn bi" id="btn-chat-clear" title="Limpiar chat (admin)" style="font-size:12px;display:none">🗑</button>
+              <button class="btn bi" id="btn-chat-search-toggle" title="Buscar en mensajes" style="font-size:12px">🔍</button>
+            </div>
+          </div>
+
+          <!-- Buscador de mensajes (oculto por defecto) -->
+          <div id="chat-msg-search-bar" style="display:none;padding:8px 12px;border-bottom:1px solid var(--br);background:var(--s2)">
+            <input type="text" id="chat-msg-search" placeholder="Buscar en mensajes..." 
+              style="width:100%;padding:7px 12px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:13px;font-family:inherit"/>
+          </div>
+
+          <!-- Área de mensajes -->
+          <div id="chat-messages"></div>
+
+          <!-- Indicador de "escribiendo..." -->
+          <div id="chat-typing" style="padding:4px 14px;font-size:11px;color:var(--t2);min-height:20px;font-style:italic"></div>
+
+          <!-- Input area -->
+          <div id="chat-input-area">
+            <!-- Preview archivo adjunto -->
+            <div id="chat-attach-preview" style="display:none;padding:6px 12px;background:var(--s3);border-top:1px solid var(--br);display:flex;align-items:center;gap:8px">
+              <span id="chat-attach-name" style="font-size:12px;flex:1"></span>
+              <button id="btn-chat-rm-attach" class="btn bi" style="font-size:11px;padding:3px 7px">✕</button>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-end;padding:10px 12px;border-top:1px solid var(--br)">
+              <!-- Emoji picker toggle -->
+              <button class="btn bi" id="btn-chat-emoji" style="font-size:18px;padding:6px 8px;flex-shrink:0" title="Emojis">😊</button>
+              <!-- Adjuntar -->
+              <label class="btn bi" style="cursor:pointer;font-size:16px;padding:6px 8px;flex-shrink:0" title="Adjuntar imagen">
+                📎<input type="file" id="chat-attach-input" accept="image/*" style="display:none"/>
+              </label>
+              <!-- Textarea -->
+              <textarea id="chat-input" placeholder="Escribe un mensaje... (Enter enviar, Shift+Enter nueva línea)" 
+                style="flex:1;resize:none;min-height:40px;max-height:120px;padding:9px 12px;background:var(--s3);border:1px solid var(--br);border-radius:20px;color:var(--tx);font-size:13px;font-family:inherit;line-height:1.4" rows="1"></textarea>
+              <!-- Enviar -->
+              <button class="btn bp" id="btn-chat-send" style="width:40px;height:40px;padding:0;border-radius:50%;font-size:18px;flex-shrink:0">➤</button>
+            </div>
+            <!-- Emoji panel -->
+            <div id="chat-emoji-panel" style="display:none;padding:8px 12px;border-top:1px solid var(--br);background:var(--s2);flex-wrap:wrap;gap:4px">
+              <span class="chat-emoji">😊</span><span class="chat-emoji">👍</span><span class="chat-emoji">✅</span>
+              <span class="chat-emoji">⚠️</span><span class="chat-emoji">🔧</span><span class="chat-emoji">⚡</span>
+              <span class="chat-emoji">📋</span><span class="chat-emoji">📍</span><span class="chat-emoji">📷</span>
+              <span class="chat-emoji">🚨</span><span class="chat-emoji">🔴</span><span class="chat-emoji">🟢</span>
+              <span class="chat-emoji">👷</span><span class="chat-emoji">🏗️</span><span class="chat-emoji">🔌</span>
+              <span class="chat-emoji">💡</span><span class="chat-emoji">🛠️</span><span class="chat-emoji">📊</span>
+              <span class="chat-emoji">🙌</span><span class="chat-emoji">❗</span><span class="chat-emoji">❓</span>
             </div>
           </div>
         </div>
@@ -1370,6 +1508,73 @@ function toggleSidebar(){
   else{s.classList.contains('hidden')?showSidebar():hideSidebar()}
 }
 ge('sbtg').addEventListener('click',toggleSidebar);
+
+// ── MOBILE MENU ──
+var mobileMenuOpen = false;
+function toggleMobileMenu(){
+  mobileMenuOpen = !mobileMenuOpen;
+  ge('mobile-menu').style.display = mobileMenuOpen ? 'block' : 'none';
+}
+function closeMobileMenu(){
+  mobileMenuOpen = false;
+  ge('mobile-menu').style.display = 'none';
+}
+ge('btn-mobile-menu').addEventListener('click', toggleMobileMenu);
+
+// Mobile menu actions
+ge('btn-logout-m').addEventListener('click', function(){ closeMobileMenu(); doLogout(); });
+ge('btn-print-m').addEventListener('click',  function(){ closeMobileMenu(); openPrintModal(null); });
+ge('btn-wa-m').addEventListener('click',     function(){ closeMobileMenu(); openWhatsApp(null); });
+ge('btn-theme-m').addEventListener('click',  function(){
+  darkMode=!darkMode; DB.save('dark',darkMode); applyTheme();
+  ge('btn-theme-m').textContent = darkMode ? '☀️ Tema' : '🌙 Tema';
+});
+
+// Mobile search synced with main
+ge('gsearch-mobile').addEventListener('input', function(e){ gSearch(e.target.value); });
+
+// Mobile nav buttons
+ge('btn-back-m').addEventListener('click', function(){
+  if(S.hIdx>0){ S.hIdx--; nav(S.hist[S.hIdx]); closeMobileMenu(); }
+});
+ge('btn-fwd-m').addEventListener('click', function(){
+  if(S.hIdx<S.hist.length-1){ S.hIdx++; nav(S.hist[S.hIdx]); closeMobileMenu(); }
+});
+
+// Keep mobile nav buttons disabled state in sync
+function updateMobileNavBtns(){
+  var bm=ge('btn-back-m'), fm=ge('btn-fwd-m');
+  if(bm) bm.disabled = S.hIdx<=0;
+  if(fm) fm.disabled = S.hIdx>=S.hist.length-1;
+}
+
+// Close mobile menu when navigating
+var _origNav = nav;
+nav = function(page){
+  _origNav(page);
+  closeMobileMenu();
+  updateMobileNavBtns();
+};
+
+// Show config button in mobile menu for admin
+var _origShowApp = showApp;
+showApp = function(){
+  _origShowApp();
+  var cm = ge('btn-config-m');
+  if(cm) cm.style.display = S.user && S.user.rol==='admin' ? 'flex' : 'none';
+};
+ge('btn-config-m').addEventListener('click', function(){ closeMobileMenu(); openConfig(); });
+
+// Close mobile menu if user taps outside
+document.addEventListener('click', function(e){
+  if(mobileMenuOpen){
+    var menu=ge('mobile-menu'), btn=ge('btn-mobile-menu');
+    if(menu && btn && !menu.contains(e.target) && !btn.contains(e.target)){
+      closeMobileMenu();
+    }
+  }
+});
+
 ge('sb-overlay').addEventListener('click',hideSidebar);
 // Detectar tamaño al cargar
 window.addEventListener('resize',()=>{
@@ -2493,128 +2698,273 @@ function gSearch(v){if(!v)return;ge('ot-q').value=v;nav('ordenes');filterOT()}
 // Los mensajes se guardan en localStorage y se "sincronizan"
 // mostrando todos los mensajes de todos los usuarios en este dispositivo.
 // Para chat real entre dispositivos se necesitaría Firebase/Supabase.
-const CHAT_KEY = 'ep_chat_msgs';
-const CHAT_MAX = 200;
-let chatInterval = null;
-let lastChatCount = 0;
+// ═══════════════════════════════════════════════════════
+// ── CHAT INTERNO MEJORADO ──
+// ═══════════════════════════════════════════════════════
+var CHAT_KEY   = 'ep_chat_msgs';
+var CHAT_MAX   = 300;
+var chatInterval = null;
+var lastChatCount = 0;
+var chatCurrentTarget = 'general'; // 'general' o userId para DM
+var chatAttachData = null;
+var chatAttachName = null;
 
 function loadChatMsgs(){
-  try{ return JSON.parse(localStorage.getItem(CHAT_KEY)||'[]'); }catch(e){return [];}
+  try{ return JSON.parse(localStorage.getItem(CHAT_KEY)||'[]'); }catch(e){ return []; }
 }
 function saveChatMsgs(msgs){
   try{ localStorage.setItem(CHAT_KEY, JSON.stringify(msgs.slice(-CHAT_MAX))); }catch(e){}
 }
 
+// ── ENVIAR MENSAJE ──
 function sendChatMsg(){
-  const inp = ge('chat-input');
-  const txt = (inp.value||'').trim();
-  if(!txt) return;
-  const msgs = loadChatMsgs();
-  msgs.push({
-    id: 'cm_'+Date.now(),
-    userId: S.user.id,
-    nombre: S.user.nombre,
-    rol: S.user.rol,
-    text: txt,
-    time: new Date().toISOString()
-  });
+  var inp = ge('chat-input');
+  var txt = (inp.value||'').trim();
+  if(!txt && !chatAttachData) return;
+  var msgs = loadChatMsgs();
+  var msg = {
+    id:      'cm_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),
+    userId:  S.user.id,
+    nombre:  S.user.nombre,
+    rol:     S.user.rol,
+    text:    txt,
+    target:  chatCurrentTarget,   // 'general' o userId destino
+    time:    new Date().toISOString(),
+    img:     chatAttachData||null,
+    imgName: chatAttachName||null
+  };
+  msgs.push(msg);
   saveChatMsgs(msgs);
-  inp.value='';
-  inp.style.height='38px';
+  inp.value=''; inp.style.height='40px';
+  chatAttachData=null; chatAttachName=null;
+  ge('chat-attach-preview').style.display='none';
+  ge('chat-emoji-panel').classList.remove('open');
   renderChatMessages();
+  logEvent('CHAT', 'Mensaje enviado en '+(chatCurrentTarget==='general'?'Chat General':'Mensaje directo'), null);
 }
 
+// ── FILTRAR MENSAJES SEGÚN CANAL ACTIVO ──
+function getVisibleMsgs(allMsgs){
+  var myId = S.user.id;
+  if(chatCurrentTarget === 'general'){
+    return allMsgs.filter(function(m){ return m.target==='general'||!m.target; });
+  }
+  // DM: mensajes entre yo y el otro usuario
+  return allMsgs.filter(function(m){
+    return (m.userId===myId && m.target===chatCurrentTarget) ||
+           (m.userId===chatCurrentTarget && m.target===myId);
+  });
+}
+
+// ── RENDERIZAR MENSAJES ──
 function renderChatMessages(){
-  const msgs = loadChatMsgs();
-  const box = ge('chat-messages');
+  var allMsgs = loadChatMsgs();
+  var msgs = getVisibleMsgs(allMsgs);
+  var box = ge('chat-messages');
   if(!box) return;
-  // Check for new messages (for badge)
-  if(msgs.length > lastChatCount && lastChatCount > 0){
-    const diff = msgs.length - lastChatCount;
-    // Only notify if not on chat page
-    const chatPage = ge('page-chat');
-    if(!chatPage || !chatPage.classList.contains('act')){
-      const badge = ge('chat-badge');
-      if(badge){ badge.style.display='inline'; badge.textContent=diff; }
-      addNotif('💬 '+diff+' mensaje(s) nuevo(s) en el chat');
+
+  // Notificación de nuevos mensajes si no estamos en el chat
+  var totalNew = allMsgs.length;
+  if(totalNew > lastChatCount && lastChatCount > 0){
+    var diff = totalNew - lastChatCount;
+    var chatPg = ge('page-chat');
+    if(!chatPg||!chatPg.classList.contains('act')){
+      var badge=ge('chat-badge');
+      if(badge){badge.style.display='inline';badge.textContent=diff;}
+      addNotif('💬 '+diff+' mensaje(s) nuevo(s)');
     }
   }
-  lastChatCount = msgs.length;
-  const myId = S.user.id;
-  box.innerHTML = msgs.map(function(m){
-    const isMe = m.userId === myId;
-    const time = new Date(m.time).toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'});
-    const date = new Date(m.time).toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit'});
-    const rolBadge = m.rol==='admin'?'b-red':m.rol==='supervisor'?'b-blue':'b-gray';
-    const avatar = m.nombre[0].toUpperCase();
-    return '<div style="display:flex;flex-direction:'+(isMe?'row-reverse':'row')+';gap:8px;align-items:flex-end;max-width:85%;'+(isMe?'align-self:flex-end':'align-self:flex-start')+'">'+
-      '<div style="width:30px;height:30px;border-radius:50%;background:'+(isMe?'var(--ac)':'var(--bl)')+';color:'+(isMe?'#000':'#fff')+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0">'+avatar+'</div>'+
+  lastChatCount = totalNew;
+
+  // Filtrar por búsqueda
+  var searchQ = (ge('chat-msg-search')&&ge('chat-msg-search').value||'').toLowerCase();
+  if(searchQ) msgs = msgs.filter(function(m){ return (m.text||'').toLowerCase().includes(searchQ); });
+
+  var myId = S.user.id;
+  var html = '';
+  var lastDate = '';
+  var lastUserId = '';
+  var lastTime = 0;
+
+  msgs.forEach(function(m, idx){
+    var isMe = m.userId===myId;
+    var dt = new Date(m.time);
+    var dateStr = dt.toLocaleDateString('es-PE',{weekday:'short',day:'numeric',month:'short'});
+    var timeStr = dt.toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'});
+    var isToday = dt.toDateString()===new Date().toDateString();
+    var displayDate = isToday ? 'Hoy' : dateStr;
+
+    // Separador de fecha
+    if(displayDate !== lastDate){
+      html += '<div class="chat-date-divider">'+displayDate+'</div>';
+      lastDate = displayDate;
+      lastUserId = '';
+    }
+
+    // Agrupar mensajes del mismo usuario (dentro de 2 min)
+    var sameUser = m.userId===lastUserId && (dt-lastTime)<120000;
+    lastUserId = m.userId;
+    lastTime = dt;
+
+    var u = S.users.find(function(x){return x.id===m.userId;});
+    var rolColor = (ROLES[m.rol]||ROLES.visualizador).color;
+    var avatarLetter = (m.nombre||'?')[0].toUpperCase();
+
+    // Nombre del remitente (solo en primer mensaje del grupo y si no soy yo)
+    var nameHtml = '';
+    if(!isMe && !sameUser){
+      nameHtml = '<div class="chat-sender-name">'+
+        '<span style="color:'+rolColor+'">'+avatarLetter+'</span> '+
+        m.nombre+
+        ' <span style="font-size:9px;opacity:.7">'+getRol(m.rol).label+'</span>'+
+      '</div>';
+    }
+
+    // Avatar (solo en primer mensaje del grupo)
+    var avHtml = '';
+    if(!sameUser){
+      avHtml = '<div class="chat-av-small" style="background:'+(isMe?'var(--ac)':rolColor)+';color:'+(isMe?'#000':'#fff')+';">'+avatarLetter+'</div>';
+    } else {
+      avHtml = '<div style="width:28px;flex-shrink:0"></div>';
+    }
+
+    // Contenido de la burbuja
+    var bubbleContent = '';
+    if(m.text) bubbleContent += '<span>'+escapeHtml(m.text)+'</span>';
+    if(m.img){
+      bubbleContent += '<img src="'+m.img+'" alt="'+(m.imgName||'img')+'" '+
+        'data-chatimg="1" style="max-width:200px;border-radius:10px;display:block;margin-top:'+(m.text?'6':'0')+'px;cursor:pointer"/>';
+    }
+
+    // Tick de estado (solo mis mensajes)
+    var tick = isMe ? ' <span style="color:'+(isMe?'rgba(0,0,0,.5)':'var(--t3)')+'">✓</span>' : '';
+
+    html += '<div class="chat-msg-row'+(isMe?' me':'')+'" style="'+(sameUser?'margin-left:'+(isMe?'0':'36px')+';margin-right:'+(isMe?'36px':'0')+';':'')+'">'+
+      (isMe ? '' : (!sameUser?avHtml:avHtml))+
       '<div>'+
-        (isMe?'':'<div style="font-size:11px;color:var(--t2);margin-bottom:3px;padding-'+(isMe?'right':'left')+':4px">'+m.nombre+' <span class="badge '+rolBadge+'" style="font-size:9px">'+m.rol+'</span></div>')+
-        '<div style="background:'+(isMe?'var(--ac)':'var(--s3)')+';color:'+(isMe?'#000':'var(--tx)')+';padding:9px 13px;border-radius:'+(isMe?'12px 12px 2px 12px':'12px 12px 12px 2px')+';font-size:13px;word-break:break-word;max-width:100%;box-shadow:var(--sh)">'+
-          escapeHtml(m.text)+
+        nameHtml+
+        '<div class="chat-bubble '+(isMe?'me':'other')+'">'+bubbleContent+'</div>'+
+        '<div class="chat-meta '+(isMe?'me':'')+'" style="padding:'+(isMe?'0 4px 0 0':'0 0 0 4px')+'">'+
+          timeStr+tick+
         '</div>'+
-        '<div style="font-size:10px;color:var(--t3);margin-top:3px;text-align:'+(isMe?'right':'left')+'">'+date+' '+time+'</div>'+
+      '</div>'+
+      (isMe ? avHtml : '')+
+    '</div>';
+  });
+
+  if(!msgs.length){
+    html='<div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--t3);padding:40px">'+
+      '<div style="font-size:48px">💬</div>'+
+      '<div style="font-size:14px;font-weight:600">'+
+        (chatCurrentTarget==='general'?'Chat General del equipo':'Conversación privada')+
+      '</div>'+
+      '<div style="font-size:12px;text-align:center">'+
+        (chatCurrentTarget==='general'?'Todos los mensajes del equipo aparecen aquí':'Envía un mensaje directo')+
       '</div>'+
     '</div>';
-  }).join('');
-  // Scroll al fondo
-  setTimeout(function(){ box.scrollTop = box.scrollHeight; }, 50);
+  }
+
+  box.innerHTML = html;
+  setTimeout(function(){ box.scrollTop=box.scrollHeight; }, 30);
 }
 
-function escapeHtml(t){
-  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'<br>');
-}
-
+// ── RENDERIZAR USUARIOS EN SIDEBAR ──
 function renderChatUsers(){
-  const list = ge('chat-users-list');
-  const countEl = ge('chat-online-count');
+  var list = ge('chat-users-list');
+  var countEl = ge('chat-online-count');
   if(!list) return;
-  // Marcar como online (actualizar lastSeen)
-  S.user.lastSeen = new Date().toISOString();
-  S.user.online = true;
-  saveAll();
-  // Mostrar todos los usuarios
-  const onlineUsers = S.users.filter(u=>u.activo);
-  const onlineCount = S.users.filter(u=>u.online&&u.activo).length;
-  if(countEl) countEl.textContent = onlineCount+' en línea de '+onlineUsers.length+' usuarios';
-  list.innerHTML = onlineUsers.map(function(u){
-    const isOnline = u.online;
-    const isMe = u.id === S.user.id;
-    return '<div style="display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--r);'+(isMe?'background:var(--gl)':'')+'margin-bottom:3px">'+
-      '<div style="width:28px;height:28px;border-radius:50%;background:'+((ROLES[u.rol]||ROLES.visualizador).color)+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">'+u.nombre[0].toUpperCase()+'</div>'+
-      '<div style="flex:1;min-width:0">'+
-        '<div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+u.nombre+(isMe?' (tú)':'')+'</div>'+
-        '<div style="font-size:10px;color:var(--t2)">'+u.rol+'</div>'+
+
+  // Marcar usuario actual como online
+  S.user.lastSeen=new Date().toISOString(); S.user.online=true; saveAll();
+
+  var others = S.users.filter(function(u){ return u.activo && u.id!==S.user.id; });
+  var onlineCnt = S.users.filter(function(u){ return u.online&&u.activo; }).length;
+  if(countEl) countEl.textContent = onlineCnt+' en línea';
+
+  // Filtrar por búsqueda
+  var q = (ge('chat-user-search')&&ge('chat-user-search').value||'').toLowerCase();
+  var filtered = q ? others.filter(function(u){ return u.nombre.toLowerCase().includes(q)||u.username.toLowerCase().includes(q); }) : others;
+
+  // Contar mensajes no leídos por usuario (DMs)
+  var allMsgs = loadChatMsgs();
+  var myId = S.user.id;
+
+  list.innerHTML = filtered.map(function(u){
+    var isOnline = u.online;
+    var rolColor = (ROLES[u.rol]||ROLES.visualizador).color;
+    var isCurrent = chatCurrentTarget===u.id;
+    // Unread DMs
+    var unread = allMsgs.filter(function(m){ return m.userId===u.id && m.target===myId; }).length;
+    return '<div class="chat-user-item'+(isCurrent?' active':'')+'" data-chat-user="'+u.id+'">'+
+      '<div class="chat-u-av" style="background:'+rolColor+';color:#000">'+
+        u.nombre[0].toUpperCase()+
+        '<span class="chat-u-dot" style="background:'+(isOnline?'var(--gn)':'var(--t3)')+'"></span>'+
       '</div>'+
-      '<span class="odot '+(isOnline?'on':'off')+'"></span>'+
+      '<div class="chat-ch-info">'+
+        '<div class="chat-ch-name">'+u.nombre+(u.id===S.user.id?' (tú)':'')+'</div>'+
+        '<div class="chat-ch-last">'+getRol(u.rol).label+(isOnline?' · En línea':' · '+fmtLast(u.lastSeen))+'</div>'+
+      '</div>'+
+      (unread?'<span class="chat-badge-count">'+unread+'</span>':'')+
     '</div>';
   }).join('');
-  const badge = ge('chat-badge');
-  if(badge) badge.style.display='none';
+
+  // Actualizar último mensaje en general
+  var genMsgs = allMsgs.filter(function(m){ return m.target==='general'||!m.target; });
+  var lastGen = genMsgs[genMsgs.length-1];
+  var lastGenEl = ge('chat-general-last');
+  if(lastGenEl && lastGen) lastGenEl.textContent = (lastGen.nombre||'')+': '+(lastGen.text||'📷 Imagen').slice(0,30);
+
+  // Badge notificaciones
+  var badge=ge('chat-badge'); if(badge) badge.style.display='none';
 }
 
-function initChat(){
+// ── CAMBIAR CANAL ──
+function switchChatTo(target){
+  chatCurrentTarget = target;
+  // Update header
+  var hname=ge('chat-header-name'), hstatus=ge('chat-header-status'), hav=ge('chat-header-av');
+  if(target==='general'){
+    if(hname) hname.textContent='💬 Chat General';
+    if(hstatus) hstatus.textContent=S.users.filter(function(u){return u.online&&u.activo;}).length+' personas en línea';
+    if(hav){ hav.textContent='👥'; hav.style.background='var(--ac)'; hav.style.color='#000'; }
+  } else {
+    var u=S.users.find(function(x){return x.id===target;});
+    if(u&&hname) hname.textContent=u.nombre;
+    if(u&&hstatus) hstatus.textContent=(u.online?'● En línea':'Última vez: '+fmtLast(u.lastSeen));
+    if(u&&hav){ hav.textContent=u.nombre[0].toUpperCase(); hav.style.background=(ROLES[u.rol]||ROLES.visualizador).color; hav.style.color='#000'; }
+  }
+  // Update active states
+  var genBtn=ge('chat-general-btn');
+  if(genBtn) genBtn.classList.toggle('active', target==='general');
+  document.querySelectorAll('.chat-user-item').forEach(function(el){
+    el.classList.toggle('active', el.dataset.chatUser===target);
+  });
   renderChatMessages();
-  renderChatUsers();
+  ge('chat-input').focus();
+}
+
+// ── INIT CHAT ──
+function initChat(){
   lastChatCount = loadChatMsgs().length;
-  // Poll cada 3s para nuevos mensajes (simula tiempo real en localStorage)
+  chatCurrentTarget = 'general';
+  switchChatTo('general');
+  renderChatUsers();
+  ge('btn-chat-clear').style.display = S.user&&S.user.rol==='admin' ? 'flex' : 'none';
   if(chatInterval) clearInterval(chatInterval);
   chatInterval = setInterval(function(){
     if(ge('page-chat')&&ge('page-chat').classList.contains('act')){
-      renderChatMessages();
-      renderChatUsers();
+      renderChatMessages(); renderChatUsers();
     } else {
-      // Check for new msgs for badge
-      const msgs = loadChatMsgs();
-      if(msgs.length > lastChatCount){
-        const diff = msgs.length - lastChatCount;
-        const badge = ge('chat-badge');
-        if(badge){ badge.style.display='inline'; badge.textContent=diff; }
+      var msgs=loadChatMsgs();
+      if(msgs.length>lastChatCount){
+        var diff=msgs.length-lastChatCount;
+        var badge=ge('chat-badge');
+        if(badge){badge.style.display='inline';badge.textContent=diff;}
       }
     }
-  }, 3000);
+  }, 2500);
 }
+
 
 
 // ── IMPRESIÓN ──
@@ -3491,16 +3841,95 @@ ge('usr-tbody').addEventListener('click',e=>{
 ge('btn-savepw').addEventListener('click',saveChPw);
 
 // Chat send
+// ── CHAT EVENT LISTENERS ──
 ge('btn-chat-send').addEventListener('click', sendChatMsg);
-
-// ── CONFIGURACIÓN ──
-ge('btn-config-top').addEventListener('click', openConfig);
-ge('btn-save-config').addEventListener('click', saveCfg);
-
-// Config tabs
-document.querySelectorAll('[data-ctab]').forEach(btn=>{
-  btn.addEventListener('click', ()=>switchCTab(btn.dataset.ctab));
+ge('chat-input').addEventListener('keydown', function(e){
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendChatMsg(); return; }
+  this.style.height='auto';
+  this.style.height=Math.min(this.scrollHeight,120)+'px';
 });
+ge('chat-input').addEventListener('input', function(){
+  // Typing indicator (visual only)
+  this.style.height='auto';
+  this.style.height=Math.min(this.scrollHeight,120)+'px';
+});
+
+// Chat: canal general
+ge('chat-general-btn').addEventListener('click', function(){ switchChatTo('general'); });
+
+// Chat: click en usuario (DM o simplemente ver su canal)
+ge('chat-users-list').addEventListener('click', function(e){
+  var item=e.target.closest('[data-chat-user]');
+  if(item) switchChatTo(item.dataset.chatUser);
+});
+
+// Chat: búsqueda de usuarios
+ge('chat-user-search').addEventListener('input', function(){ renderChatUsers(); });
+
+// Chat: búsqueda de mensajes
+ge('btn-chat-search-toggle').addEventListener('click', function(){
+  var bar=ge('chat-msg-search-bar');
+  var showing=bar.style.display!=='none';
+  bar.style.display=showing?'none':'block';
+  if(!showing) ge('chat-msg-search').focus();
+  else { ge('chat-msg-search').value=''; renderChatMessages(); }
+});
+ge('chat-msg-search').addEventListener('input', function(){ renderChatMessages(); });
+
+// Chat: emojis
+ge('btn-chat-emoji').addEventListener('click', function(){
+  var panel=ge('chat-emoji-panel');
+  panel.classList.toggle('open');
+});
+ge('chat-emoji-panel').addEventListener('click', function(e){
+  var em=e.target.closest('.chat-emoji');
+  if(!em) return;
+  var inp=ge('chat-input');
+  inp.value+=em.textContent;
+  inp.focus();
+  ge('chat-emoji-panel').classList.remove('open');
+});
+
+// Chat: adjuntar imagen
+ge('chat-attach-input').addEventListener('change', function(){
+  var file=this.files[0]; if(!file) return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    chatAttachData=ev.target.result;
+    chatAttachName=file.name;
+    ge('chat-attach-preview').style.display='flex';
+    ge('chat-attach-name').textContent='📷 '+file.name;
+  };
+  r.readAsDataURL(file);
+  this.value='';
+});
+ge('btn-chat-rm-attach').addEventListener('click', function(){
+  chatAttachData=null; chatAttachName=null;
+  ge('chat-attach-preview').style.display='none';
+});
+
+// Chat: limpiar (admin)
+ge('btn-chat-clear').addEventListener('click', function(){
+  if(!confirm('¿Borrar todos los mensajes del chat?')) return;
+  saveChatMsgs([]);
+  lastChatCount=0;
+  renderChatMessages();
+  toast('Chat limpiado', 'info');
+});
+
+// IV para imágenes del chat
+document.addEventListener('click', function(e){
+  var chatImg=e.target.closest('#chat-messages img');
+  if(chatImg){
+    var msgs=loadChatMsgs().filter(function(m){return m.img;});
+    var src=chatImg.src;
+    var idx=msgs.findIndex(function(m){return m.img===src;});
+    S.ivList=msgs.map(function(m){return{id:m.id,name:m.imgName||'chat.jpg',data:m.img,fecha:new Date(m.time).toLocaleDateString('es-PE'),gps:''};});
+    S.ivIdx=Math.max(0,idx);
+    renderIV(); ge('iv').classList.add('open');
+  }
+});
+
 
 // Color presets
 ge('cfg-color-presets').addEventListener('click', e=>{
