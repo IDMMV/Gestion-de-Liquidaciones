@@ -723,6 +723,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
     <div class="nsec">
       <div class="nlbl">Principal</div>
       <button class="ni" data-page="mipanel"><span class="ico">👤</span> Mi Panel <span id="mi-pendientes-badge" style="display:none;background:var(--rd);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:auto">!</span></button>
+      <button class="ni" id="sb-panel-general" data-page="panelgeneral"><span class="ico">🌐</span> Panel General</button>
       <button class="ni act" data-page="dashboard"><span class="ico">📊</span> Dashboard</button>
       <button class="ni" data-page="ordenes"><span class="ico">📋</span> Órdenes de Trabajo</button>
       <button class="ni" data-page="mapa"><span class="ico">🗺️</span> Mapa de OT</button>
@@ -1286,6 +1287,28 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       </div>
     </div>
 
+    <!-- PANEL GENERAL -->
+    <div class="page" id="page-panelgeneral">
+      <div class="ph">
+        <div><h2>🌐 Panel General</h2><div class="sub">Todas las OT — consulta y seguimiento</div></div>
+        <div class="ph-right">
+          <input type="text" id="mp-gen-search" placeholder="🔍 Buscar OT..." class="sf" style="width:180px"/>
+          <select class="fsel" id="mp-gen-est"><option value="">Todos los estados</option><option value="Pendiente">⏳ Pendiente</option><option value="En Curso">⚡ En Curso</option><option value="Completado">✅ Completado</option><option value="Observado">⚠️ Observado</option></select>
+          <select class="fsel" id="mp-gen-zona"><option value="">Todas las zonas</option></select>
+        </div>
+      </div>
+      <div class="sgrid" style="margin-bottom:14px" id="pg-stats"></div>
+      <div class="card">
+        <div class="ch"><h3>📋 Registro de Órdenes de Trabajo</h3><span id="pg-count" style="font-size:12px;color:var(--t2);margin-left:auto"></span></div>
+        <div style="overflow-x:auto">
+          <table style="min-width:700px">
+            <thead><tr><th>OT</th><th>Fecha</th><th>Zona</th><th>Alimentador</th><th>Estado</th><th>Asignado</th><th>Informe</th><th>Checklist</th><th>Ver</th></tr></thead>
+            <tbody id="mp-gen-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- KANBAN -->
     <div class="page" id="page-kanban">
       <div class="ph">
@@ -1828,15 +1851,12 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
           </select>
         </div>
 
-        <!-- Advertencia para completado -->
-        <div id="inf-warn-completado" style="display:none;background:rgba(63,185,80,.1);border:1px solid var(--gn);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--gn)">
-          ✅ Al guardar, la OT pasará a estado <b>Completado</b> y se registrará la hora de fin del trabajo.
-        </div>
-        <div id="inf-warn-proceso" style="display:none;background:rgba(56,139,253,.1);border:1px solid var(--bl);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--bl)">
-          ⚡ La OT quedará como <b>En Curso</b>. Aparecerá como "Pendiente de informe de cierre" hasta que termines el trabajo.
-        </div>
-        <div id="inf-warn-suspendido" style="display:none;background:rgba(248,81,73,.1);border:1px solid var(--rd);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--rd)">
-          ⚠️ La OT pasará a <b>Observado</b>. Se registrará el motivo y se habilitará la opción de reprogramación.
+        <!-- Mensaje único de hora de cambio de estado -->
+        <div id="inf-warn-estado" style="display:none;background:rgba(240,165,0,.1);border:1px solid var(--ac);border-radius:var(--r);padding:10px 12px;margin-bottom:10px">
+          <div style="font-size:12px;color:var(--ac);font-weight:600;margin-bottom:4px">⏱ Registro de hora de cambio de estado</div>
+          <div style="font-size:12px;color:var(--t2)">Se registrará la hora actual como <b>hora de cambio de estado</b> y <b>hora final del trabajo</b>. Este registro quedará en el historial de la OT.</div>
+          <div id="inf-warn-hora-actual" style="font-size:13px;font-weight:700;color:var(--ac);margin-top:6px;font-family:monospace"></div>
+          <div id="inf-warn-estado-detail" style="font-size:11px;color:var(--t2);margin-top:4px"></div>
         </div>
 
         <div id="inf-suspension-fields" style="display:none">
@@ -2578,7 +2598,7 @@ function updateHistBtns(){
   ge('btn-fwd').disabled=S.hIdx>=S.hist.length-1;
 }
 function renderPage(p){
-  const pages={dashboard:renderDash,ordenes:renderOrdenes,usuarios:renderUsuarios,perfil:renderPerfil,chat:initChat,mapa:initMapa,plantillas:renderPlantillas,historial:renderHistorial,mipanel:renderMiPanel,calendario:renderCalendario,materiales:renderMateriales,kanban:renderKanban,informes:function(){},busqueda:function(){var el=ge('gs-input');if(el){el.value='';el.focus();}ge('gs-results').innerHTML=''}};
+  const pages={dashboard:renderDash,ordenes:renderOrdenes,usuarios:renderUsuarios,perfil:renderPerfil,chat:initChat,mapa:initMapa,plantillas:renderPlantillas,historial:renderHistorial,mipanel:renderMiPanel,panelgeneral:renderPanelGeneral,calendario:renderCalendario,materiales:renderMateriales,kanban:renderKanban,informes:function(){},busqueda:function(){var el=ge('gs-input');if(el){el.value='';el.focus();}ge('gs-results').innerHTML=''}};
   (pages[p]||function(){})();
 }
 
@@ -6655,15 +6675,26 @@ function renderTutStep(){
 }
 function tutNext(){
   if(tutStep>=TUTORIAL_STEPS.length-1){
-    ge('tutorial-overlay').style.display='none';
-    try{localStorage.setItem(TUT_KEY,'1');}catch(e){}
-    toast('Tutorial completado. Puedes verlo de nuevo en Mi Perfil.','success');
+    tutFinish();
     return;
   }
   tutStep++;renderTutStep();
 }
 function tutPrev(){if(tutStep>0){tutStep--;renderTutStep();}}
-function skipTutorial(){ge('tutorial-overlay').style.display='none';try{localStorage.setItem(TUT_KEY,'1');}catch(e){}}
+function tutFinish(){
+  ge('tutorial-overlay').style.display='none';
+  try{localStorage.setItem(TUT_KEY,'1');}catch(e){}
+  toast('Tutorial completado. Puedes verlo de nuevo en Mi Perfil.','success');
+  if(S.user && S.user.rol!=='admin') nav('mipanel');
+  else nav('dashboard');
+}
+function skipTutorial(){
+  ge('tutorial-overlay').style.display='none';
+  try{localStorage.setItem(TUT_KEY,'1');}catch(e){}
+  // Volver a la página correcta según el rol
+  if(S.user && S.user.rol!=='admin') nav('mipanel');
+  else nav('dashboard');
+}
 
 // Mostrar tutorial al primer login
 var _origShowAppTut=showApp;
@@ -7324,56 +7355,86 @@ function renderMiPanel(){
   renderMiPanelGeneral();
 }
 
-function renderMiPanelGeneral(){
+function renderPanelGeneral(){
   var search  = (ge('mp-gen-search')  ? ge('mp-gen-search').value  : '').toLowerCase();
   var estFlt  = ge('mp-gen-est')  ? ge('mp-gen-est').value  : '';
   var zonaFlt = ge('mp-gen-zona') ? ge('mp-gen-zona').value : '';
 
   // Poblar zonas
   var zonasSel = ge('mp-gen-zona');
-  if(zonasSel && zonasSel.options.length <= 1){
+  if(zonasSel){
     var zonas = [...new Set(S.ordenes.map(function(o){return o.zona;}).filter(Boolean))];
-    zonas.forEach(function(z){
-      var opt=document.createElement('option'); opt.value=z; opt.textContent=z;
-      zonasSel.appendChild(opt);
-    });
+    var cur = zonasSel.value;
+    zonasSel.innerHTML = '<option value="">Todas las zonas</option>'+
+      zonas.map(function(z){return '<option value="'+z+'"'+(cur===z?' selected':'')+'>'+z+'</option>';}).join('');
   }
 
   var ots = S.ordenes.filter(function(o){
-    if(estFlt  && o.estado!==estFlt)       return false;
-    if(zonaFlt && o.zona!==zonaFlt)        return false;
+    if(estFlt  && o.estado!==estFlt)  return false;
+    if(zonaFlt && o.zona!==zonaFlt)   return false;
     if(search){
       return (o.ot||'').toLowerCase().includes(search)||
              (o.zona||'').toLowerCase().includes(search)||
              (o.alimentador||'').toLowerCase().includes(search)||
-             (o.supervisor||'').toLowerCase().includes(search);
+             (o.supervisor||'').toLowerCase().includes(search)||
+             (o.desc||'').toLowerCase().includes(search);
     }
     return true;
   });
 
+  // KPI rápidos
+  var pgStats = ge('pg-stats');
+  if(pgStats){
+    var tot=ots.length, pend=ots.filter(function(o){return o.estado==='Pendiente';}).length;
+    var curso=ots.filter(function(o){return o.estado==='En Curso';}).length;
+    var comp=ots.filter(function(o){return o.estado==='Completado';}).length;
+    pgStats.innerHTML=[
+      {c:'y',ico:'📋',lbl:'Total',val:tot,sub:'filtradas'},
+      {c:'r',ico:'⏳',lbl:'Pendientes',val:pend,sub:'por iniciar'},
+      {c:'b',ico:'⚡',lbl:'En Curso',val:curso,sub:'en ejecución'},
+      {c:'g',ico:'✅',lbl:'Completadas',val:comp,sub:tot?Math.round(comp/tot*100)+'%':'0%'},
+    ].map(function(s){return'<div class="sc '+s.c+'"><div class="slbl">'+s.lbl+'</div><div class="sval">'+s.val+'</div><div class="sico">'+s.ico+'</div><div class="ssub">'+s.sub+'</div></div>';}).join('');
+  }
+
+  var pgCount = ge('pg-count');
+  if(pgCount) pgCount.textContent = ots.length + ' OT';
+
   var tbody = ge('mp-gen-tbody');
   if(!tbody) return;
-
+  var informes = loadInformes ? loadInformes() : {};
   tbody.innerHTML = ots.length ? ots.map(function(o){
     var ow  = S.users.find(function(u){return u.id===o.userId;})||{nombre:'—'};
     var oF  = S.files.filter(function(f){return f.otId===o.id;});
     var clD = CHECKLIST.filter(function(sf){return oF.some(function(f){return f.subFolder===sf;});}).length;
-    var inf = loadInformes ? loadInformes()[o.id] : null;
+    var clPct = Math.round(clD/CHECKLIST.length*100);
+    var inf = informes[o.id];
     return '<tr>'+
-      '<td><b style="color:var(--ac)">'+o.ot+'</b>'+(inf?'<br><span style="font-size:10px;color:var(--gn)">✅ Con informe</span>':'')+'</td>'+
+      '<td><b style="color:var(--ac)">'+o.ot+'</b><br><span style="font-size:10px;color:var(--t2)">'+(o.supervisor||'—')+'</span></td>'+
       '<td style="white-space:nowrap;font-size:12px">'+o.fecha+'</td>'+
       '<td style="font-size:12px">'+(o.zona||'—')+'</td>'+
       '<td style="font-size:12px">'+(o.alimentador||'—')+'</td>'+
       '<td><span class="badge '+ebadge(o.estado)+'" style="font-size:10px">'+o.estado+'</span></td>'+
       '<td style="font-size:12px">'+ow.nombre+'</td>'+
-      '<td style="text-align:center;font-size:12px">'+clD+'/'+CHECKLIST.length+'</td>'+
+      '<td style="font-size:11px;text-align:center">'+
+        (inf?'<span style="color:var(--gn)">✅ '+inf.estadoFinal+'<br>'+inf.avance+'% · '+inf.cuadrilla.slice(0,2).join(', ')+'</span>':
+             '<span style="color:var(--t3)">Sin informe</span>')+
+      '</td>'+
+      '<td style="text-align:center">'+
+        '<div style="background:var(--s3);border-radius:10px;height:5px;width:60px;margin:0 auto 2px">'+
+          '<div style="height:100%;border-radius:10px;background:var(--gn);width:'+clPct+'%"></div>'+
+        '</div>'+
+        '<span style="font-size:10px;color:var(--t2)">'+clD+'/'+CHECKLIST.length+'</span>'+
+      '</td>'+
       '<td>'+
-        '<button class="btn bi" data-ocl="'+o.id+'" title="Ver checklist" style="font-size:14px">📁</button>'+
+        '<button class="btn bi" data-ocl="'+o.id+'" title="Checklist" style="font-size:14px">📁</button>'+
         '<button class="btn bi" data-galeria="'+o.id+'" title="Fotos" style="font-size:14px">📷</button>'+
+        '<button class="btn bi" data-comments="'+o.id+'" title="Comentarios" style="font-size:14px">💬</button>'+
       '</td>'+
     '</tr>';
-  }).join('') : '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--t2)">Sin OT que coincidan</td></tr>';
+  }).join('') : '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--t2)">Sin OT que coincidan con los filtros</td></tr>';
 }
+// Alias para compatibilidad
+function renderMiPanelGeneral(){ renderPanelGeneral(); }
 
 // Iniciar trabajo desde Mi Panel
 function mpIniciarTrabajo(otId){
@@ -7483,15 +7544,27 @@ function infUpdateTabColors(estadoFinal){
 
 // ─── ESTADO FINAL → warnings ───
 function infUpdateEstadoWarning(val){
-  ge('inf-warn-completado').style.display  = val==='completado'?'block':'none';
-  ge('inf-warn-proceso').style.display     = val==='en_proceso'?'block':'none';
-  ge('inf-warn-suspendido').style.display  = val==='suspendido'||val==='reprogramar'?'block':'none';
-  ge('inf-suspension-fields').style.display= val==='suspendido'||val==='reprogramar'?'block':'none';
+  var warnEl = ge('inf-warn-estado');
+  var warnHora = ge('inf-warn-hora-actual');
+  var warnDetail = ge('inf-warn-estado-detail');
+  if(warnEl) warnEl.style.display = val ? 'block' : 'none';
+  if(warnHora){
+    var now = new Date();
+    warnHora.textContent = '🕐 Hora registrada: ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+  }
+  var detalles = {
+    completado:  '✅ La OT pasará a estado Completado.',
+    en_proceso:  '⚡ La OT quedará En Curso — pendiente de informe de cierre.',
+    parcial:     '🔶 La OT quedará En Curso con avance parcial registrado.',
+    suspendido:  '⏸ La OT pasará a Observado. Indica el motivo abajo.',
+    reprogramar: '📅 La OT pasará a Observado y se habilitará reprogramación.'
+  };
+  if(warnDetail) warnDetail.textContent = detalles[val] || '';
+  ge('inf-suspension-fields').style.display = val==='suspendido'||val==='reprogramar'?'block':'none';
   infUpdateTabColors(val);
   // Avance auto
   var avance=ge('inf-avance'), avanceVal=ge('inf-avance-val');
   if(val==='completado'&&avance){ avance.value=100; if(avanceVal)avanceVal.textContent='100%'; }
-  else if(val==='en_proceso'&&avance){ /* no change */ }
 }
 // ═══ EVENT LISTENERS ═══
 
@@ -7523,11 +7596,17 @@ var _elSbAlertas=ge('sb-alertas');if(_elSbAlertas)_elSbAlertas.addEventListener(
 var _elSbListas=ge('sb-listas');if(_elSbListas)_elSbListas.addEventListener('click',openListasModal);
 
 // ── MI PANEL ──
-// Filtros
-['mp-filter-est','mp-search','mp-gen-search','mp-gen-est','mp-gen-zona'].forEach(function(id){
+// Filtros Mi Panel
+['mp-filter-est','mp-search'].forEach(function(id){
   var el=ge(id);
   if(el) el.addEventListener('input',renderMiPanel);
   if(el) el.addEventListener('change',renderMiPanel);
+});
+// Filtros Panel General
+['mp-gen-search','mp-gen-est','mp-gen-zona'].forEach(function(id){
+  var el=ge(id);
+  if(el) el.addEventListener('input',renderPanelGeneral);
+  if(el) el.addEventListener('change',renderPanelGeneral);
 });
 
 // Iniciar trabajo desde Mi Panel
