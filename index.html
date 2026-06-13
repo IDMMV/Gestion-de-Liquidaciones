@@ -176,6 +176,15 @@ tr:hover td{background:rgba(127,127,127,.04)}
 /* OT folder pill */
 .ot-cl-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.3);border-radius:5px;font-size:11px;color:var(--ac);cursor:pointer;font-family:inherit;transition:all .15s}
 .ot-cl-pill:hover{background:rgba(240,165,0,.22)}
+/* ── OT DROPDOWN MENU ── */
+.ot-actions-wrap{display:flex;gap:4px;align-items:center;position:relative}
+.ot-main-btn{background:var(--gl)!important;border-color:var(--ac)!important;color:var(--ac)!important}
+.ot-menu-btn{background:var(--s3)!important}
+.ot-dropdown{position:absolute;right:0;top:100%;z-index:300;background:var(--s);border:1px solid var(--br);border-radius:var(--rl);box-shadow:0 8px 30px rgba(0,0,0,.3);min-width:190px;overflow:hidden;margin-top:4px}
+.ot-dropdown button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;background:none;border:none;color:var(--tx);font-size:13px;cursor:pointer;text-align:left;font-family:inherit;transition:background .12s;border-bottom:1px solid var(--br)}
+.ot-dropdown button:last-child{border-bottom:none}
+.ot-dropdown button:hover{background:var(--gl)}
+.ot-dropdown button:first-child{font-weight:600}
 
 /* ── TBAR ── */
 .tbar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
@@ -394,6 +403,53 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 .dash-tooltip{position:fixed;background:var(--s);border:1px solid var(--br);border-radius:8px;padding:8px 12px;font-size:12px;pointer-events:none;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.3);min-width:140px;display:none}
 .dash-active-filter{display:inline-flex;align-items:center;gap:5px;background:var(--ac);color:#000;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;margin:2px;cursor:pointer}
 .dash-active-filter:hover{opacity:.85}
+/* ── CALENDARIO ── */
+.cal-day{border-right:1px solid var(--br);border-bottom:1px solid var(--br);min-height:80px;padding:4px;position:relative;cursor:pointer;transition:background .15s}
+.cal-day:hover{background:var(--gl)}
+.cal-day.today{background:rgba(240,165,0,.08);border:1px solid var(--ac)}
+.cal-day.other-month{opacity:.35}
+.cal-day-num{font-size:11px;font-weight:600;color:var(--t2);margin-bottom:3px}
+.cal-day.today .cal-day-num{color:var(--ac);font-weight:700}
+.cal-event{font-size:9px;padding:2px 5px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+/* ── MATERIALES ── */
+#mat-tbody tr:hover{background:var(--gl)}
+/* ── COMENTARIOS ── */
+.comment-item{background:var(--s3);border-radius:var(--r);padding:10px 12px}
+.comment-meta{font-size:11px;color:var(--t2);margin-top:4px}
+/* ── APROBACIÓN ── */
+.aprob-step{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);background:var(--s3)}
+.aprob-step.done{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3)}
+.aprob-step.pending{opacity:.6}
+.aprob-step.current{background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.4)}
+/* ── INFORME DE CAMPO ── */
+#itab-materiales .inf-mat-dest{background:var(--s2);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit;padding:7px 10px}
+/* ── MI PANEL ── */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+#mp-ot-list .card{transition:box-shadow .2s}
+#mp-ot-list .card:hover{box-shadow:0 4px 20px rgba(0,0,0,.2)}
+#mp-gen-tbody tr{cursor:pointer}
+#mp-gen-tbody tr:hover{background:var(--gl)}
+/* ── KANBAN ── */
+.kanban-col{background:var(--s3);border-radius:var(--rl);padding:10px;min-height:200px}
+.kanban-col-header{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:6px 8px;border-radius:var(--r);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.kanban-card{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:10px 12px;margin-bottom:8px;cursor:grab;transition:box-shadow .15s,transform .15s;user-select:none}
+.kanban-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.2);transform:translateY(-1px)}
+.kanban-card.dragging{opacity:.5;cursor:grabbing}
+.kanban-col.drag-over{background:var(--gl);border:2px dashed var(--ac)}
+.kanban-card .kc-ot{font-size:12px;font-weight:700;color:var(--ac);margin-bottom:4px}
+.kanban-card .kc-info{font-size:11px;color:var(--t2);line-height:1.5}
+/* ── BÚSQUEDA ── */
+.gs-section{margin-bottom:16px}
+.gs-section-title{font-size:12px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;padding:8px 14px;border-bottom:1px solid var(--br)}
+.gs-item{padding:10px 14px;border-bottom:1px solid var(--br);cursor:pointer;transition:background .1s;display:flex;gap:10px;align-items:flex-start}
+.gs-item:hover{background:var(--gl)}
+.gs-item .gs-ico{font-size:18px;flex-shrink:0;margin-top:1px}
+.gs-item .gs-title{font-size:13px;font-weight:500}
+.gs-item .gs-sub{font-size:11px;color:var(--t2);margin-top:2px}
+.gs-highlight{background:rgba(240,165,0,.25);color:var(--ac);border-radius:3px;padding:0 2px;font-weight:600}
+/* ── TUTORIAL ── */
+#tutorial-box{animation:tutPop .3s ease}
+@keyframes tutPop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 /* scrollbar */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -433,8 +489,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 .print-footer{margin-top:20px;border-top:1px solid #e0e0e0;padding-top:10px;display:flex;justify-content:space-between;font-size:10px;color:#888}
 .print-sign{border-top:1px solid #333;width:180px;text-align:center;padding-top:5px;font-size:10px;margin-top:40px}
 </style>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet se carga dinámicamente al abrir el mapa -->
 </head>
 <body>
 
@@ -531,10 +586,10 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
           <div style="display:flex;gap:10px;align-items:center">
             <div id="cfg-logo-preview" style="width:52px;height:52px;border-radius:12px;background:var(--s3);border:1px solid var(--br);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden">⚡</div>
             <div style="flex:1">
-              <label class="btn bs" style="cursor:pointer;font-size:12px;display:inline-flex;align-items:center;gap:6px">
+              <label for="cfg-logo-file" class="btn bs" style="cursor:pointer;font-size:12px;display:inline-flex;align-items:center;gap:6px">
                 📷 Subir logo
-                <input type="file" id="cfg-logo-file" accept="image/*" style="display:none"/>
               </label>
+              <input type="file" id="cfg-logo-file" accept="image/*" style="position:fixed;left:-9999px;top:-9999px;opacity:0;width:1px;height:1px"/>
               <button class="btn bs" id="cfg-logo-clear" style="font-size:12px;margin-left:6px">✕ Quitar</button>
               <div style="font-size:10px;color:var(--t3);margin-top:4px">PNG, JPG — aparecerá en el login y en la barra superior</div>
             </div>
@@ -653,11 +708,16 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
   <div id="sidebar">
     <div class="nsec">
       <div class="nlbl">Principal</div>
+      <button class="ni" data-page="mipanel"><span class="ico">👤</span> Mi Panel <span id="mi-pendientes-badge" style="display:none;background:var(--rd);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:auto">!</span></button>
       <button class="ni act" data-page="dashboard"><span class="ico">📊</span> Dashboard</button>
       <button class="ni" data-page="ordenes"><span class="ico">📋</span> Órdenes de Trabajo</button>
       <button class="ni" data-page="mapa"><span class="ico">🗺️</span> Mapa de OT</button>
-      <button class="ni" data-page="plantillas"><span class="ico">📑</span> Plantillas</button>
+
       <button class="ni" data-page="historial"><span class="ico">🕐</span> Historial</button>
+      <button class="ni" data-page="calendario"><span class="ico">📅</span> Calendario</button>
+      <button class="ni" data-page="materiales"><span class="ico">🔩</span> Materiales</button>
+      <button class="ni" data-page="kanban"><span class="ico">🗂️</span> Kanban</button>
+      <button class="ni" data-page="busqueda"><span class="ico">🔍</span> Búsqueda global</button>
       <button class="ni" data-page="perfil"><span class="ico">👤</span> Mi Perfil</button>
       <button class="ni" data-page="chat"><span class="ico">💬</span> Chat Interno <span id="chat-badge" style="display:none;background:var(--rd);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:auto">0</span></button>
     </div>
@@ -665,10 +725,12 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       <div class="nlbl">Administración</div>
       <button class="ni" data-page="usuarios"><span class="ico">👥</span> Usuarios</button>
       <button class="ni" id="sb-dynamic-fields" style="display:flex"><span class="ico">📝</span> Campos personalizados OT</button>
+      <button class="ni" id="sb-listas" style="display:none"><span class="ico">📋</span> Listas desplegables</button>
     </div>
     <div class="nsec">
       <div class="nlbl">Cuenta</div>
       <button class="ni" id="sb-notif-cfg"><span class="ico">🔔</span> Notificaciones</button>
+      <button class="ni" id="sb-alertas"><span class="ico">⚠️</span> Alertas OT</button>
 
       <button class="ni" id="sb-chpw"><span class="ico">🔑</span> Cambiar contraseña</button>
       <button class="ni" id="sb-logout"><span class="ico">↩</span> Cerrar sesión</button>
@@ -907,6 +969,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
         <div><h2>📋 Órdenes de Trabajo</h2><div class="sub">Checklist con 27 subcarpetas automáticas</div></div>
         <div class="ph-right">
           <button class="btn bs" id="btn-expxls" style="font-size:12px">📥 Excel</button>
+          <button class="btn bs" id="btn-import-excel" style="font-size:12px;display:none">📤 Importar</button>
           <button class="btn bp" id="btn-newot">+ Nueva OT</button>
         </div>
       </div>
@@ -1089,6 +1152,157 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       </div>
     </div>
 
+    <!-- CALENDARIO -->
+    <div class="page" id="page-calendario">
+      <div class="ph">
+        <div><h2>📅 Calendario de OT</h2><div class="sub">Vista mensual de órdenes de trabajo</div></div>
+        <div class="ph-right">
+          <button class="btn bs" id="cal-prev">◀</button>
+          <span id="cal-mes-lbl" style="font-size:14px;font-weight:600;min-width:160px;text-align:center"></span>
+          <button class="btn bs" id="cal-next">▶</button>
+          <button class="btn bp" id="cal-hoy" style="font-size:12px">Hoy</button>
+        </div>
+      </div>
+      <!-- Leyenda estados -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;font-size:11px">
+        <span><span style="background:var(--or);border-radius:3px;padding:1px 6px;color:#000">Pendiente</span></span>
+        <span><span style="background:var(--bl);border-radius:3px;padding:1px 6px;color:#fff">En Curso</span></span>
+        <span><span style="background:var(--gn);border-radius:3px;padding:1px 6px;color:#000">Completado</span></span>
+        <span><span style="background:var(--rd);border-radius:3px;padding:1px 6px;color:#fff">Observado</span></span>
+      </div>
+      <div class="card" style="overflow:auto">
+        <!-- Cabecera días -->
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--br)">
+          <div style="padding:8px;text-align:center;font-size:11px;color:var(--t2);font-weight:600">Lun</div>
+          <div style="padding:8px;text-align:center;font-size:11px;color:var(--t2);font-weight:600">Mar</div>
+          <div style="padding:8px;text-align:center;font-size:11px;color:var(--t2);font-weight:600">Mié</div>
+          <div style="padding:8px;text-align:center;font-size:11px;color:var(--t2);font-weight:600">Jue</div>
+          <div style="padding:8px;text-align:center;font-size:11px;color:var(--t2);font-weight:600">Vie</div>
+          <div style="padding:8px;text-align:center;font-size:11px;color:var(--t2);font-weight:600">Sáb</div>
+          <div style="padding:8px;text-align:center;font-size:11px;color:var(--t2);font-weight:600;color:var(--rd)">Dom</div>
+        </div>
+        <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);min-height:500px"></div>
+      </div>
+    </div>
+
+    <!-- MATERIALES -->
+    <div class="page" id="page-materiales">
+      <div class="ph">
+        <div><h2>🔩 Control de Materiales</h2><div class="sub">Registro de materiales por OT</div></div>
+        <div class="ph-right">
+          <select class="fsel" id="mat-filter-ot" style="min-width:180px"><option value="">Todas las OT</option></select>
+          <button class="btn bp" id="btn-new-material">+ Agregar material</button>
+        </div>
+      </div>
+      <!-- KPI materiales -->
+      <div class="sgrid" style="margin-bottom:14px" id="mat-stats"></div>
+      <!-- Tabla materiales -->
+      <div class="card">
+        <div class="ch"><h3>📦 Registro de materiales</h3>
+          <button class="btn bs" id="btn-exp-materiales" style="font-size:12px;margin-left:auto">📥 Exportar</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table id="mat-table" style="min-width:700px">
+            <thead><tr><th>OT</th><th>Material</th><th>Unidad</th><th>Cantidad</th><th>Costo Unit.</th><th>Total</th><th>Fecha</th><th>Acción</th></tr></thead>
+            <tbody id="mat-tbody"></tbody>
+            <tfoot id="mat-tfoot"></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MI PANEL -->
+    <div class="page" id="page-mipanel">
+      <div class="ph">
+        <div>
+          <h2 id="mipanel-title">👤 Mi Panel</h2>
+          <div class="sub" id="mipanel-sub">Tus trabajos asignados</div>
+        </div>
+        <div class="ph-right">
+          <select class="fsel" id="mp-filter-est" style="min-width:140px">
+            <option value="">Todos los estados</option>
+            <option value="Pendiente">⏳ Pendiente</option>
+            <option value="En Curso">⚡ En Curso</option>
+            <option value="Completado">✅ Completado</option>
+            <option value="Observado">⚠️ Observado</option>
+            <option value="pendiente_informe">📋 Pendiente de informe</option>
+          </select>
+          <input type="text" id="mp-search" placeholder="🔍 Buscar OT..." class="sf" style="width:160px"/>
+        </div>
+      </div>
+
+      <!-- Pendientes de informe — alerta -->
+      <div id="mp-alerta-pendientes" style="display:none;background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.4);border-radius:var(--r);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">⚠️</span>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600;color:var(--rd)">Tienes informes pendientes de completar</div>
+          <div id="mp-alerta-txt" style="font-size:11px;color:var(--t2)"></div>
+        </div>
+      </div>
+
+      <!-- KPI cards del usuario -->
+      <div class="sgrid" style="margin-bottom:16px" id="mp-stats"></div>
+
+      <!-- Mis OT asignadas -->
+      <div id="mp-ot-list" style="display:flex;flex-direction:column;gap:12px"></div>
+
+      <div id="mp-empty" class="empty" style="display:none">
+        <div class="ei">📋</div>
+        <p>No tienes OT asignadas aún.</p>
+        <p style="font-size:12px;color:var(--t3);margin-top:4px">El supervisor o coordinador te asignará trabajos.</p>
+      </div>
+
+      <!-- PANEL GENERAL (solo lectura para técnicos) -->
+      <div class="card" style="margin-top:20px">
+        <div class="ch">
+          <h3>📋 Panel General — Todas las OT</h3>
+          <span style="font-size:11px;color:var(--t2);margin-left:auto">Solo lectura</span>
+        </div>
+        <div style="padding:8px 14px;border-bottom:1px solid var(--br);display:flex;gap:8px;flex-wrap:wrap">
+          <input type="text" id="mp-gen-search" placeholder="🔍 Buscar..." class="sf" style="flex:1;min-width:120px"/>
+          <select class="fsel" id="mp-gen-est"><option value="">Todos</option><option value="Pendiente">Pendiente</option><option value="En Curso">En Curso</option><option value="Completado">Completado</option><option value="Observado">Observado</option></select>
+          <select class="fsel" id="mp-gen-zona"><option value="">Todas las zonas</option></select>
+        </div>
+        <div style="overflow-x:auto">
+          <table style="min-width:600px">
+            <thead><tr><th>OT</th><th>Fecha</th><th>Zona</th><th>Alimentador</th><th>Estado</th><th>Asignado</th><th>Docs</th><th>Ver</th></tr></thead>
+            <tbody id="mp-gen-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- KANBAN -->
+    <div class="page" id="page-kanban">
+      <div class="ph">
+        <div><h2>🗂️ Vista Kanban</h2><div class="sub">Arrastra las OT entre columnas para cambiar su estado</div></div>
+        <div class="ph-right">
+          <select class="fsel" id="kanban-filter-usr"><option value="">Todos los usuarios</option></select>
+          <button class="btn bp" id="kanban-newot">+ Nueva OT</button>
+        </div>
+      </div>
+      <div id="kanban-board" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start;min-height:60vh"></div>
+    </div>
+
+    <!-- BÚSQUEDA GLOBAL -->
+    <div class="page" id="page-busqueda">
+      <div class="ph"><div><h2>🔍 Búsqueda Global</h2><div class="sub">Encuentra OT, archivos, materiales y comentarios</div></div></div>
+      <div class="card" style="margin-bottom:14px">
+        <div style="padding:14px;display:flex;gap:10px;align-items:center">
+          <input type="text" id="gs-input" placeholder="Escribe para buscar en toda la plataforma..." 
+            style="flex:1;padding:12px 16px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:14px;font-family:inherit"/>
+          <button class="btn bp" id="btn-gs-search" style="padding:12px 20px">🔍 Buscar</button>
+        </div>
+        <div style="padding:0 14px 10px;display:flex;gap:8px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="gs-ot" checked style="accent-color:var(--ac)"/> OT</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="gs-arch" checked style="accent-color:var(--ac)"/> Archivos</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="gs-mat" checked style="accent-color:var(--ac)"/> Materiales</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" id="gs-com" checked style="accent-color:var(--ac)"/> Comentarios</label>
+        </div>
+      </div>
+      <div id="gs-results"></div>
+    </div>
+
     <!-- PERFIL -->
     <div class="page" id="page-perfil">
       <div class="ph"><h2>👤 Mi Perfil</h2></div>
@@ -1110,10 +1324,10 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       <div class="fg">
         <div class="field"><label>N° Orden *</label><input type="text" id="f-ot" placeholder="OT-2024-001"/></div>
         <div class="field"><label>Fecha *</label><input type="date" id="f-fecha"/></div>
-        <div class="field"><label>Supervisor Responsable *</label><input type="text" id="f-sup" placeholder="Nombre del supervisor"/></div>
-        <div class="field"><label>Alimentador</label><input type="text" id="f-ali" placeholder="ALI-01"/></div>
-        <div class="field"><label>Circuito</label><input type="text" id="f-cir" placeholder="C-001"/></div>
-        <div class="field"><label>Zona</label><input type="text" id="f-zona" placeholder="Norte, Sur..."/></div>
+        <div class="field"><label>Supervisor Responsable *</label><select id="f-sup" style="width:100%"><option value="">-- Selecciona --</option></select></div>
+        <div class="field"><label>Alimentador</label><select id="f-ali" style="width:100%"><option value="">-- Selecciona --</option></select></div>
+        <div class="field"><label>Circuito</label><select id="f-cir" style="width:100%"><option value="">-- Selecciona --</option></select></div>
+        <div class="field"><label>Zona</label><select id="f-zona" style="width:100%"><option value="">-- Selecciona --</option></select></div>
         <div class="field s2"><label>Estado</label>
           <select id="f-est"><option>Pendiente</option><option>En Curso</option><option>Completado</option><option>Observado</option></select>
           <div style="font-size:11px;color:var(--or);margin-top:4px" id="f-est-note"></div>
@@ -1179,7 +1393,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       <span>⚠️ GPS pendiente de confirmación</span>
       <button class="btn bp" id="btn-cl-confirmar-llegada" style="font-size:11px;padding:5px 12px;margin-left:auto">📍 Confirmar llegada</button>
     </div>
-    <div class="mf"><button class="btn bs" data-close="m-checklist">Cerrar</button><button class="btn bs" id="btn-cl-galeria" style="font-size:12px">📷 Galería</button><button class="btn bg2" id="btn-exp-cl" style="font-size:12px">📥 Exportar</button></div>
+    <div class="mf"><button class="btn bs" data-close="m-checklist">Cerrar</button><button class="btn bs" id="btn-cl-galeria" style="font-size:12px">📷 Galería</button><button class="btn bs" id="btn-cl-firma-c" style="font-size:12px">🤝 Firma cliente</button><button class="btn bg2" id="btn-exp-cl" style="font-size:12px">📥 Exportar</button></div>
   </div>
 </div>
 
@@ -1443,6 +1657,402 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 </div>
 
 <div id="tarea"></div>
+
+<!-- MODAL INFORME DE CAMPO (reemplaza la pantalla de llegada) -->
+<div class="mover" id="m-informe">
+  <div class="modal mlg" style="max-width:560px">
+    <div class="mh">
+      <h3 id="inf-title">📋 Informe de Trabajo</h3>
+      <span id="inf-ot-badge" class="badge b-blue" style="margin-left:6px"></span>
+      <button class="mc" data-close="m-informe">✕</button>
+    </div>
+    <div class="mb">
+      <!-- TABS del informe -->
+      <div class="tabs" style="margin-bottom:16px">
+        <button class="ltab act" data-itab="inicio">🚀 Inicio</button>
+        <button class="ltab" data-itab="materiales">🔩 Materiales</button>
+        <button class="ltab" data-itab="cierre">✅ Cierre</button>
+      </div>
+
+      <!-- TAB INICIO -->
+      <div id="itab-inicio">
+        <div style="background:var(--gl);border:1px solid var(--ac);border-radius:var(--r);padding:12px;margin-bottom:14px">
+          <div id="inf-llegada-status" style="font-size:13px;font-weight:600;margin-bottom:6px">📍 Confirmando ubicación...</div>
+          <div id="inf-gps-val" style="font-size:11px;color:var(--t2)"></div>
+          <button class="btn bp" id="btn-inf-gps" style="font-size:12px;margin-top:8px;padding:6px 14px">📍 Obtener GPS ahora</button>
+        </div>
+        <div class="field">
+          <label>Estado inicial del trabajo</label>
+          <select id="inf-estado-inicial">
+            <option value="iniciando">🚀 Iniciando trabajo</option>
+            <option value="continuando">▶️ Continuando trabajo anterior</option>
+            <option value="inspeccion">🔍 Solo inspección</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>👷 Integrantes de cuadrilla</label>
+          <div id="inf-cuadrilla-list" style="margin-bottom:8px"></div>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="inf-cuadrilla-input" placeholder="Nombre del integrante..." style="flex:1"/>
+            <button class="btn bp" id="btn-add-cuadrilla" style="font-size:12px;padding:7px 12px">+ Agregar</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>🚗 Unidades asignadas</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px" id="inf-unidades-check">
+            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Camioneta" style="accent-color:var(--ac)"/> 🚗 Camioneta</label>
+            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Brazo hidráulico" style="accent-color:var(--ac)"/> 🦾 Brazo hidráulico</label>
+            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Escalera" style="accent-color:var(--ac)"/> 🪜 Escalera</label>
+            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Generador" style="accent-color:var(--ac)"/> ⚡ Generador</label>
+            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Compresora" style="accent-color:var(--ac)"/> 🔧 Compresora</label>
+          </div>
+          <input type="text" id="inf-unidades-extra" placeholder="Otras unidades (separadas por coma)..."/>
+        </div>
+        <div class="field">
+          <label>Observaciones de inicio</label>
+          <textarea id="inf-obs-inicio" placeholder="Condiciones del punto de trabajo, accesos, riesgos observados..." style="min-height:70px"></textarea>
+        </div>
+      </div>
+
+      <!-- TAB MATERIALES DE CAMPO -->
+      <div id="itab-materiales" style="display:none">
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.6;background:var(--s3);padding:10px;border-radius:var(--r)">
+          Registra el estado de cada material. Indica si fue <b>consumido</b> en obra, <b>devuelto</b> al almacén, <b>prestado</b> a otra cuadrilla, o si necesitas <b>solicitar más</b>.
+        </div>
+        <!-- Agregar material -->
+        <div style="display:grid;grid-template-columns:1fr 80px 80px;gap:7px;margin-bottom:10px">
+          <input type="text" id="inf-mat-desc" placeholder="Material..." style="padding:8px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit"/>
+          <input type="number" id="inf-mat-qty" placeholder="Cant." min="0" step="0.01" style="padding:8px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit;text-align:center"/>
+          <select id="inf-mat-unidad" style="padding:8px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit">
+            <option>m</option><option>und</option><option>kg</option><option>rollo</option><option>caja</option>
+          </select>
+        </div>
+        <button class="btn bp" id="btn-inf-add-mat" style="width:100%;justify-content:center;margin-bottom:14px;font-size:13px">+ Agregar material</button>
+        <!-- Lista de materiales con estado -->
+        <div id="inf-mat-list"></div>
+        <!-- Panel de pendientes -->
+        <div id="inf-pendientes-panel" style="display:none;margin-top:12px;background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.3);border-radius:var(--r);padding:12px">
+          <div style="font-size:12px;font-weight:600;color:var(--rd);margin-bottom:8px">⚠️ Materiales pendientes de resolución</div>
+          <div id="inf-pendientes-list" style="font-size:12px"></div>
+        </div>
+      </div>
+
+      <!-- TAB CIERRE -->
+      <div id="itab-cierre" style="display:none">
+        <div class="field">
+          <label>Estado final del trabajo</label>
+          <select id="inf-estado-final">
+            <option value="completado">✅ Trabajo completado al 100%</option>
+            <option value="parcial">⚡ Completado parcialmente</option>
+            <option value="suspendido">⏸ Trabajo suspendido</option>
+            <option value="reprogramar">📅 Requiere reprogramación</option>
+          </select>
+        </div>
+        <div id="inf-suspension-fields" style="display:none">
+          <div class="field">
+            <label>Motivo de suspensión</label>
+            <select id="inf-motivo-suspension">
+              <option>Falta de material</option>
+              <option>Condiciones climáticas</option>
+              <option>Acceso denegado</option>
+              <option>Problema técnico</option>
+              <option>Orden de trabajo incompleta</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>¿Se requiere reprogramar?</label>
+            <input type="date" id="inf-fecha-reprog" placeholder="Fecha sugerida de reprogramación"/>
+          </div>
+        </div>
+        <div class="field">
+          <label>% de avance estimado</label>
+          <div style="display:flex;align-items:center;gap:12px">
+            <input type="range" id="inf-avance" min="0" max="100" value="100" style="flex:1;accent-color:var(--ac)"/>
+            <span id="inf-avance-val" style="font-size:16px;font-weight:700;color:var(--ac);min-width:40px">100%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Observaciones finales</label>
+          <textarea id="inf-obs-final" placeholder="Describe el trabajo realizado, incidentes, recomendaciones..." style="min-height:90px"></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <button class="btn bp" id="btn-inf-fotos" style="justify-content:center;padding:12px">📷 Adjuntar fotos</button>
+          <button class="btn bp" id="btn-inf-checklist" style="justify-content:center;padding:12px">📁 Ir al Checklist</button>
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" data-close="m-informe">Cancelar</button>
+      <button class="btn bs" id="btn-inf-prev" style="display:none">← Anterior</button>
+      <button class="btn bp" id="btn-inf-next">Siguiente →</button>
+      <button class="btn bp" id="btn-inf-save" style="display:none;background:var(--gn);border-color:var(--gn);color:#000">✅ Guardar informe</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LISTAS DESPLEGABLES -->
+<div class="mover" id="m-listas">
+  <div class="modal" style="max-width:500px">
+    <div class="mh"><h3>📝 Listas desplegables de OT</h3><button class="mc" data-close="m-listas">✕</button></div>
+    <div class="mb">
+      <div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">
+        Define las opciones que aparecerán en los campos del formulario de OT. Los usuarios seleccionarán de estas listas en lugar de escribir manualmente.
+      </div>
+      <!-- Tabs por campo -->
+      <div class="tabs" style="margin-bottom:14px">
+        <button class="ltab act" data-ltab="zona">🗺 Zona</button>
+        <button class="ltab" data-ltab="alimentador">⚡ Alimentador</button>
+        <button class="ltab" data-ltab="circuito">🔌 Circuito</button>
+        <button class="ltab" data-ltab="supervisor">👤 Supervisor</button>
+      </div>
+      <!-- Panel activo -->
+      <div id="listas-panel">
+        <div id="listas-items" style="max-height:220px;overflow-y:auto;margin-bottom:10px;border:1px solid var(--br);border-radius:var(--r)"></div>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="listas-new-item" placeholder="Escribe y presiona Agregar..." style="flex:1;padding:9px 12px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:13px;font-family:inherit"/>
+          <button class="btn bp" id="btn-lista-add">+ Agregar</button>
+        </div>
+        <div style="font-size:11px;color:var(--t2);margin-top:8px">También puedes pegar múltiples opciones separadas por coma: <b>Norte, Sur, Este, Oeste</b></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bs" data-close="m-listas">Cerrar</button><button class="btn bp" id="btn-listas-save">💾 Guardar listas</button></div>
+  </div>
+</div>
+
+<!-- MODAL REPROGRAMAR OT -->
+<div class="mover" id="m-reprogram">
+  <div class="modal" style="max-width:440px">
+    <div class="mh"><h3>🔄 Reprogramar OT</h3><button class="mc" data-close="m-reprogram">✕</button></div>
+    <div class="mb">
+      <div id="reprogram-ot-info" style="background:var(--s3);border-radius:var(--r);padding:10px 12px;margin-bottom:14px;font-size:13px;color:var(--t2)"></div>
+      <div class="fg">
+        <div class="field"><label>Nueva fecha *</label><input type="date" id="rp-fecha"/></div>
+        <div class="field"><label>Nuevo estado</label>
+          <select id="rp-estado"><option value="Pendiente">⏳ Pendiente</option><option value="En Curso">⚡ En Curso</option><option value="Observado">⚠️ Observado</option></select>
+        </div>
+        <div class="field s2"><label>Nuevo supervisor (opcional)</label><input type="text" id="rp-supervisor" placeholder="Dejar en blanco para mantener actual"/></div>
+        <div class="field s2"><label>Asignado a</label><select id="rp-asignado" style="width:100%"><option value="">Sin cambio</option></select></div>
+        <div class="field s2"><label>Motivo de reprogramación</label><textarea id="rp-motivo" placeholder="Explica por qué se reprogramó..." style="min-height:70px"></textarea></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bs" data-close="m-reprogram">Cancelar</button><button class="btn bp" id="btn-save-reprogram">🔄 Confirmar reprogramación</button></div>
+  </div>
+</div>
+
+<!-- MODAL CONTROL DE TIEMPO -->
+<div class="mover" id="m-tiempo">
+  <div class="modal" style="max-width:400px">
+    <div class="mh"><h3>⏱ Control de Tiempo</h3><button class="mc" data-close="m-tiempo">✕</button></div>
+    <div class="mb">
+      <div id="tiempo-ot-info" style="font-size:13px;font-weight:600;color:var(--ac);margin-bottom:16px;text-align:center"></div>
+      <!-- Cronómetro -->
+      <div style="text-align:center;margin-bottom:20px">
+        <div id="tiempo-display" style="font-size:48px;font-weight:700;font-family:monospace;color:var(--tx);letter-spacing:2px">00:00:00</div>
+        <div id="tiempo-status" style="font-size:12px;color:var(--t2);margin-top:6px"></div>
+      </div>
+      <!-- Historial de sesiones -->
+      <div style="background:var(--s3);border-radius:var(--r);padding:12px;margin-bottom:12px">
+        <div style="font-size:11px;color:var(--t2);margin-bottom:8px;font-weight:600">SESIONES DE TRABAJO</div>
+        <div id="tiempo-sesiones" style="max-height:150px;overflow-y:auto"></div>
+        <div style="border-top:1px solid var(--br);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px">
+          <span style="color:var(--t2)">Total acumulado:</span>
+          <span id="tiempo-total" style="font-weight:700;color:var(--ac)">0h 0min</span>
+        </div>
+      </div>
+      <div class="field"><label>Notas de la sesión (opcional)</label>
+        <input type="text" id="tiempo-nota" placeholder="Ej: Tendido de cable, instalación transformador..."/>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" data-close="m-tiempo">Cerrar</button>
+      <button class="btn bd" id="btn-tiempo-stop" style="display:none">⏹ Detener</button>
+      <button class="btn bp" id="btn-tiempo-start">▶ Iniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ALERTAS DE VENCIMIENTO -->
+<div class="mover" id="m-alertas">
+  <div class="modal" style="max-width:420px">
+    <div class="mh"><h3>🔔 Alertas de Vencimiento</h3><button class="mc" data-close="m-alertas">✕</button></div>
+    <div class="mb">
+      <div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Configura alertas automáticas por Telegram cuando una OT esté próxima a vencer o lleve demasiado tiempo pendiente.</div>
+      <div class="field">
+        <label>Alertar cuando una OT lleve más de</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="number" id="alerta-dias" value="7" min="1" max="90" style="width:80px"/>
+          <span style="font-size:13px">días en Pendiente</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Fecha límite por defecto (días desde creación)</label>
+        <input type="number" id="alerta-limite" value="30" min="1" max="365"/>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--s3);border-radius:var(--r);cursor:pointer">
+          <input type="checkbox" id="alerta-pendiente" checked style="accent-color:var(--ac);width:16px;height:16px"/>
+          <div><div style="font-size:13px;font-weight:500">⏳ OT con muchos días pendiente</div><div style="font-size:11px;color:var(--t2)">Avisa cuando supera los días configurados</div></div>
+        </label>
+        <label style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--s3);border-radius:var(--r);cursor:pointer">
+          <input type="checkbox" id="alerta-vence" checked style="accent-color:var(--ac);width:16px;height:16px"/>
+          <div><div style="font-size:13px;font-weight:500">📅 OT próxima a vencer</div><div style="font-size:11px;color:var(--t2)">Avisa 3 días antes de la fecha límite</div></div>
+        </label>
+        <label style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--s3);border-radius:var(--r);cursor:pointer">
+          <input type="checkbox" id="alerta-obs" checked style="accent-color:var(--ac);width:16px;height:16px"/>
+          <div><div style="font-size:13px;font-weight:500">⚠️ OT observada sin resolver</div><div style="font-size:11px;color:var(--t2)">Avisa si lleva más de 2 días en Observado</div></div>
+        </label>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bs" data-close="m-alertas">Cancelar</button><button class="btn bp" id="btn-save-alertas">💾 Guardar alertas</button></div>
+  </div>
+</div>
+
+<!-- TUTORIAL INTERACTIVO -->
+<div id="tutorial-overlay" style="display:none;position:fixed;inset:0;z-index:2000;pointer-events:none">
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,.7);pointer-events:all" id="tutorial-backdrop"></div>
+  <div id="tutorial-box" style="position:absolute;background:var(--s);border:2px solid var(--ac);border-radius:var(--rl);padding:20px;max-width:320px;z-index:2001;pointer-events:all;box-shadow:0 8px 40px rgba(0,0,0,.5)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <div id="tut-icon" style="font-size:28px"></div>
+      <div>
+        <div id="tut-title" style="font-size:15px;font-weight:700"></div>
+        <div id="tut-step-lbl" style="font-size:11px;color:var(--t2)"></div>
+      </div>
+    </div>
+    <div id="tut-body" style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn bs" id="btn-tut-skip" style="font-size:12px">Saltar</button>
+      <div style="flex:1"></div>
+      <button class="btn bs" id="btn-tut-prev" style="font-size:12px" disabled>← Anterior</button>
+      <button class="btn bp" id="btn-tut-next" style="font-size:12px">Siguiente →</button>
+    </div>
+    <div style="display:flex;gap:4px;justify-content:center;margin-top:10px" id="tut-dots"></div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO MATERIAL -->
+<div class="mover" id="m-material">
+  <div class="modal" style="max-width:460px">
+    <div class="mh"><h3>🔩 Agregar Material</h3><button class="mc" data-close="m-material">✕</button></div>
+    <div class="mb">
+      <div class="fg">
+        <div class="field s2"><label>OT *</label><select id="mat-ot-sel" style="width:100%"><option value="">-- Selecciona OT --</option></select></div>
+        <div class="field s2"><label>Descripción del material *</label><input type="text" id="mat-desc" placeholder="Ej: Cable NYY 3x35mm²"/></div>
+        <div class="field"><label>Unidad</label>
+          <select id="mat-unidad"><option>m</option><option>und</option><option>kg</option><option>rollo</option><option>caja</option><option>gl</option><option>juego</option></select>
+        </div>
+        <div class="field"><label>Cantidad *</label><input type="number" id="mat-qty" placeholder="0" min="0" step="0.01"/></div>
+        <div class="field"><label>Costo unitario (S/) *</label><input type="number" id="mat-costo" placeholder="0.00" min="0" step="0.01"/></div>
+        <div class="field"><label>Total (calculado)</label>
+          <div id="mat-total" style="padding:9px 13px;background:var(--s3);border:1px solid var(--ac);border-radius:var(--r);font-weight:700;color:var(--ac)">S/ 0.00</div>
+        </div>
+        <div class="field s2"><label>Categoría</label>
+          <select id="mat-categoria"><option value="conductor">Conductor/Cable</option><option value="poste">Postes y estructuras</option><option value="transformador">Transformadores</option><option value="proteccion">Protección</option><option value="herramientas">Herramientas</option><option value="otros">Otros</option></select>
+        </div>
+        <div class="field s2"><label>Observaciones</label><input type="text" id="mat-obs" placeholder="Opcional..."/></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bs" data-close="m-material">Cancelar</button><button class="btn bp" id="btn-save-material">💾 Guardar material</button></div>
+  </div>
+</div>
+
+<!-- MODAL IMPORTAR EXCEL -->
+<div class="mover" id="m-import">
+  <div class="modal" style="max-width:500px">
+    <div class="mh"><h3>📥 Importar OT desde Excel</h3><button class="mc" data-close="m-import">✕</button></div>
+    <div class="mb">
+      <div style="background:var(--s3);border-radius:var(--r);padding:12px;margin-bottom:14px;font-size:12px;line-height:1.8">
+        <b>Instrucciones:</b><br>
+        1. Descarga la plantilla Excel<br>
+        2. Llena los datos de las OT (una por fila)<br>
+        3. Guarda el archivo y súbelo aquí<br>
+        4. Revisa la vista previa y confirma la importación
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button class="btn bp" id="btn-dl-template" style="flex:1;justify-content:center">📋 Descargar plantilla</button>
+      </div>
+      <div class="divider"></div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;margin-top:12px">Subir archivo Excel:</div>
+      <div class="dzone" id="import-dzone" style="padding:20px;text-align:center">
+        <div style="font-size:32px;margin-bottom:8px">📊</div>
+        <p style="font-size:13px">Arrastra tu Excel aquí o toca para seleccionar</p>
+        <p style="font-size:11px;color:var(--t3)">.xlsx, .xls, .csv</p>
+        <input type="file" id="import-file" accept=".xlsx,.xls,.csv" style="display:none"/>
+      </div>
+      <div id="import-preview" style="margin-top:12px;max-height:200px;overflow-y:auto;display:none">
+        <div style="font-size:12px;font-weight:600;margin-bottom:6px">Vista previa:</div>
+        <table style="font-size:11px"><thead id="import-head"></thead><tbody id="import-body"></tbody></table>
+      </div>
+      <div id="import-result" style="margin-top:8px;font-size:12px"></div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" data-close="m-import">Cancelar</button>
+      <button class="btn bp" id="btn-import-confirm" style="display:none">✅ Importar OT</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL COMENTARIOS POR OT -->
+<div class="mover" id="m-comments">
+  <div class="modal" style="max-width:480px">
+    <div class="mh"><h3>💬 Comentarios</h3><button class="mc" data-close="m-comments">✕</button></div>
+    <div class="mb">
+      <div id="comments-ot-info" style="font-size:12px;color:var(--t2);margin-bottom:12px"></div>
+      <div id="comments-list" style="max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>
+      <div style="border-top:1px solid var(--br);padding-top:12px">
+        <div class="field" style="margin-bottom:6px"><label>Nuevo comentario</label>
+          <textarea id="comment-input" placeholder="Escribe un comentario interno..." style="min-height:70px"></textarea>
+        </div>
+        <button class="btn bp" id="btn-save-comment" style="width:100%;justify-content:center">💬 Agregar comentario</button>
+      </div>
+    </div>
+    <div class="mf"><button class="btn bs" data-close="m-comments">Cerrar</button></div>
+  </div>
+</div>
+
+<!-- MODAL APROBACIÓN DE OT -->
+<div class="mover" id="m-aprobacion">
+  <div class="modal" style="max-width:440px">
+    <div class="mh"><h3>✅ Aprobación de OT</h3><button class="mc" data-close="m-aprobacion">✕</button></div>
+    <div class="mb">
+      <div id="aprob-ot-info" style="background:var(--s3);border-radius:var(--r);padding:12px;margin-bottom:14px;font-size:13px"></div>
+      <div style="display:flex;flex-direction:column;gap:10px" id="aprob-steps"></div>
+      <div class="divider"></div>
+      <div class="field"><label>Observaciones de aprobación</label>
+        <textarea id="aprob-obs" placeholder="Notas del revisor..." style="min-height:70px"></textarea>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" data-close="m-aprobacion">Cancelar</button>
+      <button class="btn bd" id="btn-rechazar" style="font-size:13px">❌ Rechazar</button>
+      <button class="btn bp" id="btn-aprobar" style="font-size:13px">✅ Aprobar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FIRMA DEL CLIENTE -->
+<div class="mover" id="m-firma-cliente">
+  <div class="modal" style="max-width:440px">
+    <div class="mh"><h3>✍️ Firma de Conformidad del Cliente</h3><button class="mc" data-close="m-firma-cliente">✕</button></div>
+    <div class="mb">
+      <div id="fc-ot-info" style="font-size:12px;color:var(--t2);margin-bottom:12px"></div>
+      <div class="field"><label>Nombre del cliente / representante</label><input type="text" id="fc-nombre" placeholder="Nombre completo"/></div>
+      <div class="field"><label>DNI / RUC (opcional)</label><input type="text" id="fc-dni" placeholder="12345678"/></div>
+      <div class="field"><label>Firma del cliente</label>
+        <canvas id="fc-canvas" style="width:100%;height:130px;background:#fff;border-radius:var(--r);border:1px solid var(--br);cursor:crosshair;touch-action:none;display:block"></canvas>
+        <button class="btn bs" id="btn-clear-fc" style="font-size:11px;margin-top:5px;padding:4px 10px">🗑 Borrar</button>
+      </div>
+      <div class="field"><label>Observaciones del cliente (opcional)</label>
+        <textarea id="fc-obs" placeholder="El cliente puede escribir sus observaciones..." style="min-height:60px"></textarea>
+      </div>
+      <div style="font-size:11px;color:var(--t2)">📅 Fecha: <b id="fc-fecha"></b></div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" data-close="m-firma-cliente">Cancelar</button>
+      <button class="btn bp" id="btn-save-firma-cliente">✅ Guardar conformidad</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL CONFIRMACIÓN LLEGADA AL PUNTO -->
 <div class="mover" id="m-llegada">
@@ -1708,6 +2318,25 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 
 <script>
 (function(){
+// ── BOTÓN ATRÁS DE ANDROID ──
+// Cada vez que navegamos, añadimos estado al historial del navegador
+// Cuando el usuario presiona Atrás, volvemos a la página anterior de la app
+window.addEventListener('popstate', function(e){
+  if(e.state && e.state.appPage){
+    // Navegar a la página anterior sin añadir nuevo estado
+    var pages=document.querySelectorAll('.page');
+    pages.forEach(function(p){p.classList.remove('act');});
+    var target=document.getElementById('page-'+e.state.appPage);
+    if(target) target.classList.add('act');
+    // Actualizar sidebar activo
+    document.querySelectorAll('.ni').forEach(function(b){b.classList.remove('act');});
+    var nb=document.querySelector('.ni[data-page="'+e.state.appPage+'"]');
+    if(nb) nb.classList.add('act');
+  } else {
+    // No hay estado previo — mantener la app abierta
+    history.pushState({appPage:'dashboard'},'','');
+  }
+});
 // Aplicar configuración guardada al cargar (afecta login screen)
 // Brand se aplica después de cargar el DOM (ver applyConfig al final)
 
@@ -1761,6 +2390,14 @@ const S={
   clOTId:null,statusOTId:null,
   sfViewOTId:null,sfViewSF:null,
 };
+function updateMiPanelBadge(){
+  if(!S.user) return;
+  var informes = loadInformes ? loadInformes() : {};
+  var misOTs = S.ordenes.filter(function(o){ return o.userId===S.user.id; });
+  var pend = misOTs.filter(function(o){ return o.estado==='En Curso' && !informes[o.id]; }).length;
+  var badge = ge('mi-pendientes-badge');
+  if(badge){ badge.style.display=pend?'inline':'none'; badge.textContent=pend; }
+}
 function saveAll(){
   // Siempre guardar en localStorage (funciona offline)
   DB.save('users',S.users);
@@ -1849,7 +2486,7 @@ function updateHistBtns(){
   ge('btn-fwd').disabled=S.hIdx>=S.hist.length-1;
 }
 function renderPage(p){
-  const pages={dashboard:renderDash,ordenes:renderOrdenes,usuarios:renderUsuarios,perfil:renderPerfil,chat:initChat,mapa:initMapa,plantillas:renderPlantillas,historial:renderHistorial};
+  const pages={dashboard:renderDash,ordenes:renderOrdenes,usuarios:renderUsuarios,perfil:renderPerfil,chat:initChat,mapa:initMapa,plantillas:renderPlantillas,historial:renderHistorial,mipanel:renderMiPanel,calendario:renderCalendario,materiales:renderMateriales,kanban:renderKanban,informes:function(){},busqueda:function(){var el=ge('gs-input');if(el){el.value='';el.focus();}ge('gs-results').innerHTML=''}};
   (pages[p]||function(){})();
 }
 
@@ -1974,7 +2611,14 @@ function showApp(){
   ge('main').classList.toggle('exp',window.innerWidth>=768?false:false);
   updateUserPanel();nav('dashboard');
   if(!S.historial)S.historial=DB.load('historial',[]);
+  setTimeout(populateOTSelects,100);
   logEvent('LOGIN','Inicio de sesión: '+S.user.nombre,null);
+  // No-admin va a Mi Panel primero
+  setTimeout(function(){
+    if(S.user && S.user.rol!=='admin'){
+      nav('mipanel');
+    }
+  },100);
   // Init chat polling
   setTimeout(initChat,500);
 }
@@ -2515,10 +3159,25 @@ function filterOT(){
       '<td><span class="badge '+ebadge(o.estado)+'">'+o.estado+'</span></td>'+
       '<td style="white-space:nowrap">'+(ow?ow.nombre:'—')+'</td>'+
       '<td><button class="ot-cl-pill" data-ocl="'+o.id+'">📁 '+clD+'/'+CHECKLIST.length+'</button></td>'+
-      '<td><div style="display:flex;gap:3px;flex-wrap:wrap">'+
-        '<button class="btn bi" data-otv="'+o.id+'" title="Ver detalle" style="font-size:14px">👁</button>'+
-        '<button class="btn bi" data-qr="'+o.id+'" title="Ver QR" style="font-size:14px">📱</button>'+'<button class="btn bi" data-galeria="'+o.id+'" title="Galería fotos" style="font-size:14px">📷</button>'+(canDo('editOT',o.userId)?'<button class="btn bi" data-ote="'+o.id+'" title="Editar" style="font-size:14px">✏️</button>':'')+(canDo('statusOT',o.userId)?'<button class="btn bi" data-ost="'+o.id+'" title="Estado" style="font-size:14px;color:var(--bl)">⚙️</button>':'')+(canDo('deleteOT',o.userId)?'<button class="btn bi" data-otdel="'+o.id+'" title="Eliminar" style="font-size:14px;color:var(--rd)">🗑</button>':'')+
-      '</div></td>'+
+      '<td>'+
+        '<div class="ot-actions-wrap" style="position:relative">'+
+          '<button class="btn bi ot-main-btn" data-otv="'+o.id+'" title="Ver detalle" style="font-size:16px;width:36px;height:36px">👁</button>'+
+          '<button class="btn bi ot-menu-btn" data-otmenu="'+o.id+'" title="Más acciones" style="font-size:16px;width:36px;height:36px">⋮</button>'+
+          '<div class="ot-dropdown" id="otmenu-'+o.id+'" style="display:none">'+
+            (canDo('editOT',o.userId)?'<button data-ote="'+o.id+'">✏️ Editar</button>':'')+
+            '<button data-reprogram="'+o.id+'">🔄 Reprogramar</button>'+
+            (canDo('statusOT',o.userId)?'<button data-ost="'+o.id+'">⚙️ Cambiar estado</button>':'')+
+            '<button data-qr="'+o.id+'">📱 Ver QR</button>'+
+            '<button data-galeria="'+o.id+'">📷 Galería</button>'+
+            '<button data-tiempo="'+o.id+'">⏱ Tiempo</button>'+
+            '<button data-dup="'+o.id+'">📋 Duplicar</button>'+
+            '<button data-comments="'+o.id+'">💬 Comentarios</button>'+
+            '<button data-aprob="'+o.id+'">✅ Aprobación</button>'+
+            '<button data-firma-c="'+o.id+'">🤝 Firma cliente</button>'+
+            (canDo('deleteOT',o.userId)?'<button data-otdel="'+o.id+'" style="color:var(--rd)">🗑 Eliminar</button>':'')+
+          '</div>'+
+        '</div>'+
+      '</td>'+
     '</tr>';
   }).join('');
 }
@@ -2542,6 +3201,8 @@ function editOT(id){
   ge('f-ot').value=o.ot||'';ge('f-fecha').value=o.fecha||'';ge('f-sup').value=o.supervisor||'';
   ge('f-ali').value=o.alimentador||'';ge('f-cir').value=o.circuito||'';ge('f-zona').value=o.zona||'';
   ge('f-est').value=o.estado||'Pendiente';ge('f-desc').value=o.desc||'';ge('f-gps').value=o.gps||'';
+  populateOTSelects();
+  setTimeout(function(){ge('f-ali').value=o.alimentador||'';ge('f-zona').value=o.zona||'';ge('f-cir').value=o.circuito||'';ge('f-sup').value=o.supervisor||'';},50);
   ge('f-mo-campo').value=o.moCampo||'';
   ge('f-mo-liq').value=o.moLiq||'';
   calcMODiff();
@@ -3842,18 +4503,46 @@ let leafletMap=null, leafletMarkers=[];
 const MARKER_COLORS={
   'Pendiente':'#f0a500','En Curso':'#388bfd','Completado':'#3fb950','Observado':'#f85149'
 };
-function initMapa(){
-  const container=ge('leaflet-map');
+function initMapaCore(){
+  var container=ge('leaflet-map');
   if(!container)return;
-  // Destruir mapa anterior si existe
-  if(leafletMap){leafletMap.remove();leafletMap=null;leafletMarkers=[];}
-  // Inicializar mapa centrado en Lima, Perú
+  container.innerHTML='';
+  if(leafletMap){try{leafletMap.remove();}catch(e){}leafletMap=null;leafletMarkers=[];}
   leafletMap=L.map('leaflet-map',{zoomControl:true}).setView([-12.046374,-77.042793],11);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     attribution:'© <a href="https://openstreetmap.org">OpenStreetMap</a>',
     maxZoom:19
   }).addTo(leafletMap);
   renderMapaOT();
+}
+function initMapa(){
+  var container=ge('leaflet-map');
+  if(!container)return;
+  container.style.minHeight='480px';
+  if(leafletMap){try{leafletMap.remove();}catch(e){}leafletMap=null;leafletMarkers=[];}
+  if(typeof L==='undefined'){
+    container.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--t2);gap:12px;padding:40px"><div style="font-size:40px">⏳</div><p style="font-size:14px;font-weight:600">Cargando mapa...</p><p style="font-size:12px">Se requiere conexión a internet</p></div>';
+    if(!document.querySelector('link[href*="leaflet"]')){
+      var lnk=document.createElement('link');
+      lnk.rel='stylesheet';lnk.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(lnk);
+    }
+    var scr=document.createElement('script');
+    scr.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    scr.onload=function(){initMapaCore();};
+    scr.onerror=function(){
+      var con=ge('leaflet-map');
+      if(con)con.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--t2);gap:16px;padding:40px">'+
+        '<div style="font-size:48px">📡</div>'+
+        '<p style="font-size:15px;font-weight:600;color:var(--tx)">Sin conexión a internet</p>'+
+        '<p style="font-size:12px;text-align:center;line-height:1.6">El mapa de OpenStreetMap requiere internet.<br>Conecta tu 4G/WiFi y toca Reintentar.</p>'+
+        '<button onclick="initMapa()" style="background:var(--ac);color:#000;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">🔄 Reintentar</button>'+
+      '</div>';
+    };
+    document.head.appendChild(scr);
+    return;
+  }
+  initMapaCore();
 }
 function renderMapaOT(){
   if(!leafletMap)return;
@@ -4812,14 +5501,20 @@ var _origOpenChecklist = openChecklist;
 openChecklist = function(otId){
   var o = S.ordenes.find(function(x){return x.id===otId;});
   var u = S.user;
-  // Si es campo (supervisor o tecnico) y no ha confirmado llegada, preguntar
-  var roleNeedsConfirm = u.rol==='supervisor'||u.rol==='tecnico'||u.rol==='inspector';
-  var yaConfirmo = o&&o.llegada&&o.llegada.userId===u.id;
-  if(roleNeedsConfirm && !yaConfirmo && o&&o.estado!=='Completado'){
-    openLlegada(otId);
-    return;
+  // Admin y supervisor que no tiene la OT asignada entran directo
+  if(u.rol==='admin'){
+    _origOpenChecklist(otId);
+  } else {
+    // Técnico/supervisor/inspector con OT asignada → informe de campo
+    var esAsignado = o && (o.userId===u.id);
+    var yaInicio = o && o.informe && o.informe.userId===u.id;
+    if(esAsignado && !yaInicio && o.estado!=='Completado'){
+      openInforme(otId);
+      return;
+    }
+    _origOpenChecklist(otId);
   }
-  _origOpenChecklist(otId);
+  _origOpenChecklist = _origOpenChecklist; // no-op para evitar lint
   // Mostrar barra de GPS pendiente si no hay coordenadas
   setTimeout(function(){
     var bar = ge('cl-llegada-bar');
@@ -5158,6 +5853,1434 @@ renderDashData = function(){
   renderScatter(ots);
 };
 
+
+// ═══════════════════════════════════════════════════════
+// ── CALENDARIO DE OT ──
+// ═══════════════════════════════════════════════════════
+var calYear=new Date().getFullYear(), calMonth=new Date().getMonth();
+var EST_COLORS={Pendiente:'var(--or)',Completado:'var(--gn)','En Curso':'var(--bl)',Observado:'var(--rd)'};
+var EST_TC={Pendiente:'#000',Completado:'#000','En Curso':'#fff',Observado:'#fff'};
+
+function renderCalendario(){
+  var meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  ge('cal-mes-lbl').textContent=meses[calMonth]+' '+calYear;
+  var first=new Date(calYear,calMonth,1);
+  var last=new Date(calYear,calMonth+1,0);
+  var startDay=(first.getDay()+6)%7; // 0=Lun
+  var grid=ge('cal-grid'); if(!grid)return;
+  var today=new Date(); today.setHours(0,0,0,0);
+  var cells='';
+  // Días del mes anterior
+  for(var i=0;i<startDay;i++){
+    var d=new Date(calYear,calMonth,1-startDay+i);
+    cells+='<div class="cal-day other-month"><div class="cal-day-num">'+d.getDate()+'</div></div>';
+  }
+  // Días del mes actual
+  for(var d2=1;d2<=last.getDate();d2++){
+    var dateStr=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d2).padStart(2,'0');
+    var dayDate=new Date(calYear,calMonth,d2);
+    var isToday=dayDate.getTime()===today.getTime();
+    var dayOTs=S.ordenes.filter(function(o){return o.fecha===dateStr;});
+    var evHtml=dayOTs.slice(0,3).map(function(o){
+      return '<div class="cal-event" style="background:'+EST_COLORS[o.estado]+';color:'+EST_TC[o.estado]+'" data-otv="'+o.id+'" title="'+o.ot+' — '+o.estado+'">'+o.ot+'</div>';
+    }).join('');
+    if(dayOTs.length>3) evHtml+='<div style="font-size:9px;color:var(--t2)">+' +(dayOTs.length-3)+' más</div>';
+    cells+='<div class="cal-day'+(isToday?' today':'')+'" data-caldate="'+dateStr+'">'+
+      '<div class="cal-day-num">'+d2+'</div>'+evHtml+'</div>';
+  }
+  // Completar última semana
+  var remaining=(7-(startDay+last.getDate())%7)%7;
+  for(var k=1;k<=remaining;k++){
+    cells+='<div class="cal-day other-month"><div class="cal-day-num">'+k+'</div></div>';
+  }
+  grid.innerHTML=cells;
+  // Event listeners
+  grid.querySelectorAll('[data-otv]').forEach(function(el){
+    el.addEventListener('click',function(e){e.stopPropagation();openOTDetail(this.dataset.otv);});
+  });
+  grid.querySelectorAll('[data-caldate]').forEach(function(el){
+    el.addEventListener('click',function(){
+      var date=this.dataset.caldate;
+      if(date){nav('ordenes');setTimeout(function(){
+        var elF=ge('f-fecha');if(elF)elF.value=date;
+        openNewOT();ge('f-fecha').value=date;
+      },200);}
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// ── CONTROL DE MATERIALES ──
+// ═══════════════════════════════════════════════════════
+var MAT_KEY='ep_materiales';
+function loadMats(){try{return JSON.parse(localStorage.getItem(MAT_KEY)||'[]');}catch(e){return[];}}
+function saveMats(m){try{localStorage.setItem(MAT_KEY,JSON.stringify(m));}catch(e){}}
+
+function openNewMaterial(otId){
+  var sel=ge('mat-ot-sel');
+  sel.innerHTML='<option value="">-- Selecciona OT --</option>'+
+    S.ordenes.map(function(o){return'<option value="'+o.id+'"'+(otId&&o.id===otId?' selected':'')+'>'+o.ot+'</option>';}).join('');
+  ge('mat-desc').value='';ge('mat-qty').value='';ge('mat-costo').value='';ge('mat-obs').value='';
+  ge('mat-total').textContent='S/ 0.00';
+  openM('m-material');
+}
+function calcMatTotal(){
+  var q=parseFloat(ge('mat-qty').value)||0, c=parseFloat(ge('mat-costo').value)||0;
+  ge('mat-total').textContent='S/ '+(q*c).toFixed(2);
+}
+function saveMaterial(){
+  var otId=ge('mat-ot-sel').value, desc=ge('mat-desc').value.trim();
+  var qty=parseFloat(ge('mat-qty').value)||0, costo=parseFloat(ge('mat-costo').value)||0;
+  if(!otId||!desc||!qty||!costo){toast('Completa los campos obligatorios','error');return;}
+  var mats=loadMats();
+  mats.push({id:'mat_'+Date.now(),otId,desc,unidad:ge('mat-unidad').value,
+    qty,costo,total:qty*costo,categoria:ge('mat-categoria').value,
+    obs:ge('mat-obs').value.trim(),userId:S.user.id,fecha:new Date().toISOString().split('T')[0]});
+  saveMats(mats);closeM('m-material');renderMateriales();
+  logEvent('MATERIAL_AGREGADO','Material: '+desc+' para OT '+S.ordenes.find(function(o){return o.id===otId;})||{ot:'—'}.ot,otId);
+  toast('Material guardado','success');
+}
+function renderMateriales(){
+  var mats=loadMats();
+  var fOT=ge('mat-filter-ot')&&ge('mat-filter-ot').value;
+  // Poblar filtro
+  var fSel=ge('mat-filter-ot');
+  if(fSel){
+    var cur=fSel.value;
+    fSel.innerHTML='<option value="">Todas las OT</option>'+S.ordenes.map(function(o){return'<option value="'+o.id+'"'+(cur===o.id?' selected':'')+'>'+o.ot+'</option>';}).join('');
+    fSel.value=cur;
+  }
+  var filtered=fOT?mats.filter(function(m){return m.otId===fOT;}):mats;
+  var totalCosto=filtered.reduce(function(a,m){return a+m.total;},0);
+  var body=ge('mat-tbody');
+  if(body){
+    body.innerHTML=filtered.length?filtered.map(function(m){
+      var o=S.ordenes.find(function(x){return x.id===m.otId;})||{ot:'—'};
+      var canDel=S.user.rol==='admin'||m.userId===S.user.id;
+      return'<tr><td><b style="color:var(--ac)">'+o.ot+'</b></td><td>'+m.desc+'</td><td>'+m.unidad+'</td>'+
+        '<td style="text-align:right">'+m.qty+'</td><td style="text-align:right">S/ '+m.costo.toFixed(2)+'</td>'+
+        '<td style="text-align:right;font-weight:600;color:var(--ac)">S/ '+m.total.toFixed(2)+'</td>'+
+        '<td>'+m.fecha+'</td>'+
+        '<td>'+(canDel?'<button class="btn bi" data-del-mat="'+m.id+'" style="font-size:12px;color:var(--rd)">🗑</button>':'')+
+        '<button class="btn bi" data-ot-mat="'+m.otId+'" style="font-size:12px">📋</button></td></tr>';
+    }).join(''):'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--t2)">Sin materiales registrados</td></tr>';
+    var foot=ge('mat-tfoot');
+    if(foot) foot.innerHTML=filtered.length?'<tr style="font-weight:700;border-top:2px solid var(--br)"><td colspan="5" style="text-align:right;padding:8px">Total general:</td><td style="color:var(--ac);font-size:14px">S/ '+totalCosto.toFixed(2)+'</td><td colspan="2"></td></tr>':'';
+  }
+  // KPI materiales
+  var statsEl=ge('mat-stats');
+  if(statsEl){
+    var totalItems=filtered.length;
+    var totalMonto=filtered.reduce(function(a,m){return a+m.total;},0);
+    var otCount=[...new Set(filtered.map(function(m){return m.otId;}))].length;
+    statsEl.innerHTML=[
+      {c:'y',ico:'📦',lbl:'Total items',val:totalItems,sub:'registros'},
+      {c:'g',ico:'💰',lbl:'Monto total',val:'S/ '+totalMonto.toFixed(0),sub:'en materiales'},
+      {c:'b',ico:'📋',lbl:'OT con materiales',val:otCount,sub:'órdenes'},
+    ].map(function(s){return'<div class="sc '+s.c+'"><div class="slbl">'+s.lbl+'</div><div class="sval">'+s.val+'</div><div class="sico">'+s.ico+'</div><div class="ssub">'+s.sub+'</div></div>';}).join('');
+  }
+}
+function exportMateriales(){
+  var mats=loadMats();
+  if(!mats.length){toast('Sin materiales para exportar','warn');return;}
+  var csv='OT,Material,Unidad,Cantidad,Costo Unit,Total,Categoria,Fecha\n';
+  mats.forEach(function(m){
+    var o=S.ordenes.find(function(x){return x.id===m.otId;})||{ot:'—'};
+    csv+=o.ot+','+m.desc+','+m.unidad+','+m.qty+','+m.costo+','+m.total+','+m.categoria+','+m.fecha+'\n';
+  });
+  var b=new Blob([csv],{type:'text/csv'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Materiales.csv';a.click();
+}
+
+// ═══════════════════════════════════════════════════════
+// ── IMPORTAR OT DESDE EXCEL/CSV ──
+// ═══════════════════════════════════════════════════════
+var _importData=[];
+function downloadTemplate(){
+  var headers='N° OT,Fecha (YYYY-MM-DD),Supervisor,Alimentador,Circuito,Zona,Estado,Descripcion,GPS,Asignado (username),MO Campo,MO Liquidacion';
+  var example='OT-2024-100,2024-01-15,Ing. Torres,ALI-01,C-001,Norte,Pendiente,Trabajo de campo,,carlos,1500,1800';
+  var csv=headers+'\n'+example+'\n';
+  var b=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Plantilla_OT.csv';a.click();
+  toast('Plantilla descargada','success');
+}
+function processImportFile(file){
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var text=e.target.result;
+    var lines=text.split('\n').filter(function(l){return l.trim();});
+    if(lines.length<2){toast('El archivo está vacío o sin datos','error');return;}
+    var headers=lines[0].split(',').map(function(h){return h.trim().replace(/"/g,'');});
+    _importData=[];
+    for(var i=1;i<lines.length;i++){
+      var vals=lines[i].split(',').map(function(v){return v.trim().replace(/"/g,'');});
+      if(!vals[0])continue;
+      var row={};
+      headers.forEach(function(h,j){row[h]=vals[j]||'';});
+      _importData.push(row);
+    }
+    // Mostrar preview
+    ge('import-head').innerHTML='<tr>'+headers.slice(0,6).map(function(h){return'<th>'+h+'</th>';}).join('')+'</tr>';
+    ge('import-body').innerHTML=_importData.slice(0,5).map(function(r){
+      return'<tr>'+headers.slice(0,6).map(function(h){return'<td>'+r[h]+'</td>';}).join('')+'</tr>';
+    }).join('');
+    ge('import-preview').style.display='block';
+    ge('import-result').innerHTML='<span style="color:var(--gn)">✅ '+_importData.length+' OT listas para importar</span>';
+    ge('btn-import-confirm').style.display='flex';
+  };
+  reader.readAsText(file,'utf-8');
+}
+function confirmImport(){
+  if(!_importData.length){toast('Sin datos para importar','error');return;}
+  var created=0, errors=0;
+  _importData.forEach(function(row){
+    var otNm=row['N° OT']||row['OT']||row['numero']||'';
+    if(!otNm){errors++;return;}
+    var asigUser=S.users.find(function(u){return u.username===(row['Asignado (username)']||'');});
+    var est=row['Estado']||'Pendiente';
+    if(!['Pendiente','En Curso','Completado','Observado'].includes(est)) est='Pendiente';
+    var newOT={
+      id:'ot_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),
+      ot:otNm, fecha:row['Fecha (YYYY-MM-DD)']||row['Fecha']||new Date().toISOString().split('T')[0],
+      supervisor:row['Supervisor']||'', alimentador:row['Alimentador']||'',
+      circuito:row['Circuito']||'', zona:row['Zona']||'', estado:est,
+      desc:row['Descripcion']||row['Descripción']||'', gps:row['GPS']||'',
+      userId:asigUser?asigUser.id:S.user.id,
+      moCampo:parseFloat(row['MO Campo'])||0, moLiq:parseFloat(row['MO Liquidacion'])||0,
+      moDiff:(parseFloat(row['MO Liquidacion'])||0)-(parseFloat(row['MO Campo'])||0),
+      prellenada:true, created:new Date().toISOString(), updated:new Date().toISOString(),
+      dynamicFields:{}
+    };
+    // Verificar que no exista
+    if(S.ordenes.find(function(o){return o.ot===otNm;})){errors++;return;}
+    S.ordenes.push(newOT);
+    // Crear carpetas checklist
+    CHECKLIST.forEach(function(sf){S.files;});
+    created++;
+    logEvent('OT_CREADA','OT importada: '+otNm,newOT.id);
+  });
+  saveAll();closeM('m-import');filterOT();renderDash();
+  toast('✅ '+created+' OT importadas'+(errors?' · '+errors+' con error':''),'success');
+  _importData=[];
+}
+
+// ═══════════════════════════════════════════════════════
+// ── COMENTARIOS POR OT ──
+// ═══════════════════════════════════════════════════════
+var COM_KEY='ep_comments';
+function loadComments(){try{return JSON.parse(localStorage.getItem(COM_KEY)||'{}');}catch(e){return{};}}
+function saveComments(d){try{localStorage.setItem(COM_KEY,JSON.stringify(d));}catch(e){}}
+var _commentOtId=null;
+function openComments(otId){
+  _commentOtId=otId;
+  var o=S.ordenes.find(function(x){return x.id===otId;})||{ot:'—'};
+  ge('comments-ot-info').textContent='OT: '+o.ot+' — '+o.zona;
+  ge('comment-input').value='';
+  renderCommentsList(otId);
+  openM('m-comments');
+}
+function renderCommentsList(otId){
+  var all=loadComments();
+  var items=(all[otId]||[]).slice().reverse();
+  ge('comments-list').innerHTML=items.length?items.map(function(cm){
+    return'<div class="comment-item">'+
+      '<div style="font-size:13px">'+escapeHtml(cm.text)+'</div>'+
+      '<div class="comment-meta">'+cm.nombre+' · '+new Date(cm.time).toLocaleString('es-PE')+'</div>'+
+    '</div>';
+  }).join(''):
+  '<div style="text-align:center;padding:20px;color:var(--t2);font-size:12px">Sin comentarios aún</div>';
+}
+function saveComment(){
+  var txt=ge('comment-input').value.trim();
+  if(!txt){toast('Escribe un comentario','error');return;}
+  var all=loadComments();
+  if(!all[_commentOtId])all[_commentOtId]=[];
+  all[_commentOtId].push({id:'cm_'+Date.now(),text:txt,userId:S.user.id,nombre:S.user.nombre,time:new Date().toISOString()});
+  saveComments(all);ge('comment-input').value='';
+  renderCommentsList(_commentOtId);
+  logEvent('COMENTARIO','Comentario en '+S.ordenes.find(function(o){return o.id===_commentOtId;})||{ot:'—'}.ot,_commentOtId);
+  toast('Comentario guardado','success');
+}
+
+// ═══════════════════════════════════════════════════════
+// ── APROBACIÓN DE OT EN FLUJO ──
+// ═══════════════════════════════════════════════════════
+var _aprobOtId=null;
+var APROB_STEPS=[
+  {rol:'tecnico',label:'Técnico sube documentos',icon:'🔧'},
+  {rol:'supervisor',label:'Supervisor revisa',icon:'👁'},
+  {rol:'admin',label:'Admin aprueba',icon:'✅'},
+];
+function openAprobacion(otId){
+  _aprobOtId=otId;
+  var o=S.ordenes.find(function(x){return x.id===otId;})||{ot:'—',zona:'—',estado:'Pendiente'};
+  ge('aprob-ot-info').innerHTML='<b style="color:var(--ac)">'+o.ot+'</b> — '+o.zona+'<br>Estado actual: <span class="badge '+ebadge(o.estado)+'">'+o.estado+'</span>';
+  var aprobData=o.aprobacion||{step:0,history:[]};
+  ge('aprob-steps').innerHTML=APROB_STEPS.map(function(s,i){
+    var done=i<aprobData.step;
+    var current=i===aprobData.step;
+    var cls=done?'done':current?'current':'pending';
+    var hist=aprobData.history&&aprobData.history[i];
+    return'<div class="aprob-step '+cls+'">'+
+      '<div style="font-size:20px">'+s.icon+'</div>'+
+      '<div style="flex:1">'+
+        '<div style="font-size:13px;font-weight:600">'+s.label+'</div>'+
+        (hist?'<div style="font-size:11px;color:var(--t2)">'+hist.nombre+' · '+new Date(hist.time).toLocaleDateString('es-PE')+'</div>':'')+
+      '</div>'+
+      '<div style="font-size:18px">'+(done?'✅':current?'⏳':'○')+'</div>'+
+    '</div>';
+  }).join('');
+  ge('aprob-obs').value='';
+  // Mostrar/ocultar botones según rol y paso actual
+  var canAprob=(S.user.rol==='admin')||(S.user.rol==='supervisor'&&aprobData.step===1)||(S.user.rol==='tecnico'&&aprobData.step===0);
+  ge('btn-aprobar').style.display=canAprob?'flex':'none';
+  ge('btn-rechazar').style.display=S.user.rol==='admin'||S.user.rol==='supervisor'?'flex':'none';
+  openM('m-aprobacion');
+}
+function procesarAprobacion(aprobar){
+  var o=S.ordenes.find(function(x){return x.id===_aprobOtId;});
+  if(!o)return;
+  if(!o.aprobacion)o.aprobacion={step:0,history:[]};
+  var obs=ge('aprob-obs').value.trim();
+  var hist={userId:S.user.id,nombre:S.user.nombre,obs:obs,time:new Date().toISOString(),aprobado:aprobar};
+  if(aprobar){
+    if(!o.aprobacion.history) o.aprobacion.history=[];
+    o.aprobacion.history[o.aprobacion.step]=hist;
+    o.aprobacion.step=(o.aprobacion.step||0)+1;
+    if(o.aprobacion.step>=APROB_STEPS.length){
+      o.estado='Completado';
+      toast('OT aprobada y completada','success');
+    } else {
+      toast('Paso '+o.aprobacion.step+' aprobado — siguiente: '+APROB_STEPS[o.aprobacion.step].label,'success');
+    }
+    logEvent('OT_APROBADA','Paso '+(o.aprobacion.step)+' aprobado en '+o.ot,_aprobOtId);
+  } else {
+    o.estado='Observado';
+    logEvent('OT_RECHAZADA','OT rechazada: '+o.ot+(obs?' — '+obs:''),_aprobOtId);
+    toast('OT marcada como Observada','warn');
+  }
+  o.updated=new Date().toISOString();
+  saveAll();closeM('m-aprobacion');filterOT();renderDash();
+}
+
+// ═══════════════════════════════════════════════════════
+// ── FIRMA DEL CLIENTE ──
+// ═══════════════════════════════════════════════════════
+var _fcOtId=null, _fcDrawing=false, _fcCtx=null;
+function openFirmaCliente(otId){
+  _fcOtId=otId;
+  var o=S.ordenes.find(function(x){return x.id===otId;})||{ot:'—'};
+  ge('fc-ot-info').textContent='OT: '+o.ot+' — '+o.zona;
+  ge('fc-nombre').value=o.firmaCliente?o.firmaCliente.nombre:'';
+  ge('fc-dni').value=o.firmaCliente?o.firmaCliente.dni:'';
+  ge('fc-obs').value=o.firmaCliente?o.firmaCliente.obs:'';
+  ge('fc-fecha').textContent=new Date().toLocaleString('es-PE');
+  var canvas=ge('fc-canvas');
+  var rect=canvas.getBoundingClientRect();
+  canvas.width=Math.round(rect.width*window.devicePixelRatio)||400;
+  canvas.height=130*window.devicePixelRatio||130;
+  canvas.style.width='100%';canvas.style.height='130px';
+  _fcCtx=canvas.getContext('2d');
+  _fcCtx.scale(window.devicePixelRatio,window.devicePixelRatio);
+  _fcCtx.strokeStyle='#1a1a1a';_fcCtx.lineWidth=2;_fcCtx.lineCap='round';
+  if(o.firmaCliente&&o.firmaCliente.imagen){
+    var img=new Image();img.onload=function(){_fcCtx.drawImage(img,0,0,rect.width,130);};img.src=o.firmaCliente.imagen;
+  }
+  canvas.addEventListener('mousedown',function(e){_fcDrawing=true;var p=_fcPos(e);_fcCtx.beginPath();_fcCtx.moveTo(p.x,p.y);});
+  canvas.addEventListener('mousemove',function(e){if(!_fcDrawing)return;var p=_fcPos(e);_fcCtx.lineTo(p.x,p.y);_fcCtx.stroke();});
+  canvas.addEventListener('mouseup',function(){_fcDrawing=false;});
+  canvas.addEventListener('touchstart',function(e){e.preventDefault();_fcDrawing=true;var p=_fcPos(e.touches[0]);_fcCtx.beginPath();_fcCtx.moveTo(p.x,p.y);},{passive:false});
+  canvas.addEventListener('touchmove',function(e){e.preventDefault();if(!_fcDrawing)return;var p=_fcPos(e.touches[0]);_fcCtx.lineTo(p.x,p.y);_fcCtx.stroke();},{passive:false});
+  canvas.addEventListener('touchend',function(){_fcDrawing=false;});
+  openM('m-firma-cliente');
+}
+function _fcPos(e){var r=ge('fc-canvas').getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+function saveFirmaCliente(){
+  var nombre=ge('fc-nombre').value.trim();
+  if(!nombre){toast('Ingresa el nombre del cliente','error');return;}
+  var canvas=ge('fc-canvas');
+  var data=canvas.toDataURL('image/png');
+  var o=S.ordenes.find(function(x){return x.id===_fcOtId;});
+  if(!o)return;
+  o.firmaCliente={nombre,dni:ge('fc-dni').value.trim(),obs:ge('fc-obs').value.trim(),imagen:data,fecha:new Date().toISOString()};
+  o.updated=new Date().toISOString();
+  saveAll();closeM('m-firma-cliente');filterOT();
+  logEvent('FIRMA_CLIENTE','Conformidad del cliente '+nombre+' en '+o.ot,_fcOtId);
+  toast('✅ Firma del cliente guardada','success');
+}
+
+// ═══════════════════════════════════════════════════════
+// ── VERSIONADO DE DOCUMENTOS ──
+// ═══════════════════════════════════════════════════════
+// Sobrescribir saveSubFiles para guardar versiones
+var _origSaveSubFilesV=saveSubFiles;
+saveSubFiles=function(){
+  // Antes de guardar, versionar archivos con mismo nombre
+  var existing=S.files.filter(function(f){return f.otId===S.upOTId&&f.subFolder===S.upSF;});
+  S.upFiles.forEach(function(newF){
+    var dup=existing.find(function(f){return f.name===newF.name;});
+    if(dup){
+      // Mover a versiones
+      if(!dup.versions) dup.versions=[];
+      dup.versions.push({data:dup.data,fecha:dup.fecha,userId:dup.userId,size:dup.size});
+      dup.version=(dup.version||1)+1;
+      dup.data=newF.data; dup.fecha=newF.fecha; dup.size=newF.size;
+      dup.userId=S.user.id; dup.updated=new Date().toISOString();
+      // No añadir duplicado
+    }
+  });
+  _origSaveSubFilesV();
+};
+
+
+// ═══════════════════════════════════════════════════════
+// ── KANBAN ──
+// ═══════════════════════════════════════════════════════
+var kanbanDragId=null;
+var KANBAN_COLS=[
+  {est:'Pendiente',color:'var(--or)',tc:'#000',icon:'⏳'},
+  {est:'En Curso', color:'var(--bl)',tc:'#fff',icon:'⚡'},
+  {est:'Completado',color:'var(--gn)',tc:'#000',icon:'✅'},
+  {est:'Observado', color:'var(--rd)',tc:'#fff',icon:'⚠️'},
+];
+function renderKanban(){
+  var usrF=ge('kanban-filter-usr')&&ge('kanban-filter-usr').value;
+  // Poblar filtro usuario
+  var uSel=ge('kanban-filter-usr');
+  if(uSel){
+    var cur=uSel.value;
+    uSel.innerHTML='<option value="">Todos los usuarios</option>'+
+      S.users.filter(function(u){return u.activo;}).map(function(u){return'<option value="'+u.id+'"'+(cur===u.id?' selected':'')+'>'+u.nombre+'</option>';}).join('');
+    uSel.value=cur;
+  }
+  var ots=usrF?S.ordenes.filter(function(o){return o.userId===usrF;}):S.ordenes;
+  var board=ge('kanban-board');if(!board)return;
+  board.innerHTML=KANBAN_COLS.map(function(col){
+    var colOTs=ots.filter(function(o){return o.estado===col.est;});
+    var cards=colOTs.map(function(o){
+      var ow=S.users.find(function(u){return u.id===o.userId;})||{nombre:'—'};
+      var oF=S.files.filter(function(f){return f.otId===o.id;});
+      var clPct=Math.round(CHECKLIST.filter(function(sf){return oF.some(function(f){return f.subFolder===sf;});}).length/CHECKLIST.length*100);
+      return '<div class="kanban-card" draggable="true" data-kid="'+o.id+'">'+
+        '<div class="kc-ot">'+o.ot+'</div>'+
+        '<div class="kc-info">📍 '+(o.zona||'—')+' · ⚡ '+(o.alimentador||'—')+'<br>'+
+          '👤 '+ow.nombre+'<br>'+
+          '<div style="margin-top:5px;background:var(--s3);border-radius:10px;height:4px;overflow:hidden">'+
+            '<div style="height:100%;background:'+col.color+';width:'+clPct+'%;transition:width .5s"></div>'+
+          '</div>'+
+          '<span style="font-size:10px;color:var(--t3)">'+clPct+'% checklist</span>'+
+        '</div>'+
+        '<div style="display:flex;gap:4px;margin-top:7px">'+
+          '<button class="btn bi" data-otv="'+o.id+'" style="font-size:11px;flex:1;justify-content:center">👁</button>'+
+          '<button class="btn bi" data-ocl="'+o.id+'" style="font-size:11px;flex:1;justify-content:center">📁</button>'+
+          '<button class="btn bi" data-dup="'+o.id+'" style="font-size:11px;flex:1;justify-content:center">📋</button>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+    return '<div class="kanban-col" data-kest="'+col.est+'">'+
+      '<div class="kanban-col-header" style="background:'+col.color+'22;color:'+col.color+'">'+
+        '<span>'+col.icon+' '+col.est+'</span>'+
+        '<span style="background:'+col.color+';color:'+col.tc+';border-radius:12px;padding:1px 8px;font-size:11px">'+colOTs.length+'</span>'+
+      '</div>'+cards+
+    '</div>';
+  }).join('');
+  // Drag & Drop
+  board.querySelectorAll('.kanban-card').forEach(function(card){
+    card.addEventListener('dragstart',function(){kanbanDragId=this.dataset.kid;this.classList.add('dragging');});
+    card.addEventListener('dragend',function(){this.classList.remove('dragging');kanbanDragId=null;document.querySelectorAll('.kanban-col').forEach(function(c){c.classList.remove('drag-over');});});
+  });
+  board.querySelectorAll('.kanban-col').forEach(function(col){
+    col.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('drag-over');});
+    col.addEventListener('dragleave',function(){this.classList.remove('drag-over');});
+    col.addEventListener('drop',function(e){
+      e.preventDefault();this.classList.remove('drag-over');
+      if(!kanbanDragId)return;
+      var newEst=this.dataset.kest;
+      var o=S.ordenes.find(function(x){return x.id===kanbanDragId;});
+      if(!o||o.estado===newEst)return;
+      if(newEst==='Completado'&&!canDo('complete',o.userId)){toast('Solo el admin puede marcar como Completado','error');return;}
+      if(!canDo('statusOT',o.userId)){toast('Sin permisos para cambiar estado','error');return;}
+      o.estado=newEst;o.updated=new Date().toISOString();
+      saveAll();renderKanban();renderDash();
+      logEvent('OT_ESTADO','Estado cambiado a '+newEst+' (Kanban): '+o.ot,o.id);
+      sendPushNotification(newEst==='Completado'?'OT Completada':'Estado actualizado',o.ot+' → '+newEst,'kanban');
+      toast('Estado actualizado: '+newEst,'success');
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// ── BÚSQUEDA GLOBAL ──
+// ═══════════════════════════════════════════════════════
+function runGlobalSearch(){
+  var q=(ge('gs-input').value||'').trim().toLowerCase();
+  if(!q){ge('gs-results').innerHTML='<div style="text-align:center;padding:30px;color:var(--t2)"><div style="font-size:36px;margin-bottom:8px">🔍</div><p>Escribe algo para buscar</p></div>';return;}
+  var results=[];
+  function hl(text){
+    if(!text)return'';
+    var safe=q.replace(/[-[\]{}()*+?.,\\^$|#]/g,'\\$&');return String(text).replace(new RegExp(safe,'gi'),function(m){return'<span class="gs-highlight">'+m+'</span>';});
+  }
+  // OT
+  if(ge('gs-ot').checked){
+    S.ordenes.filter(function(o){
+      return (o.ot||'').toLowerCase().includes(q)||(o.supervisor||'').toLowerCase().includes(q)||
+             (o.zona||'').toLowerCase().includes(q)||(o.alimentador||'').toLowerCase().includes(q)||
+             (o.desc||'').toLowerCase().includes(q);
+    }).forEach(function(o){
+      var ow=S.users.find(function(u){return u.id===o.userId;})||{nombre:'—'};
+      results.push({type:'ot',icon:'📋',title:hl(o.ot)+' — '+hl(o.supervisor),
+        sub:'Zona: '+hl(o.zona)+' · Alimentador: '+hl(o.alimentador)+' · Usuario: '+ow.nombre+' · '+o.estado,
+        action:function(id){return function(){nav('ordenes');setTimeout(function(){openOTDetail(id);},200);};}(o.id)});
+    });
+  }
+  // Archivos
+  if(ge('gs-arch').checked){
+    S.files.filter(function(f){return(f.name||'').toLowerCase().includes(q)||(f.subFolder||'').toLowerCase().includes(q);}).forEach(function(f){
+      var o=S.ordenes.find(function(x){return x.id===f.otId;})||{ot:'—'};
+      results.push({type:'arch',icon:'📎',title:hl(f.name),
+        sub:'OT: '+o.ot+' · Carpeta: '+hl(f.subFolder)+' · '+f.fecha,
+        action:function(otId,sf){return function(){openChecklist(otId);setTimeout(function(){openSFView(otId,sf);},400);};}(f.otId,f.subFolder)});
+    });
+  }
+  // Materiales
+  if(ge('gs-mat').checked){
+    var mats=loadMats();
+    mats.filter(function(m){return(m.desc||'').toLowerCase().includes(q)||(m.categoria||'').toLowerCase().includes(q);}).forEach(function(m){
+      var o=S.ordenes.find(function(x){return x.id===m.otId;})||{ot:'—'};
+      results.push({type:'mat',icon:'🔩',title:hl(m.desc),
+        sub:'OT: '+o.ot+' · '+m.qty+' '+m.unidad+' × S/ '+m.costo+' = S/ '+m.total,
+        action:function(){nav('materiales');}});
+    });
+  }
+  // Comentarios
+  if(ge('gs-com').checked){
+    var coms=loadComments();
+    Object.keys(coms).forEach(function(otId){
+      (coms[otId]||[]).filter(function(cm){return(cm.text||'').toLowerCase().includes(q);}).forEach(function(cm){
+        var o=S.ordenes.find(function(x){return x.id===otId;})||{ot:'—'};
+        results.push({type:'com',icon:'💬',title:hl(cm.text.slice(0,60))+(cm.text.length>60?'…':''),
+          sub:'OT: '+o.ot+' · Por: '+cm.nombre+' · '+new Date(cm.time).toLocaleDateString('es-PE'),
+          action:function(id){return function(){openComments(id);};}(otId)});
+      });
+    });
+  }
+  // Renderizar
+  var el=ge('gs-results');
+  if(!results.length){
+    el.innerHTML='<div class="card" style="text-align:center;padding:30px;color:var(--t2)"><div style="font-size:36px;margin-bottom:8px">😕</div><p>Sin resultados para "'+escapeHtml(q)+'"</p></div>';
+    return;
+  }
+  var byType={ot:[],arch:[],mat:[],com:[]};
+  var typeNames={ot:'📋 Órdenes de Trabajo',arch:'📎 Archivos',mat:'🔩 Materiales',com:'💬 Comentarios'};
+  results.forEach(function(r){byType[r.type].push(r);});
+  el.innerHTML='<div style="font-size:12px;color:var(--t2);margin-bottom:10px">'+results.length+' resultado(s) para "'+escapeHtml(q)+'"</div>'+
+    Object.keys(byType).filter(function(t){return byType[t].length;}).map(function(t){
+      return'<div class="card gs-section">'+
+        '<div class="gs-section-title">'+typeNames[t]+' ('+byType[t].length+')</div>'+
+        byType[t].map(function(r,i){
+          return'<div class="gs-item" data-gsi="'+t+'_'+i+'">'+
+            '<div class="gs-ico">'+r.icon+'</div>'+
+            '<div><div class="gs-title">'+r.title+'</div><div class="gs-sub">'+r.sub+'</div></div>'+
+          '</div>';
+        }).join('')+
+      '</div>';
+    }).join('');
+  // Guardar acciones
+  window._gsActions = {};
+  results.forEach(function(r,i){window._gsActions[r.type+'_'+i]=r.action;});
+  el.querySelectorAll('.gs-item').forEach(function(item){
+    item.addEventListener('click',function(){
+      var fn=window._gsActions[this.dataset.gsi];
+      if(fn)fn();
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// ── CONTROL DE TIEMPO ──
+// ═══════════════════════════════════════════════════════
+var TIEMPO_KEY='ep_tiempo';
+var _tiempoTimer=null, _tiempoStart=null, _tiempoOtId=null;
+function loadTiempo(){try{return JSON.parse(localStorage.getItem(TIEMPO_KEY)||'{}');}catch(e){return{};}}
+function saveTiempo(d){try{localStorage.setItem(TIEMPO_KEY,JSON.stringify(d));}catch(e){}}
+function openTiempo(otId){
+  _tiempoOtId=otId;
+  var o=S.ordenes.find(function(x){return x.id===otId;})||{ot:'—'};
+  ge('tiempo-ot-info').textContent='⏱ '+o.ot+' — '+(o.zona||'');
+  renderTiempoUI(otId);
+  openM('m-tiempo');
+}
+function renderTiempoUI(otId){
+  var data=loadTiempo()[otId]||{sesiones:[]};
+  var totalMin=data.sesiones.reduce(function(a,s){return a+(s.durMin||0);},0);
+  ge('tiempo-total').textContent=Math.floor(totalMin/60)+'h '+(totalMin%60)+'min';
+  ge('tiempo-sesiones').innerHTML=data.sesiones.length?data.sesiones.slice(-5).reverse().map(function(s){
+    return'<div style="display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:1px solid var(--br)">'+
+      '<span style="color:var(--t2)">'+new Date(s.inicio).toLocaleDateString('es-PE')+' '+new Date(s.inicio).toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})+'</span>'+
+      '<span style="font-weight:600">'+Math.floor(s.durMin/60)+'h '+Math.round(s.durMin%60)+'min</span>'+
+      (s.nota?'<span style="color:var(--t2);font-style:italic">'+s.nota+'</span>':'')+
+    '</div>';
+  }).join(''):'<p style="text-align:center;color:var(--t2);font-size:11px;padding:10px">Sin sesiones registradas</p>';
+  var isRunning=!!_tiempoTimer&&_tiempoOtId===otId;
+  ge('btn-tiempo-start').style.display=isRunning?'none':'flex';
+  ge('btn-tiempo-stop').style.display=isRunning?'flex':'none';
+  ge('tiempo-status').textContent=isRunning?'⏺ Cronómetro en marcha...':(totalMin>0?'Último registro guardado':'Listo para iniciar');
+}
+function startTiempo(){
+  _tiempoStart=Date.now();
+  ge('btn-tiempo-start').style.display='none';
+  ge('btn-tiempo-stop').style.display='flex';
+  ge('tiempo-status').textContent='⏺ Cronómetro en marcha...';
+  _tiempoTimer=setInterval(function(){
+    var elapsed=Math.floor((Date.now()-_tiempoStart)/1000);
+    var h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;
+    var el=ge('tiempo-display');
+    if(el)el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  },1000);
+}
+function stopTiempo(){
+  if(!_tiempoTimer)return;
+  clearInterval(_tiempoTimer);_tiempoTimer=null;
+  var durMs=Date.now()-_tiempoStart;
+  var durMin=Math.round(durMs/60000);
+  var data=loadTiempo();
+  if(!data[_tiempoOtId])data[_tiempoOtId]={sesiones:[]};
+  data[_tiempoOtId].sesiones.push({inicio:new Date(_tiempoStart).toISOString(),durMin,nota:ge('tiempo-nota').value.trim()});
+  saveTiempo(data);
+  ge('tiempo-nota').value='';
+  ge('tiempo-display').textContent='00:00:00';
+  logEvent('TIEMPO','Sesión de '+durMin+' min en '+S.ordenes.find(function(o){return o.id===_tiempoOtId;})||{ot:'—'}.ot,_tiempoOtId);
+  toast('Sesión guardada: '+Math.floor(durMin/60)+'h '+(durMin%60)+'min','success');
+  renderTiempoUI(_tiempoOtId);
+}
+
+// ═══════════════════════════════════════════════════════
+// ── DUPLICAR OT ──
+// ═══════════════════════════════════════════════════════
+function duplicarOT(otId){
+  var o=S.ordenes.find(function(x){return x.id===otId;});
+  if(!o)return;
+  if(!confirm('¿Duplicar la OT '+o.ot+'? Se creará una copia en estado Pendiente.'))return;
+  var newOT=Object.assign({},o,{
+    id:'ot_'+Date.now(),
+    ot:o.ot+'-COPIA',
+    estado:'Pendiente',
+    created:new Date().toISOString(),
+    updated:new Date().toISOString(),
+    userId:S.user.id,
+    firma:null,firmaCliente:null,aprobacion:null,llegada:null,
+    dynamicFields:{}
+  });
+  S.ordenes.push(newOT);
+  saveAll();filterOT();
+  logEvent('OT_DUPLICADA','OT duplicada: '+o.ot+' → '+newOT.ot,newOT.id);
+  toast('OT duplicada: '+newOT.ot,'success');
+}
+
+// ═══════════════════════════════════════════════════════
+// ── ALERTAS DE VENCIMIENTO ──
+// ═══════════════════════════════════════════════════════
+var ALERTA_KEY='ep_alertas_cfg';
+function loadAlertasCfg(){
+  try{return Object.assign({dias:7,limite:30,pendiente:true,vence:true,obs:true},JSON.parse(localStorage.getItem(ALERTA_KEY)||'{}'));}
+  catch(e){return{dias:7,limite:30,pendiente:true,vence:true,obs:true};}
+}
+function openAlertasCfg(){
+  var cfg=loadAlertasCfg();
+  ge('alerta-dias').value=cfg.dias;ge('alerta-limite').value=cfg.limite;
+  ge('alerta-pendiente').checked=cfg.pendiente;ge('alerta-vence').checked=cfg.vence;ge('alerta-obs').checked=cfg.obs;
+  openM('m-alertas');
+}
+function saveAlertasCfg(){
+  var cfg={dias:parseInt(ge('alerta-dias').value)||7,limite:parseInt(ge('alerta-limite').value)||30,
+    pendiente:ge('alerta-pendiente').checked,vence:ge('alerta-vence').checked,obs:ge('alerta-obs').checked};
+  try{localStorage.setItem(ALERTA_KEY,JSON.stringify(cfg));}catch(e){}
+  closeM('m-alertas');toast('Alertas configuradas','success');
+}
+function checkAlertasVencimiento(){
+  var cfg=loadAlertasCfg();
+  var tgCfg=loadNotifCfg();
+  if(!tgCfg.tgToken)return;
+  var hoy=new Date();
+  S.ordenes.forEach(function(o){
+    var alertKey='ep_alt_'+o.id;
+    var hoyStr=hoy.toDateString();
+    if(localStorage.getItem(alertKey)===hoyStr)return;
+    var alertSent=false;
+    // Pendiente por muchos días
+    if(cfg.pendiente&&o.estado==='Pendiente'&&o.created){
+      var dias=Math.floor((hoy-new Date(o.created))/86400000);
+      if(dias>=cfg.dias){sendTelegramMsg('ALERTA: OT '+o.ot+' lleva '+dias+' dias en Pendiente. Zona: '+(o.zona||'-'));alertSent=true;}
+    }
+    // Observado sin resolver
+    if(cfg.obs&&o.estado==='Observado'&&o.updated){
+      var diasObs=Math.floor((hoy-new Date(o.updated))/86400000);
+      if(diasObs>=2){sendTelegramMsg('ALERTA: OT '+o.ot+' lleva '+diasObs+' dias en Observado sin resolver.');alertSent=true;}
+    }
+    if(alertSent)localStorage.setItem(alertKey,hoyStr);
+  });
+}
+setInterval(checkAlertasVencimiento,3600000);
+setTimeout(checkAlertasVencimiento,8000);
+
+// ═══════════════════════════════════════════════════════
+// ── TUTORIAL INTERACTIVO ──
+// ═══════════════════════════════════════════════════════
+var TUT_KEY='ep_tutorial_done';
+var tutStep=0;
+var TUTORIAL_STEPS=[
+  {icon:'👋',title:'Bienvenido a ElectricaPro',body:'Esta guía te mostrará las funciones principales en menos de 2 minutos. Puedes saltar en cualquier momento.',target:null},
+  {icon:'📊',title:'Dashboard',body:'Aquí ves todos los indicadores en tiempo real. Toca cualquier barra o KPI card para filtrar automáticamente todos los gráficos.',target:'page-dashboard'},
+  {icon:'📋',title:'Órdenes de Trabajo',body:'Crea y gestiona tus OT. Usa el botón + Nueva OT. Puedes cambiar el estado arrastrando en el Kanban o con el botón ⚙️.',target:'page-ordenes'},
+  {icon:'📁',title:'Checklist de documentos',body:'Cada OT tiene 27 subcarpetas. El supervisor de campo confirma su llegada con GPS antes de adjuntar documentos y fotos.',target:null},
+  {icon:'🗂️',title:'Vista Kanban',body:'Arrastra las tarjetas entre columnas para cambiar el estado de las OT. Mucho más rápido que hacerlo una por una.',target:'page-kanban'},
+  {icon:'📅',title:'Calendario',body:'Vista mensual de todas las OT. Toca un día vacío para crear una OT en esa fecha. Toca una OT para ver su detalle.',target:'page-calendario'},
+  {icon:'🔍',title:'Búsqueda global',body:'Encuentra cualquier OT, archivo, material o comentario en toda la plataforma desde un solo buscador.',target:'page-busqueda'},
+  {icon:'🔔',title:'Notificaciones',body:'Activa las notificaciones del navegador y configura el bot de Telegram para recibir alertas automáticas.',target:null},
+  {icon:'🎉',title:'¡Listo!',body:'Ya conoces las funciones principales. Recuerda que puedes ver este tutorial de nuevo desde Mi Perfil.',target:null},
+];
+function startTutorial(force){
+  if(!force&&localStorage.getItem(TUT_KEY)==='1')return;
+  tutStep=0;renderTutStep();ge('tutorial-overlay').style.display='block';
+}
+function renderTutStep(){
+  var step=TUTORIAL_STEPS[tutStep];
+  ge('tut-icon').textContent=step.icon;
+  ge('tut-title').textContent=step.title;
+  ge('tut-step-lbl').textContent='Paso '+(tutStep+1)+' de '+TUTORIAL_STEPS.length;
+  ge('tut-body').textContent=step.body;
+  ge('btn-tut-prev').disabled=tutStep===0;
+  ge('btn-tut-next').textContent=tutStep===TUTORIAL_STEPS.length-1?'✅ Finalizar':'Siguiente →';
+  ge('tut-dots').innerHTML=TUTORIAL_STEPS.map(function(_,i){
+    return'<div style="width:8px;height:8px;border-radius:50%;background:'+(i===tutStep?'var(--ac)':'var(--br)')+'"></div>';
+  }).join('');
+  // Posicionar el box
+  var box=ge('tutorial-box');
+  box.style.top='50%';box.style.left='50%';box.style.transform='translate(-50%,-50%)';
+  // Navegar a la página del paso
+  if(step.target){try{nav(step.target);}catch(e){}}
+}
+function tutNext(){
+  if(tutStep>=TUTORIAL_STEPS.length-1){
+    ge('tutorial-overlay').style.display='none';
+    try{localStorage.setItem(TUT_KEY,'1');}catch(e){}
+    toast('Tutorial completado. Puedes verlo de nuevo en Mi Perfil.','success');
+    return;
+  }
+  tutStep++;renderTutStep();
+}
+function tutPrev(){if(tutStep>0){tutStep--;renderTutStep();}}
+function skipTutorial(){ge('tutorial-overlay').style.display='none';try{localStorage.setItem(TUT_KEY,'1');}catch(e){}}
+
+// Mostrar tutorial al primer login
+var _origShowAppTut=showApp;
+showApp=function(){
+  _origShowAppTut();
+  setTimeout(function(){startTutorial(false);},1500);
+};
+
+// PDF del checklist con fotos
+function exportChecklistPDF(otId){
+  var o=S.ordenes.find(function(x){return x.id===otId;});
+  if(!o){toast('OT no encontrada','error');return;}
+  var oF=S.files.filter(function(f){return f.otId===otId;});
+  var imgs=oF.filter(function(f){return isImg(f.name);});
+  var appNm=(typeof loadConfig==='function'?loadConfig().nombre:null)||'ElectricaPro';
+  var html='<html><head><meta charset="utf-8"><style>'+
+    'body{font-family:Arial,sans-serif;margin:20px;color:#1a1a1a}'+
+    'h1{color:#f0a500;border-bottom:3px solid #f0a500;padding-bottom:8px}'+
+    '.header{display:flex;justify-content:space-between;margin-bottom:20px}'+
+    '.field{background:#f8f8f8;border-left:3px solid #f0a500;padding:6px 10px;margin:4px 0;font-size:12px}'+
+    '.sf-section{margin-top:16px;border:1px solid #ddd;border-radius:6px;overflow:hidden}'+
+    '.sf-header{background:#f0a500;color:#000;padding:8px 12px;font-weight:700;font-size:12px}'+
+    '.sf-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px}'+
+    '.sf-photos img{width:100%;height:80px;object-fit:cover;border-radius:4px}'+
+    '.sf-empty{padding:8px 12px;color:#888;font-size:11px;font-style:italic}'+
+    '@media print{body{margin:10px}@page{size:A4;margin:15mm}}'+
+  '</style></head><body>'+
+    '<div class="header"><div><h1>'+appNm+'</h1><p style="font-size:11px;color:#888">Reporte de Checklist</p></div>'+
+    '<div style="text-align:right;font-size:11px;color:#888">Generado: '+new Date().toLocaleString('es-PE')+'</div></div>'+
+    '<h2 style="font-size:16px">'+o.ot+'</h2>'+
+    '<div class="field">Fecha: '+o.fecha+'</div>'+
+    '<div class="field">Supervisor: '+(o.supervisor||'—')+'</div>'+
+    '<div class="field">Alimentador: '+(o.alimentador||'—')+' · Circuito: '+(o.circuito||'—')+'</div>'+
+    '<div class="field">Zona: '+(o.zona||'—')+'</div>'+
+    '<div class="field">Estado: '+o.estado+'</div>'+
+    (o.gps?'<div class="field">GPS: '+o.gps+'</div>':'')+
+    CHECKLIST.map(function(sf){
+      var sfF=oF.filter(function(f){return f.subFolder===sf;});
+      var sfImgs=sfF.filter(function(f){return isImg(f.name);});
+      return'<div class="sf-section">'+
+        '<div class="sf-header">'+(sfF.length?'✅':'○')+' '+sf+' ('+sfF.length+' archivos)</div>'+
+        (sfImgs.length?'<div class="sf-photos">'+sfImgs.slice(0,6).map(function(f){return'<img src="'+f.data+'"/>';}).join('')+'</div>':'')+
+        (sfF.length===0?'<div class="sf-empty">Sin documentos adjuntos</div>':'')+
+      '</div>';
+    }).join('')+
+    (o.firma?'<div style="margin-top:20px"><h3>Firma del Técnico</h3><img src="'+o.firma.imagen+'" style="max-width:200px;border:1px solid #ddd"/><p style="font-size:11px">'+o.firma.nombre+' — '+new Date(o.firma.fecha).toLocaleDateString('es-PE')+'</p></div>':'')+
+    (o.firmaCliente?'<div style="margin-top:20px"><h3>Conformidad del Cliente</h3><img src="'+o.firmaCliente.imagen+'" style="max-width:200px;border:1px solid #ddd"/><p style="font-size:11px">'+o.firmaCliente.nombre+(o.firmaCliente.dni?' — '+o.firmaCliente.dni:'')+' — '+new Date(o.firmaCliente.fecha).toLocaleDateString('es-PE')+'</p></div>':'')+
+  '</body></html>';
+  var win=window.open('','_blank');
+  if(win){win.document.write(html);win.document.close();setTimeout(function(){win.print();},500);}
+  else{toast('Habilita las ventanas emergentes para generar el PDF','warn');}
+}
+
+
+// ═══════════════════════════════════════════════════════
+// ── LISTAS DESPLEGABLES CONFIGURABLES ──
+// ═══════════════════════════════════════════════════════
+var LISTAS_KEY = 'ep_listas';
+var _listaTab = 'zona';
+var LISTAS_DEF = {
+  zona: ['Norte','Sur','Este','Oeste','Centro'],
+  alimentador: ['ALI-01','ALI-02','ALI-03','ALI-04'],
+  circuito: ['C-001','C-002','C-003','C-004','C-005'],
+  supervisor: []
+};
+function loadListas(){
+  try{ return Object.assign({},LISTAS_DEF,JSON.parse(localStorage.getItem(LISTAS_KEY)||'{}')); }
+  catch(e){ return Object.assign({},LISTAS_DEF); }
+}
+function saveListas(d){ try{localStorage.setItem(LISTAS_KEY,JSON.stringify(d));}catch(e){} }
+
+function populateOTSelects(){
+  var listas = loadListas();
+  // Poblar cada select del formulario OT
+  var fields = {
+    'f-zona': listas.zona||[],
+    'f-ali':  listas.alimentador||[],
+    'f-cir':  listas.circuito||[],
+    'f-sup':  listas.supervisor||[]
+  };
+  Object.keys(fields).forEach(function(id){
+    var sel = ge(id); if(!sel) return;
+    var cur = sel.value;
+    sel.innerHTML = '<option value="">-- Selecciona --</option>'+
+      fields[id].map(function(v){ return '<option value="'+v+'"'+(cur===v?' selected':'')+'>'+v+'</option>'; }).join('');
+    if(cur) sel.value = cur;
+  });
+}
+
+function openListasModal(){
+  _listaTab = 'zona';
+  renderListasTab();
+  // Init tab buttons
+  document.querySelectorAll('[data-ltab]').forEach(function(btn){
+    btn.classList.toggle('act', btn.dataset.ltab===_listaTab);
+  });
+  openM('m-listas');
+}
+
+function renderListasTab(){
+  var listas = loadListas();
+  var items = listas[_listaTab] || [];
+  var tabNames = {zona:'Zona',alimentador:'Alimentador',circuito:'Circuito',supervisor:'Supervisor'};
+  ge('listas-items').innerHTML = items.length ?
+    items.map(function(v,i){
+      return '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--br);font-size:13px">'+
+        '<span style="flex:1">'+v+'</span>'+
+        '<button class="btn bi" data-del-lista="'+i+'" style="font-size:12px;color:var(--rd);padding:3px 8px">✕</button>'+
+      '</div>';
+    }).join('') :
+    '<div style="text-align:center;padding:20px;color:var(--t2);font-size:12px">Sin opciones para '+tabNames[_listaTab]+'. Agrega la primera.</div>';
+  ge('listas-items').addEventListener('click', function(e){
+    var btn = e.target.closest('[data-del-lista]');
+    if(!btn) return;
+    var listas2 = loadListas();
+    listas2[_listaTab].splice(parseInt(btn.dataset.delLista),1);
+    saveListas(listas2);
+    renderListasTab();
+    populateOTSelects();
+  });
+  ge('listas-new-item').value = '';
+}
+
+function addListaItem(){
+  var raw = (ge('listas-new-item').value||'').trim();
+  if(!raw){ toast('Escribe al menos un valor','error'); return; }
+  var listas = loadListas();
+  if(!listas[_listaTab]) listas[_listaTab] = [];
+  // Soporte para múltiples separados por coma
+  var items = raw.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  items.forEach(function(item){
+    if(!listas[_listaTab].includes(item)) listas[_listaTab].push(item);
+  });
+  saveListas(listas);
+  renderListasTab();
+  populateOTSelects();
+  toast('✅ '+items.length+' opción(es) agregada(s)','success');
+}
+
+function saveListasAndClose(){
+  populateOTSelects();
+  closeM('m-listas');
+  toast('Listas guardadas','success');
+}
+
+// Poblar selects cuando se abre el modal OT
+var _origOpenNewOT2 = openNewOT;
+openNewOT = function(){
+  _origOpenNewOT2();
+  populateOTSelects();
+};
+
+// ── REPROGRAMAR OT ──
+var _reprogramOtId = null;
+function openReprogram(otId){
+  _reprogramOtId = otId;
+  var o = S.ordenes.find(function(x){return x.id===otId;});
+  if(!o) return;
+  ge('reprogram-ot-info').innerHTML = '<b style="color:var(--ac)">'+o.ot+'</b> — '+o.zona+' · '+o.alimentador+'<br>Fecha actual: '+o.fecha+' · Estado: <b>'+o.estado+'</b>';
+  ge('rp-fecha').value = o.fecha||'';
+  ge('rp-estado').value = ['Pendiente','En Curso','Observado'].includes(o.estado)?o.estado:'Pendiente';
+  ge('rp-supervisor').value = '';
+  ge('rp-motivo').value = '';
+  // Poblar asignado
+  var asel = ge('rp-asignado');
+  asel.innerHTML = '<option value="">Sin cambio</option>'+
+    S.users.filter(function(u){return u.activo;}).map(function(u){
+      return '<option value="'+u.id+'"'+(u.id===o.userId?' selected':'')+'>'+getRol(u.rol).icon+' '+u.nombre+'</option>';
+    }).join('');
+  openM('m-reprogram');
+}
+
+function saveReprogram(){
+  var o = S.ordenes.find(function(x){return x.id===_reprogramOtId;});
+  if(!o) return;
+  var newFecha = ge('rp-fecha').value;
+  var newEst   = ge('rp-estado').value;
+  var newSup   = ge('rp-supervisor').value.trim();
+  var newAsg   = ge('rp-asignado').value;
+  var motivo   = ge('rp-motivo').value.trim();
+  if(!newFecha){ toast('Selecciona una nueva fecha','error'); return; }
+  var oldFecha = o.fecha;
+  o.fecha   = newFecha;
+  o.estado  = newEst;
+  if(newSup) o.supervisor = newSup;
+  if(newAsg) o.userId = newAsg;
+  o.updated = new Date().toISOString();
+  if(!o.reprogramaciones) o.reprogramaciones = [];
+  o.reprogramaciones.push({
+    fecha: new Date().toISOString(),
+    fechaAnterior: oldFecha, fechaNueva: newFecha,
+    estadoNuevo: newEst, motivo: motivo,
+    userId: S.user.id, nombre: S.user.nombre
+  });
+  saveAll(); closeM('m-reprogram'); filterOT(); renderDash();
+  logEvent('OT_REPROGRAMADA','OT '+o.ot+' reprogramada: '+oldFecha+' → '+newFecha+(motivo?' ('+motivo+')':''),_reprogramOtId);
+  sendTelegramMsg('REPROGRAMACION: OT '+o.ot+' reprogramada al '+newFecha+(motivo?'. Motivo: '+motivo:''));
+  toast('✅ OT reprogramada al '+newFecha,'success');
+}
+
+// ═══════════════════════════════════════════════════════
+// ── INFORME DE CAMPO ──
+// ═══════════════════════════════════════════════════════
+var INF_KEY = 'ep_informes';
+var _infOtId = null;
+var _infTab = 'inicio';
+var _infCuadrilla = [];
+var _infMateriales = [];
+var _infGPS = null;
+
+function loadInformes(){ try{return JSON.parse(localStorage.getItem(INF_KEY)||'{}');}catch(e){return{};} }
+function saveInformes(d){ try{localStorage.setItem(INF_KEY,JSON.stringify(d));}catch(e){} }
+
+var MAT_ESTADOS = {
+  consumido:  {label:'✅ Consumido en obra',  color:'var(--gn)', desc:'Material usado totalmente'},
+  devuelto:   {label:'🔄 Devuelto al almacén', color:'var(--bl)', desc:'Sobrante devuelto'},
+  prestado:   {label:'🤝 Prestado a cuadrilla',color:'var(--or)', desc:'Pendiente de recuperar'},
+  solicitado: {label:'📋 Solicitar más',        color:'var(--rd)', desc:'Se necesita más material'},
+};
+
+function openInforme(otId){
+  _infOtId = otId;
+  _infTab = 'inicio';
+  _infCuadrilla = [];
+  _infMateriales = [];
+  _infGPS = null;
+  var o = S.ordenes.find(function(x){return x.id===otId;}) || {ot:'—',zona:'—'};
+  // Cargar informe anterior si existe
+  var informes = loadInformes();
+  var prev = informes[otId];
+  if(prev){
+    _infCuadrilla = prev.cuadrilla||[];
+    _infMateriales = (prev.materiales||[]).map(function(m){return Object.assign({},m);});
+    _infGPS = prev.gps||null;
+  }
+  ge('inf-title').textContent = '📋 Informe: '+o.ot;
+  ge('inf-ot-badge').textContent = o.zona;
+  switchInfTab('inicio');
+  renderInfCuadrilla();
+  renderInfMateriales();
+  // GPS automático al abrir
+  ge('inf-llegada-status').textContent = '📍 Obteniendo ubicación GPS...';
+  ge('inf-gps-val').textContent = '';
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      function(pos){
+        _infGPS = pos.coords.latitude.toFixed(6)+', '+pos.coords.longitude.toFixed(6);
+        ge('inf-llegada-status').textContent = '✅ Ubicación confirmada';
+        ge('inf-gps-val').textContent = '📍 '+_infGPS;
+        ge('btn-inf-gps').style.display = 'none';
+        // Guardar GPS en la OT
+        var o2 = S.ordenes.find(function(x){return x.id===otId;});
+        if(o2 && !o2.gps){ o2.gps=_infGPS; saveAll(); }
+      },
+      function(){ ge('inf-llegada-status').textContent = '⚠️ GPS no disponible — puedes continuar'; ge('btn-inf-gps').textContent='🔄 Reintentar GPS'; }
+    ,{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+  }
+  openM('m-informe');
+}
+
+function switchInfTab(tab){
+  _infTab = tab;
+  ['inicio','materiales','cierre'].forEach(function(t){
+    var panel=ge('itab-'+t), btn=document.querySelector('[data-itab="'+t+'"]');
+    if(panel) panel.style.display = t===tab?'block':'none';
+    if(btn) btn.classList.toggle('act', t===tab);
+  });
+  var tabs=['inicio','materiales','cierre'];
+  var idx=tabs.indexOf(tab);
+  var prevBtn=ge('btn-inf-prev'), nextBtn=ge('btn-inf-next'), saveBtn=ge('btn-inf-save');
+  if(prevBtn) prevBtn.style.display=idx>0?'flex':'none';
+  if(nextBtn) nextBtn.style.display=idx<tabs.length-1?'flex':'none';
+  if(saveBtn) saveBtn.style.display=idx===tabs.length-1?'flex':'none';
+}
+
+// ── CUADRILLA ──
+function renderInfCuadrilla(){
+  var list=ge('inf-cuadrilla-list');
+  if(!list) return;
+  list.innerHTML=_infCuadrilla.length?
+    _infCuadrilla.map(function(n,i){
+      return '<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--s3);border-radius:var(--r);margin-bottom:5px">'+
+        '<span style="font-size:18px">👷</span>'+
+        '<span style="flex:1;font-size:13px">'+n+'</span>'+
+        '<button class="btn bi" data-del-cuad="'+i+'" style="font-size:11px;color:var(--rd);padding:3px 7px">✕</button>'+
+      '</div>';
+    }).join(''):
+    '<div style="text-align:center;padding:12px;color:var(--t2);font-size:12px">Sin integrantes agregados</div>';
+}
+
+function addCuadrilla(){
+  var inp=ge('inf-cuadrilla-input');
+  var val=(inp.value||'').trim();
+  if(!val){toast('Escribe el nombre del integrante','error');return;}
+  _infCuadrilla.push(val);
+  inp.value='';
+  renderInfCuadrilla();
+}
+
+// ── MATERIALES DE CAMPO ──
+function addInfMaterial(){
+  var desc=(ge('inf-mat-desc').value||'').trim();
+  var qty=parseFloat(ge('inf-mat-qty').value)||0;
+  var unidad=ge('inf-mat-unidad').value;
+  if(!desc||!qty){toast('Ingresa descripción y cantidad','error');return;}
+  _infMateriales.push({id:'im_'+Date.now(),desc,qty,unidad,estado:'consumido',cuadrillaDestino:'',obs:''});
+  ge('inf-mat-desc').value='';ge('inf-mat-qty').value='';
+  renderInfMateriales();
+  toast('Material agregado','success');
+}
+
+function renderInfMateriales(){
+  var list=ge('inf-mat-list');
+  if(!list) return;
+  if(!_infMateriales.length){
+    list.innerHTML='<div style="text-align:center;padding:20px;color:var(--t2);font-size:12px">Sin materiales registrados.<br>Agrega los materiales utilizados en esta obra.</div>';
+    ge('inf-pendientes-panel').style.display='none';
+    return;
+  }
+  list.innerHTML=_infMateriales.map(function(m,i){
+    var est=MAT_ESTADOS[m.estado]||MAT_ESTADOS.consumido;
+    return '<div style="background:var(--s3);border-radius:var(--r);padding:12px;margin-bottom:10px;border-left:3px solid '+est.color+'">'+
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
+        '<div style="flex:1"><div style="font-size:13px;font-weight:600">'+m.desc+'</div>'+
+        '<div style="font-size:11px;color:var(--t2)">'+m.qty+' '+m.unidad+'</div></div>'+
+        '<button class="btn bi" data-del-inf-mat="'+i+'" style="font-size:11px;color:var(--rd);padding:3px 7px">✕</button>'+
+      '</div>'+
+      '<div style="font-size:11px;color:var(--t2);margin-bottom:6px">Estado del material:</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">'+
+        Object.keys(MAT_ESTADOS).map(function(key){
+          var e=MAT_ESTADOS[key];
+          return '<label style="display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:var(--r);cursor:pointer;border:1px solid '+(m.estado===key?e.color:'var(--br)')+';background:'+(m.estado===key?e.color+'22':'transparent')+'">'+
+            '<input type="radio" name="mat-est-'+i+'" value="'+key+'"'+(m.estado===key?' checked':'')+' style="accent-color:'+e.color+'"/>'+
+            '<span style="font-size:11px;color:'+(m.estado===key?e.color:'var(--t2)')+'">'+e.label+'</span>'+
+          '</label>';
+        }).join('')+
+      '</div>'+
+      (m.estado==='prestado'?
+        '<div style="margin-top:8px"><input type="text" class="inf-mat-dest" data-mat-idx="'+i+'" value="'+m.cuadrillaDestino+'" placeholder="¿A qué cuadrilla se prestó?" style="width:100%;padding:7px;background:var(--s2);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit"/></div>':
+        '')+
+    '</div>';
+  }).join('');
+  // Mostrar panel de pendientes (prestados o solicitados)
+  var pendientes=_infMateriales.filter(function(m){return m.estado==='prestado'||m.estado==='solicitado';});
+  ge('inf-pendientes-panel').style.display=pendientes.length?'block':'none';
+  if(pendientes.length){
+    ge('inf-pendientes-list').innerHTML=pendientes.map(function(m){
+      return '<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--br)">'+
+        '<span>'+m.desc+' ('+m.qty+' '+m.unidad+')</span>'+
+        '<span style="color:'+(m.estado==='prestado'?'var(--or)':'var(--rd)')+'">'+MAT_ESTADOS[m.estado].label+'</span>'+
+      '</div>';
+    }).join('');
+  }
+  // Event listeners en los radio buttons
+  list.querySelectorAll('input[type=radio]').forEach(function(radio){
+    radio.addEventListener('change',function(){
+      var idx=parseInt(this.name.replace('mat-est-',''));
+      _infMateriales[idx].estado=this.value;
+      renderInfMateriales();
+    });
+  });
+  // Destino del prestado
+  list.querySelectorAll('.inf-mat-dest').forEach(function(inp){
+    inp.addEventListener('input',function(){
+      var idx=parseInt(this.dataset.matIdx);
+      _infMateriales[idx].cuadrillaDestino=this.value;
+    });
+  });
+}
+
+// ── GUARDAR INFORME ──
+function saveInforme(){
+  var estadoFinal=ge('inf-estado-final').value;
+  var avance=parseInt(ge('inf-avance').value)||0;
+  var obsFinal=(ge('inf-obs-final').value||'').trim();
+  var unidadesChecked=Array.from(ge('inf-unidades-check').querySelectorAll('input:checked')).map(function(cb){return cb.value;});
+  var unidadesExtra=(ge('inf-unidades-extra').value||'').trim();
+  if(unidadesExtra) unidadesChecked.push(unidadesExtra);
+  var informes=loadInformes();
+  var o=S.ordenes.find(function(x){return x.id===_infOtId;});
+  var informe={
+    otId:_infOtId, fechaInicio:new Date().toISOString(),
+    gps:_infGPS,
+    cuadrilla:_infCuadrilla,
+    unidades:unidadesChecked,
+    estadoInicial:ge('inf-estado-inicial').value,
+    obsInicio:(ge('inf-obs-inicio').value||'').trim(),
+    materiales:_infMateriales,
+    estadoFinal:estadoFinal, avance:avance, obsFinal:obsFinal,
+    motivoSuspension:estadoFinal==='suspendido'?(ge('inf-motivo-suspension').value||''):'',
+    fechaReprog:ge('inf-fecha-reprog').value||'',
+    userId:S.user.id, nombre:S.user.nombre
+  };
+  informes[_infOtId]=informe;
+  saveInformes(informes);
+  // Actualizar estado de la OT
+  if(o){
+    if(estadoFinal==='completado') o.estado='Completado';
+    else if(estadoFinal==='suspendido'||estadoFinal==='reprogramar') o.estado='Observado';
+    else if(estadoFinal==='parcial') o.estado='En Curso';
+    o.updated=new Date().toISOString();
+    o.informe=informe;
+    saveAll();
+  }
+  // Registrar materiales pendientes en el sistema global
+  _infMateriales.filter(function(m){return m.estado==='prestado'||m.estado==='solicitado';}).forEach(function(m){
+    var mats=loadMats();
+    mats.push({id:'mat_'+Date.now()+'_'+Math.random().toString(36).slice(2,4),
+      otId:_infOtId,desc:m.desc,unidad:m.unidad,qty:m.qty,costo:0,total:0,
+      categoria:m.estado==='prestado'?'prestado':'solicitado',
+      obs:m.estado==='prestado'?('Prestado a: '+(m.cuadrillaDestino||'—')):'Solicitud de material adicional',
+      userId:S.user.id,fecha:new Date().toISOString().split('T')[0],
+      estado:m.estado});
+    saveMats(mats);
+  });
+  logEvent('INFORME_GUARDADO','Informe de campo guardado: '+o.ot+' | Estado: '+estadoFinal+' | Avance: '+avance+'%',_infOtId);
+  sendTelegramMsg('INFORME: OT '+(o?o.ot:'—')+' — '+estadoFinal.toUpperCase()+' ('+avance+'%). Cuadrilla: '+_infCuadrilla.join(', '));
+  closeM('m-informe');
+  filterOT(); renderDash();
+  toast('✅ Informe guardado correctamente','success');
+  // Abrir checklist si completó
+  if(estadoFinal==='completado'||estadoFinal==='parcial'){
+    setTimeout(function(){
+      if(confirm('¿Deseas ir al checklist para adjuntar los documentos?')) openChecklist(_infOtId);
+    },500);
+  }
+}
+
+// ── HOOK: reemplazar openLlegada con openInforme para supervisor/técnico ──
+var _origOpenLlegada = openLlegada;
+openLlegada = function(otId){
+  var u = S.user;
+  // Admin y coordinador usan el flujo simple de llegada
+  if(u.rol==='admin') { _origOpenLlegada(otId); return; }
+  // Supervisor, técnico, inspector → informe completo
+  openInforme(otId);
+};
+
+// ── TIEMPOS EN PDF ──
+var _origExportChecklistPDF = exportChecklistPDF;
+exportChecklistPDF = function(otId){
+  // Agregar tiempos al PDF
+  var tiempoData = loadTiempo()[otId];
+  var informeData = loadInformes()[otId];
+  var o = S.ordenes.find(function(x){return x.id===otId;});
+  if(!o){ toast('OT no encontrada','error'); return; }
+  // Sección de tiempos para el PDF
+  var tiempoHTML = '';
+  if(tiempoData && tiempoData.sesiones && tiempoData.sesiones.length){
+    var totalMin = tiempoData.sesiones.reduce(function(a,s){return a+(s.durMin||0);},0);
+    tiempoHTML = '<div style="margin-top:20px"><h3 style="font-size:14px;border-bottom:2px solid #f0a500;padding-bottom:6px">⏱ Control de Tiempo</h3>'+
+      '<table style="width:100%;border-collapse:collapse;font-size:11px">'+
+      '<tr style="background:#f0a500;color:#000"><th style="padding:5px">Fecha/Hora</th><th style="padding:5px">Duración</th><th style="padding:5px">Nota</th></tr>'+
+      tiempoData.sesiones.map(function(s){
+        return '<tr><td style="padding:5px;border:1px solid #ddd">'+new Date(s.inicio).toLocaleString('es-PE')+'</td>'+
+          '<td style="padding:5px;border:1px solid #ddd;text-align:center">'+Math.floor(s.durMin/60)+'h '+(s.durMin%60)+'min</td>'+
+          '<td style="padding:5px;border:1px solid #ddd">'+(s.nota||'—')+'</td></tr>';
+      }).join('')+
+      '</table><p style="font-size:12px;font-weight:bold">Total: '+Math.floor(totalMin/60)+'h '+(totalMin%60)+'min</p></div>';
+  }
+  // Sección de informe de campo
+  var informeHTML = '';
+  if(informeData){
+    informeHTML = '<div style="margin-top:20px"><h3 style="font-size:14px;border-bottom:2px solid #f0a500;padding-bottom:6px">📋 Informe de Campo</h3>'+
+      (informeData.cuadrilla&&informeData.cuadrilla.length?'<p style="font-size:12px"><b>Cuadrilla:</b> '+informeData.cuadrilla.join(', ')+'</p>':'')+
+      (informeData.unidades&&informeData.unidades.length?'<p style="font-size:12px"><b>Unidades:</b> '+informeData.unidades.join(', ')+'</p>':'')+
+      '<p style="font-size:12px"><b>Estado final:</b> '+(informeData.estadoFinal||'—')+' ('+informeData.avance+'% avance)</p>'+
+      (informeData.obsFinal?'<p style="font-size:12px"><b>Observaciones:</b> '+informeData.obsFinal+'</p>':'')+
+      (informeData.materiales&&informeData.materiales.length?
+        '<table style="width:100%;border-collapse:collapse;font-size:11px;margin-top:8px">'+
+        '<tr style="background:#f0a500;color:#000"><th style="padding:5px">Material</th><th style="padding:5px">Cant.</th><th style="padding:5px">Estado</th></tr>'+
+        informeData.materiales.map(function(m){
+          return '<tr><td style="padding:5px;border:1px solid #ddd">'+m.desc+'</td>'+
+            '<td style="padding:5px;border:1px solid #ddd;text-align:center">'+m.qty+' '+m.unidad+'</td>'+
+            '<td style="padding:5px;border:1px solid #ddd">'+(MAT_ESTADOS[m.estado]?MAT_ESTADOS[m.estado].label:m.estado)+'</td></tr>';
+        }).join('')+
+        '</table>':'')+
+    '</div>';
+  }
+  // Inyectar en el PDF original
+  o._tiempoHTML = tiempoHTML;
+  o._informeHTML = informeHTML;
+  _origExportChecklistPDF(otId);
+};
+
+
+// ═══════════════════════════════════════════════════════
+// ── MI PANEL DE USUARIO ──
+// ═══════════════════════════════════════════════════════
+function renderMiPanel(){
+  var u = S.user;
+  if(!u) return;
+
+  // Título personalizado
+  var el_title = ge('mipanel-title');
+  var el_sub   = ge('mipanel-sub');
+  if(el_title) el_title.textContent = '👤 Panel de ' + u.nombre.split(' ')[0];
+  if(el_sub)   el_sub.textContent   = getRol(u.rol).label + ' — ' + new Date().toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});
+
+  // Mis OT asignadas (y también las que creé si soy supervisor)
+  var misOTs = S.ordenes.filter(function(o){
+    return o.userId === u.id;
+  });
+
+  var filtEst    = ge('mp-filter-est') ? ge('mp-filter-est').value : '';
+  var filtSearch = (ge('mp-search') ? ge('mp-search').value : '').toLowerCase();
+
+  // Detectar pendientes de informe
+  var informes = loadInformes ? loadInformes() : {};
+  var pendInforme = misOTs.filter(function(o){
+    return (o.estado==='En Curso') && !informes[o.id];
+  });
+
+  // Badge en sidebar
+  var badge = ge('mi-pendientes-badge');
+  if(badge){
+    badge.style.display = pendInforme.length ? 'inline' : 'none';
+    badge.textContent   = pendInforme.length;
+  }
+
+  // Alerta de pendientes
+  var alertEl = ge('mp-alerta-pendientes');
+  var alertTxt = ge('mp-alerta-txt');
+  if(alertEl){
+    if(pendInforme.length){
+      alertEl.style.display = 'flex';
+      if(alertTxt) alertTxt.textContent = pendInforme.length + ' OT iniciada(s) sin informe de cierre: ' +
+        pendInforme.map(function(o){return o.ot;}).join(', ');
+    } else {
+      alertEl.style.display = 'none';
+    }
+  }
+
+  // KPI cards personales
+  var total    = misOTs.length;
+  var pend     = misOTs.filter(function(o){return o.estado==='Pendiente';}).length;
+  var enCurso  = misOTs.filter(function(o){return o.estado==='En Curso';}).length;
+  var comp     = misOTs.filter(function(o){return o.estado==='Completado';}).length;
+  var pct      = total ? Math.round(comp/total*100) : 0;
+
+  var statsEl = ge('mp-stats');
+  if(statsEl){
+    statsEl.innerHTML = [
+      {c:'y',ico:'📋',lbl:'Mis OT',         val:total,  sub:'asignadas a mí'},
+      {c:'r',ico:'⏳',lbl:'Pendientes',      val:pend,   sub:'por iniciar'},
+      {c:'b',ico:'⚡',lbl:'En Curso',        val:enCurso,sub:pendInforme.length+' sin informe'},
+      {c:'g',ico:'✅',lbl:'Completadas',     val:comp,   sub:pct+'% cumplimiento'},
+    ].map(function(s){
+      return '<div class="sc '+s.c+'">'+
+        '<div class="slbl">'+s.lbl+'</div>'+
+        '<div class="sval">'+s.val+'</div>'+
+        '<div class="sico">'+s.ico+'</div>'+
+        '<div class="ssub">'+s.sub+'</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  // Filtrar mis OT
+  var filtradas = misOTs.filter(function(o){
+    if(filtEst === 'pendiente_informe') return o.estado==='En Curso' && !informes[o.id];
+    if(filtEst && o.estado !== filtEst) return false;
+    if(filtSearch){
+      return (o.ot||'').toLowerCase().includes(filtSearch) ||
+             (o.zona||'').toLowerCase().includes(filtSearch) ||
+             (o.alimentador||'').toLowerCase().includes(filtSearch);
+    }
+    return true;
+  }).sort(function(a,b){
+    // Pendientes primero, luego En Curso, luego Completado
+    var order = {Pendiente:0,'En Curso':1,Observado:2,Completado:3};
+    return (order[a.estado]||0)-(order[b.estado]||0);
+  });
+
+  var listEl  = ge('mp-ot-list');
+  var emptyEl = ge('mp-empty');
+  if(!listEl) return;
+
+  if(!filtradas.length){
+    listEl.innerHTML  = '';
+    if(emptyEl) emptyEl.style.display = 'block';
+  } else {
+    if(emptyEl) emptyEl.style.display = 'none';
+    listEl.innerHTML = filtradas.map(function(o){
+      var oF      = S.files.filter(function(f){return f.otId===o.id;});
+      var clD     = CHECKLIST.filter(function(sf){return oF.some(function(f){return f.subFolder===sf;});}).length;
+      var clPct   = Math.round(clD/CHECKLIST.length*100);
+      var informe = informes[o.id];
+      var pendInf = o.estado==='En Curso' && !informe;
+      var tiempos = loadTiempo ? loadTiempo()[o.id] : null;
+      var totalMin = tiempos ? tiempos.sesiones.reduce(function(a,s){return a+(s.durMin||0);},0) : 0;
+
+      var badgeColor = o.estado==='Completado'?'var(--gn)':o.estado==='En Curso'?'var(--bl)':o.estado==='Observado'?'var(--rd)':'var(--or)';
+
+      return '<div class="card" style="border-left:4px solid '+badgeColor+';padding:0;overflow:hidden">'+
+        // Header de la card
+        '<div style="padding:12px 14px;display:flex;align-items:flex-start;gap:12px">'+
+          '<div style="flex:1">'+
+            '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">'+
+              '<span style="font-size:15px;font-weight:700;color:var(--ac)">'+o.ot+'</span>'+
+              '<span class="badge '+ebadge(o.estado)+'">'+o.estado+'</span>'+
+              (pendInf?'<span class="badge b-red" style="animation:pulse 2s infinite">⚠️ Informe pendiente</span>':'')+
+              (o.prellenada?'<span class="badge b-blue">📋 Prellenada</span>':'')+
+            '</div>'+
+            '<div style="display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--t2)">'+
+              '<span>📅 '+o.fecha+'</span>'+
+              '<span>📍 '+(o.zona||'—')+'</span>'+
+              '<span>⚡ '+(o.alimentador||'—')+'</span>'+
+              (totalMin>0?'<span>⏱ '+Math.floor(totalMin/60)+'h '+(totalMin%60)+'min</span>':'')+
+            '</div>'+
+            // Barra progreso checklist
+            '<div style="margin-top:10px">'+
+              '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t2);margin-bottom:3px">'+
+                '<span>Checklist</span><span>'+clD+'/'+CHECKLIST.length+' ('+clPct+'%)</span>'+
+              '</div>'+
+              '<div style="background:var(--s3);border-radius:10px;height:6px">'+
+                '<div style="height:100%;border-radius:10px;background:'+badgeColor+';width:'+clPct+'%;transition:width .5s"></div>'+
+              '</div>'+
+            '</div>'+
+            // Info del informe si existe
+            (informe?'<div style="margin-top:8px;font-size:11px;color:var(--gn)">✅ Informe registrado · '+informe.estadoFinal+' · '+informe.avance+'% avance</div>':'')+
+          '</div>'+
+        '</div>'+
+        // Botones de acción
+        '<div style="border-top:1px solid var(--br);padding:10px 14px;display:flex;gap:8px;flex-wrap:wrap">'+
+          (o.estado!=='Completado'?
+            '<button class="btn bp" data-mp-iniciar="'+o.id+'" style="font-size:13px;padding:10px 16px;flex:1;justify-content:center">'+
+              (pendInf?'📝 Completar informe':'▶ Iniciar trabajo')+
+            '</button>':
+            '<button class="btn bs" data-ocl="'+o.id+'" style="font-size:13px;flex:1;justify-content:center">'+
+              '📁 Ver checklist'+
+            '</button>'
+          )+
+          '<button class="btn bs" data-ocl="'+o.id+'" style="font-size:13px;padding:10px;min-width:44px;justify-content:center" title="Adjuntar docs">📁</button>'+
+          '<button class="btn bs" data-galeria="'+o.id+'" style="font-size:13px;padding:10px;min-width:44px;justify-content:center" title="Galería">📷</button>'+
+          '<button class="btn bs" data-comments="'+o.id+'" style="font-size:13px;padding:10px;min-width:44px;justify-content:center" title="Comentarios">💬</button>'+
+          (pendInf?'<button class="btn bd" data-mp-informe="'+o.id+'" style="font-size:12px;padding:10px;min-width:44px;justify-content:center" title="Informe pendiente">⚠️</button>':'')+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  // Panel general
+  renderMiPanelGeneral();
+}
+
+function renderMiPanelGeneral(){
+  var search  = (ge('mp-gen-search')  ? ge('mp-gen-search').value  : '').toLowerCase();
+  var estFlt  = ge('mp-gen-est')  ? ge('mp-gen-est').value  : '';
+  var zonaFlt = ge('mp-gen-zona') ? ge('mp-gen-zona').value : '';
+
+  // Poblar zonas
+  var zonasSel = ge('mp-gen-zona');
+  if(zonasSel && zonasSel.options.length <= 1){
+    var zonas = [...new Set(S.ordenes.map(function(o){return o.zona;}).filter(Boolean))];
+    zonas.forEach(function(z){
+      var opt=document.createElement('option'); opt.value=z; opt.textContent=z;
+      zonasSel.appendChild(opt);
+    });
+  }
+
+  var ots = S.ordenes.filter(function(o){
+    if(estFlt  && o.estado!==estFlt)       return false;
+    if(zonaFlt && o.zona!==zonaFlt)        return false;
+    if(search){
+      return (o.ot||'').toLowerCase().includes(search)||
+             (o.zona||'').toLowerCase().includes(search)||
+             (o.alimentador||'').toLowerCase().includes(search)||
+             (o.supervisor||'').toLowerCase().includes(search);
+    }
+    return true;
+  });
+
+  var tbody = ge('mp-gen-tbody');
+  if(!tbody) return;
+
+  tbody.innerHTML = ots.length ? ots.map(function(o){
+    var ow  = S.users.find(function(u){return u.id===o.userId;})||{nombre:'—'};
+    var oF  = S.files.filter(function(f){return f.otId===o.id;});
+    var clD = CHECKLIST.filter(function(sf){return oF.some(function(f){return f.subFolder===sf;});}).length;
+    var inf = loadInformes ? loadInformes()[o.id] : null;
+    return '<tr>'+
+      '<td><b style="color:var(--ac)">'+o.ot+'</b>'+(inf?'<br><span style="font-size:10px;color:var(--gn)">✅ Con informe</span>':'')+'</td>'+
+      '<td style="white-space:nowrap;font-size:12px">'+o.fecha+'</td>'+
+      '<td style="font-size:12px">'+(o.zona||'—')+'</td>'+
+      '<td style="font-size:12px">'+(o.alimentador||'—')+'</td>'+
+      '<td><span class="badge '+ebadge(o.estado)+'" style="font-size:10px">'+o.estado+'</span></td>'+
+      '<td style="font-size:12px">'+ow.nombre+'</td>'+
+      '<td style="text-align:center;font-size:12px">'+clD+'/'+CHECKLIST.length+'</td>'+
+      '<td>'+
+        '<button class="btn bi" data-ocl="'+o.id+'" title="Ver checklist" style="font-size:14px">📁</button>'+
+        '<button class="btn bi" data-galeria="'+o.id+'" title="Fotos" style="font-size:14px">📷</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('') : '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--t2)">Sin OT que coincidan</td></tr>';
+}
+
+// Iniciar trabajo desde Mi Panel
+function mpIniciarTrabajo(otId){
+  var o = S.ordenes.find(function(x){return x.id===otId;});
+  if(!o) return;
+  // Cambiar estado a En Curso si estaba Pendiente
+  if(o.estado==='Pendiente'){
+    o.estado='En Curso';
+    o.updated=new Date().toISOString();
+    saveAll();
+  }
+  // Abrir informe de campo
+  openInforme(otId);
+}
 // ═══ EVENT LISTENERS ═══
 
 // Login
@@ -5184,6 +7307,155 @@ qa('.ni[data-page]').forEach(btn=>btn.addEventListener('click',()=>nav(btn.datas
 ge('sb-chpw').addEventListener('click',openChPw);
 ge('sb-logout').addEventListener('click',doLogout);
 ge('sb-notif-cfg').addEventListener('click', openNotifCfg);
+var _elSbAlertas=ge('sb-alertas');if(_elSbAlertas)_elSbAlertas.addEventListener('click',openAlertasCfg);
+var _elSbListas=ge('sb-listas');if(_elSbListas)_elSbListas.addEventListener('click',openListasModal);
+
+// ── MI PANEL ──
+// Filtros
+['mp-filter-est','mp-search','mp-gen-search','mp-gen-est','mp-gen-zona'].forEach(function(id){
+  var el=ge(id);
+  if(el) el.addEventListener('input',renderMiPanel);
+  if(el) el.addEventListener('change',renderMiPanel);
+});
+
+// Iniciar trabajo desde Mi Panel
+document.addEventListener('click',function(e){
+  var btn=e.target.closest('[data-mp-iniciar]');
+  if(btn){ mpIniciarTrabajo(btn.dataset.mpIniciar); return; }
+  var inf=e.target.closest('[data-mp-informe]');
+  if(inf){ openInforme(inf.dataset.mpInforme); return; }
+});
+
+
+// ── LISTAS MODAL ──
+var _elListaAdd=ge('btn-lista-add');if(_elListaAdd)_elListaAdd.addEventListener('click',addListaItem);
+var _elListasSave=ge('btn-listas-save');if(_elListasSave)_elListasSave.addEventListener('click',saveListasAndClose);
+var _elListasNewItem=ge('listas-new-item');
+if(_elListasNewItem)_elListasNewItem.addEventListener('keydown',function(e){if(e.key==='Enter'){addListaItem();}});
+document.querySelectorAll('[data-ltab]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    _listaTab=this.dataset.ltab;
+    document.querySelectorAll('[data-ltab]').forEach(function(b){b.classList.remove('act');});
+    this.classList.add('act');
+    renderListasTab();
+  });
+});
+
+// ── REPROGRAMAR ──
+var _elSaveReprogram=ge('btn-save-reprogram');if(_elSaveReprogram)_elSaveReprogram.addEventListener('click',saveReprogram);
+
+// ── INFORME DE CAMPO ──
+var _elInfNext=ge('btn-inf-next');if(_elInfNext)_elInfNext.addEventListener('click',function(){
+  var tabs=['inicio','materiales','cierre'];
+  var idx=tabs.indexOf(_infTab);
+  if(idx<tabs.length-1) switchInfTab(tabs[idx+1]);
+});
+var _elInfPrev=ge('btn-inf-prev');if(_elInfPrev)_elInfPrev.addEventListener('click',function(){
+  var tabs=['inicio','materiales','cierre'];
+  var idx=tabs.indexOf(_infTab);
+  if(idx>0) switchInfTab(tabs[idx-1]);
+});
+var _elInfSave=ge('btn-inf-save');if(_elInfSave)_elInfSave.addEventListener('click',saveInforme);
+var _elInfGPS=ge('btn-inf-gps');if(_elInfGPS)_elInfGPS.addEventListener('click',function(){
+  if(!navigator.geolocation){toast('GPS no disponible','error');return;}
+  this.textContent='⏳ Obteniendo...';this.disabled=true;
+  navigator.geolocation.getCurrentPosition(function(pos){
+    _infGPS=pos.coords.latitude.toFixed(6)+', '+pos.coords.longitude.toFixed(6);
+    ge('inf-llegada-status').textContent='✅ Ubicación confirmada';
+    ge('inf-gps-val').textContent='📍 '+_infGPS;
+    ge('btn-inf-gps').style.display='none';
+  },function(){ge('btn-inf-gps').textContent='🔄 Reintentar';ge('btn-inf-gps').disabled=false;},{enableHighAccuracy:true,timeout:15000});
+});
+var _elAddCuad=ge('btn-add-cuadrilla');if(_elAddCuad)_elAddCuad.addEventListener('click',addCuadrilla);
+var _elCuadInp=ge('inf-cuadrilla-input');if(_elCuadInp)_elCuadInp.addEventListener('keydown',function(e){if(e.key==='Enter')addCuadrilla();});
+var _elAddInfMat=ge('btn-inf-add-mat');if(_elAddInfMat)_elAddInfMat.addEventListener('click',addInfMaterial);
+// Delegación para eliminar items de cuadrilla y materiales
+var _elInfModal=ge('m-informe');
+if(_elInfModal){
+  _elInfModal.addEventListener('click',function(e){
+    var delCuad=e.target.closest('[data-del-cuad]');
+    if(delCuad){_infCuadrilla.splice(parseInt(delCuad.dataset.delCuad),1);renderInfCuadrilla();return;}
+    var delMat=e.target.closest('[data-del-inf-mat]');
+    if(delMat){_infMateriales.splice(parseInt(delMat.dataset.delInfMat),1);renderInfMateriales();return;}
+  });
+}
+// Tabs del informe
+document.querySelectorAll('[data-itab]').forEach(function(btn){
+  btn.addEventListener('click',function(){switchInfTab(this.dataset.itab);});
+});
+// Estado final — mostrar campos de suspensión
+var _elEstFinal=ge('inf-estado-final');if(_elEstFinal)_elEstFinal.addEventListener('change',function(){
+  var susp=ge('inf-suspension-fields');
+  if(susp) susp.style.display=this.value==='suspendido'||this.value==='reprogramar'?'block':'none';
+});
+// Avance slider
+var _elAvance=ge('inf-avance');if(_elAvance)_elAvance.addEventListener('input',function(){
+  var v=ge('inf-avance-val');if(v)v.textContent=this.value+'%';
+});
+// Botones dentro del informe (fotos y checklist)
+var _elInfFotos=ge('btn-inf-fotos');if(_elInfFotos)_elInfFotos.addEventListener('click',function(){
+  closeM('m-informe');setTimeout(function(){openCam();},200);
+});
+var _elInfChecklist=ge('btn-inf-checklist');if(_elInfChecklist)_elInfChecklist.addEventListener('click',function(){
+  closeM('m-informe');setTimeout(function(){openChecklist(_infOtId);},200);
+});
+
+
+// ── DROPDOWN OT MENU ──
+// Click en botón ⋮ de OT
+document.addEventListener('click',function(e){
+  // Abrir/cerrar menú ⋮
+  var menuBtn=e.target.closest('[data-otmenu]');
+  if(menuBtn){
+    e.stopPropagation();
+    var id=menuBtn.dataset.otmenu;
+    var menu=ge('otmenu-'+id);
+    // Cerrar todos los otros
+    document.querySelectorAll('.ot-dropdown').forEach(function(m){if(m.id!=='otmenu-'+id)m.style.display='none';});
+    if(menu) menu.style.display=menu.style.display==='none'?'block':'none';
+    return;
+  }
+  // Reprogramar
+  var rpBtn=e.target.closest('[data-reprogram]');
+  if(rpBtn){document.querySelectorAll('.ot-dropdown').forEach(function(m){m.style.display='none';});openReprogram(rpBtn.dataset.reprogram);return;}
+  // Cerrar menús al tocar fuera
+  if(!e.target.closest('.ot-actions-wrap')){
+    document.querySelectorAll('.ot-dropdown').forEach(function(m){m.style.display='none';});
+  }
+});
+
+// ── MOSTRAR LISTAS BUTTON PARA ADMIN ──
+
+
+// ── KANBAN ──
+var _elKanbanNewot=ge('kanban-newot');if(_elKanbanNewot)_elKanbanNewot.addEventListener('click',function(){nav('ordenes');setTimeout(openNewOT,200);});
+var _elKanbanUsr=ge('kanban-filter-usr');if(_elKanbanUsr)_elKanbanUsr.addEventListener('change',renderKanban);
+
+// ── BÚSQUEDA GLOBAL ──
+var _elGsSearch=ge('btn-gs-search');if(_elGsSearch)_elGsSearch.addEventListener('click',runGlobalSearch);
+var _elGsInput=ge('gs-input');if(_elGsInput)_elGsInput.addEventListener('keydown',function(e){if(e.key==='Enter')runGlobalSearch();});
+['gs-ot','gs-arch','gs-mat','gs-com'].forEach(function(id){var el=ge(id);if(el)el.addEventListener('change',runGlobalSearch);});
+
+// ── TIEMPO ──
+var _elTiempoStart=ge('btn-tiempo-start');if(_elTiempoStart)_elTiempoStart.addEventListener('click',startTiempo);
+var _elTiempoStop=ge('btn-tiempo-stop');if(_elTiempoStop)_elTiempoStop.addEventListener('click',stopTiempo);
+
+// ── TUTORIAL ──
+var _elTutNext=ge('btn-tut-next');if(_elTutNext)_elTutNext.addEventListener('click',tutNext);
+var _elTutPrev=ge('btn-tut-prev');if(_elTutPrev)_elTutPrev.addEventListener('click',tutPrev);
+var _elTutSkip=ge('btn-tut-skip');if(_elTutSkip)_elTutSkip.addEventListener('click',skipTutorial);
+var _elTutBack=ge('tutorial-backdrop');if(_elTutBack)_elTutBack.addEventListener('click',skipTutorial);
+
+// ── ALERTAS ──
+var _elSaveAlertas=ge('btn-save-alertas');if(_elSaveAlertas)_elSaveAlertas.addEventListener('click',saveAlertasCfg);
+
+// ── TUTORIAL desde perfil ──
+document.addEventListener('click',function(e){
+  var btn=e.target.closest('[data-tutorial]');if(btn)startTutorial(true);
+  var tiempo=e.target.closest('[data-tiempo]');if(tiempo)openTiempo(tiempo.dataset.tiempo);
+  var dup=e.target.closest('[data-dup]');if(dup)duplicarOT(dup.dataset.dup);
+  var pdfCL=e.target.closest('[data-pdf-cl]');if(pdfCL)exportChecklistPDF(pdfCL.dataset.pdfCl);
+});
 
 // ── RED: detectar online/offline ──
 window.addEventListener('online',  function(){ updateNetworkStatus(); toast('Conexión restaurada','success'); });
@@ -5191,6 +7463,70 @@ window.addEventListener('offline', function(){ updateNetworkStatus(); toast('Sin
 
 // Logo: handled by label wrapping input
 ge('sb-dynamic-fields').addEventListener('click', openDynamicFieldsModal);
+
+// ── CALENDARIO ──
+var _el_cal_prev=ge('cal-prev');if(_el_cal_prev)_el_cal_prev.addEventListener('click',function(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendario();});
+var _el_cal_next=ge('cal-next');if(_el_cal_next)_el_cal_next.addEventListener('click',function(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendario();});
+var _el_cal_hoy=ge('cal-hoy');if(_el_cal_hoy)_el_cal_hoy.addEventListener('click',function(){calYear=new Date().getFullYear();calMonth=new Date().getMonth();renderCalendario();});
+
+// ── MATERIALES ──
+var _el_btn_new_material=ge('btn-new-material');if(_el_btn_new_material)_el_btn_new_material.addEventListener('click',function(){openNewMaterial(null);});
+var _el_btn_save_material=ge('btn-save-material');if(_el_btn_save_material)_el_btn_save_material.addEventListener('click',saveMaterial);
+var _el_mat_qty=ge('mat-qty');if(_el_mat_qty)_el_mat_qty.addEventListener('input',calcMatTotal);
+var _el_mat_costo=ge('mat-costo');if(_el_mat_costo)_el_mat_costo.addEventListener('input',calcMatTotal);
+var _el_mat_filter_ot=ge('mat-filter-ot');if(_el_mat_filter_ot)_el_mat_filter_ot.addEventListener('change',renderMateriales);
+var _el_btn_exp_materiales=ge('btn-exp-materiales');if(_el_btn_exp_materiales)_el_btn_exp_materiales.addEventListener('click',exportMateriales);
+var _el_mat_tbody=ge('mat-tbody');if(_el_mat_tbody)_el_mat_tbody.addEventListener('click',function(e){
+  var del=e.target.closest('[data-del-mat]');
+  if(del){
+    if(!confirm('¿Eliminar este material?'))return;
+    var mats=loadMats().filter(function(m){return m.id!==del.dataset.delMat;});
+    saveMats(mats);renderMateriales();toast('Material eliminado','info');return;
+  }
+  var ot=e.target.closest('[data-ot-mat]');
+  if(ot){nav('ordenes');setTimeout(function(){openChecklist(ot.dataset.otMat);},200);}
+});
+
+// ── IMPORTAR EXCEL ──
+ge('btn-import-excel').addEventListener('click',function(){_importData=[];ge('import-preview').style.display='none';ge('import-result').innerHTML='';ge('btn-import-confirm').style.display='none';openM('m-import');});
+var _el_btn_dl_template=ge('btn-dl-template');if(_el_btn_dl_template)_el_btn_dl_template.addEventListener('click',downloadTemplate);
+var _el_import_file=ge('import-file');if(_el_import_file)_el_import_file.addEventListener('change',function(){if(this.files[0])processImportFile(this.files[0]);});
+var _el_import_dzone=ge('import-dzone');if(_el_import_dzone)_el_import_dzone.addEventListener('click',function(){ge('import-file').click();});
+ge('import-dzone').addEventListener('dragover',function(e){e.preventDefault();this.style.borderColor='var(--ac)';});
+ge('import-dzone').addEventListener('dragleave',function(){this.style.borderColor='var(--br)';});
+ge('import-dzone').addEventListener('drop',function(e){e.preventDefault();this.style.borderColor='var(--br)';if(e.dataTransfer.files[0])processImportFile(e.dataTransfer.files[0]);});
+var _el_btn_import_confirm=ge('btn-import-confirm');if(_el_btn_import_confirm)_el_btn_import_confirm.addEventListener('click',confirmImport);
+
+// ── COMENTARIOS ──
+var _el_btn_save_comment=ge('btn-save-comment');if(_el_btn_save_comment)_el_btn_save_comment.addEventListener('click',saveComment);
+
+// ── APROBACIÓN ──
+var _el_btn_aprobar=ge('btn-aprobar');if(_el_btn_aprobar)_el_btn_aprobar.addEventListener('click',function(){procesarAprobacion(true);});
+var _el_btn_rechazar=ge('btn-rechazar');if(_el_btn_rechazar)_el_btn_rechazar.addEventListener('click',function(){procesarAprobacion(false);});
+
+// ── FIRMA CLIENTE ──
+var _el_btn_save_firma_cliente=ge('btn-save-firma-cliente');if(_el_btn_save_firma_cliente)_el_btn_save_firma_cliente.addEventListener('click',saveFirmaCliente);
+var _el_btn_clear_fc=ge('btn-clear-fc');if(_el_btn_clear_fc)_el_btn_clear_fc.addEventListener('click',function(){var c=ge('fc-canvas');if(_fcCtx)_fcCtx.clearRect(0,0,c.width,c.height);});
+
+// ── BOTONES EN TABLA OT (delegación) ──
+document.addEventListener('click',function(e){
+  var comBtn=e.target.closest('[data-comments]');
+  if(comBtn){openComments(comBtn.dataset.comments);return;}
+  var aprobBtn=e.target.closest('[data-aprob]');
+  if(aprobBtn){openAprobacion(aprobBtn.dataset.aprob);return;}
+  var fcBtn=e.target.closest('[data-firma-c]');
+  if(fcBtn){openFirmaCliente(fcBtn.dataset.firmaC);return;}
+});
+
+// ── FIRMA CLIENTE DESDE CHECKLIST ──
+var _el_btn_cl_firma_c=ge('btn-cl-firma-c');if(_el_btn_cl_firma_c)_el_btn_cl_firma_c.addEventListener('click',function(){closeM('m-checklist');openFirmaCliente(S.clOTId);});
+
+// ── BOTÓN IMPORTAR EN ORDENES ──
+var impBtn=ge('btn-import-excel');
+if(impBtn) impBtn.style.display=S.user&&S.user.rol==='admin'?'flex':'none';
+
+// ── RENDERPAGE updated ──
+
 
 // ── QR ──
 ge('btn-qr-download').addEventListener('click', downloadQR);
@@ -5223,13 +7559,13 @@ ge('btn-llegada-si').addEventListener('click', confirmarLlegadaSi);
 ge('btn-llegada-no').addEventListener('click', confirmarLlegadaNo);
 
 // ── LLEGADA: desde checklist bar ──
-ge('btn-cl-confirmar-llegada').addEventListener('click', function(){
+var _el_btn_cl_confirmar_llegada=ge('btn-cl-confirmar-llegada');if(_el_btn_cl_confirmar_llegada)_el_btn_cl_confirmar_llegada.addEventListener('click', function(){
   closeM('m-checklist');
   openLlegada(S.clOTId);
 });
 
 // ── GALERÍA desde checklist ──
-ge('btn-cl-galeria').addEventListener('click', function(){
+var _el_btn_cl_galeria=ge('btn-cl-galeria');if(_el_btn_cl_galeria)_el_btn_cl_galeria.addEventListener('click', function(){
   openGaleria(S.clOTId);
 });
 
@@ -5704,7 +8040,40 @@ if(S.user){
     ge('login-screen').style.display='none';
     ge('app').style.display='flex';
     showApp();
+    // Redirect non-admin to Mi Panel on restore
+    if(S.user.rol!=='admin'){
+      setTimeout(function(){ nav('mipanel'); },200);
+    }
   }catch(e){}
+}
+
+function nav(p){
+  // Fix mapa: destruir leaflet al salir de la página de mapa
+  if(p !== 'mapa' && leafletMap){
+    try{ leafletMap.remove(); leafletMap=null; leafletMarkers=[]; }catch(e){}
+  }
+  // Push state para el botón atrás de Android
+  try{ history.pushState({appPage:p},'',''); }catch(e){}
+  // Cambiar página activa
+  document.querySelectorAll('.page').forEach(function(pg){ pg.classList.remove('act'); });
+  var target = ge('page-'+p);
+  if(target) target.classList.add('act');
+  document.querySelectorAll('.ni').forEach(function(b){ b.classList.remove('act'); });
+  var nb = document.querySelector('.ni[data-page="'+p+'"]');
+  if(nb) nb.classList.add('act');
+  // Historial de navegación interno
+  if(!S.hist) S.hist=['dashboard'];
+  if(!S.hIdx && S.hIdx!==0) S.hIdx=0;
+  if(S.hist[S.hIdx] !== p){ S.hist=S.hist.slice(0,S.hIdx+1); S.hist.push(p); S.hIdx=S.hist.length-1; }
+  // Actualizar botones nav
+  var bk=ge('btn-back'), fw=ge('btn-fwd');
+  if(bk) bk.disabled=S.hIdx<=0;
+  if(fw) fw.disabled=S.hIdx>=S.hist.length-1;
+  updateMobileNavBtns();
+  // Renderizar página
+  renderPage(p);
+  // Cerrar sidebar en móvil
+  hideSidebar();
 }
 
 })();
