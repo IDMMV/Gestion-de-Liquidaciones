@@ -423,6 +423,20 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 .aprob-step.current{background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.4)}
 /* ── INFORME DE CAMPO ── */
 #itab-materiales .inf-mat-dest{background:var(--s2);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit;padding:7px 10px}
+/* ── INFORME TABS COLORES ── */
+.itab-btn{transition:background .2s,color .2s,border-color .2s}
+.itab-btn.tab-pendiente{background:rgba(248,81,73,.15)!important;border-color:var(--rd)!important;color:var(--rd)!important}
+.itab-btn.tab-proceso{background:rgba(56,139,253,.15)!important;border-color:var(--bl)!important;color:var(--bl)!important}
+.itab-btn.tab-completo{background:rgba(63,185,80,.15)!important;border-color:var(--gn)!important;color:var(--gn)!important}
+/* ── TIPO MATERIAL BUTTONS ── */
+.inf-mat-tipo-btn{background:var(--s3)!important;border:2px solid var(--br)!important;color:var(--t2)!important;display:flex!important;align-items:center!important;justify-content:center!important}
+.inf-mat-tipo-btn.act[data-tipo="consumido"]{border-color:var(--gn)!important;background:rgba(63,185,80,.15)!important;color:var(--gn)!important}
+.inf-mat-tipo-btn.act[data-tipo="devuelto"]{border-color:var(--bl)!important;background:rgba(56,139,253,.15)!important;color:var(--bl)!important}
+.inf-mat-tipo-btn.act[data-tipo="prestado"]{border-color:var(--or)!important;background:rgba(240,165,0,.15)!important;color:var(--or)!important}
+.inf-mat-tipo-btn.act[data-tipo="solicitado"]{border-color:var(--rd)!important;background:rgba(248,81,73,.15)!important;color:var(--rd)!important}
+/* ── UNIDADES LIST ── */
+.inf-unidad-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:var(--s3);border:1px solid var(--br);border-radius:20px;font-size:12px}
+.inf-unidad-chip .qty-badge{background:var(--ac);color:#000;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700}
 /* ── MI PANEL ── */
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 #mp-ot-list .card{transition:box-shadow .2s}
@@ -1667,20 +1681,30 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
       <button class="mc" data-close="m-informe">✕</button>
     </div>
     <div class="mb">
-      <!-- TABS del informe -->
-      <div class="tabs" style="margin-bottom:16px">
-        <button class="ltab act" data-itab="inicio">🚀 Inicio</button>
-        <button class="ltab" data-itab="materiales">🔩 Materiales</button>
-        <button class="ltab" data-itab="cierre">✅ Cierre</button>
+      <!-- TABS con colores de estado -->
+      <div class="tabs" style="margin-bottom:16px" id="inf-tabs">
+        <button class="ltab act itab-btn" data-itab="inicio" id="itab-btn-inicio">🚀 Inicio</button>
+        <button class="ltab itab-btn" data-itab="materiales" id="itab-btn-materiales">🔩 Materiales</button>
+        <button class="ltab itab-btn" data-itab="cierre" id="itab-btn-cierre">📋 Cierre</button>
       </div>
 
       <!-- TAB INICIO -->
       <div id="itab-inicio">
+        <!-- GPS + Hora de inicio -->
         <div style="background:var(--gl);border:1px solid var(--ac);border-radius:var(--r);padding:12px;margin-bottom:14px">
-          <div id="inf-llegada-status" style="font-size:13px;font-weight:600;margin-bottom:6px">📍 Confirmando ubicación...</div>
-          <div id="inf-gps-val" style="font-size:11px;color:var(--t2)"></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+            <div>
+              <div id="inf-llegada-status" style="font-size:13px;font-weight:600;margin-bottom:4px">📍 Confirmando ubicación...</div>
+              <div id="inf-gps-val" style="font-size:11px;color:var(--t2)"></div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:10px;color:var(--t2);margin-bottom:2px">HORA DE INICIO</div>
+              <div id="inf-hora-inicio-display" style="font-size:18px;font-weight:700;color:var(--ac);font-family:monospace">--:--</div>
+            </div>
+          </div>
           <button class="btn bp" id="btn-inf-gps" style="font-size:12px;margin-top:8px;padding:6px 14px">📍 Obtener GPS ahora</button>
         </div>
+
         <div class="field">
           <label>Estado inicial del trabajo</label>
           <select id="inf-estado-inicial">
@@ -1689,6 +1713,8 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
             <option value="inspeccion">🔍 Solo inspección</option>
           </select>
         </div>
+
+        <!-- Cuadrilla -->
         <div class="field">
           <label>👷 Integrantes de cuadrilla</label>
           <div id="inf-cuadrilla-list" style="margin-bottom:8px"></div>
@@ -1697,57 +1723,122 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
             <button class="btn bp" id="btn-add-cuadrilla" style="font-size:12px;padding:7px 12px">+ Agregar</button>
           </div>
         </div>
+
+        <!-- Unidades como lista con cantidad -->
         <div class="field">
-          <label>🚗 Unidades asignadas</label>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px" id="inf-unidades-check">
-            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Camioneta" style="accent-color:var(--ac)"/> 🚗 Camioneta</label>
-            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Brazo hidráulico" style="accent-color:var(--ac)"/> 🦾 Brazo hidráulico</label>
-            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Escalera" style="accent-color:var(--ac)"/> 🪜 Escalera</label>
-            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Generador" style="accent-color:var(--ac)"/> ⚡ Generador</label>
-            <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--s3);border-radius:var(--r);cursor:pointer;font-size:13px"><input type="checkbox" value="Compresora" style="accent-color:var(--ac)"/> 🔧 Compresora</label>
+          <label>🚗 Equipos y unidades asignadas</label>
+          <div style="margin-bottom:8px">
+            <div style="display:flex;gap:8px;margin-bottom:6px">
+              <select id="inf-unidad-sel" style="flex:1;padding:9px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:13px;font-family:inherit">
+                <option value="">-- Seleccionar equipo --</option>
+                <option value="Camioneta">🚗 Camioneta</option>
+                <option value="Brazo hidráulico">🦾 Brazo hidráulico</option>
+                <option value="Escalera">🪜 Escalera</option>
+                <option value="Generador">⚡ Generador</option>
+                <option value="Compresora">🔧 Compresora</option>
+                <option value="Motocicleta">🏍️ Motocicleta</option>
+                <option value="Camión grúa">🏗️ Camión grúa</option>
+                <option value="Otro">➕ Otro (escribir abajo)</option>
+              </select>
+              <input type="number" id="inf-unidad-qty" placeholder="Cant." min="1" value="1" style="width:70px;padding:9px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:13px;font-family:inherit;text-align:center"/>
+              <button class="btn bp" id="btn-inf-add-unidad" style="padding:9px 14px;font-size:13px">+</button>
+            </div>
+            <input type="text" id="inf-unidades-extra" placeholder="Otro equipo no listado..." style="width:100%;padding:8px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit;box-sizing:border-box"/>
           </div>
-          <input type="text" id="inf-unidades-extra" placeholder="Otras unidades (separadas por coma)..."/>
+          <div id="inf-unidades-list" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+          <!-- Hidden: mantener compatibilidad -->
+          <div id="inf-unidades-check" style="display:none"></div>
         </div>
+
         <div class="field">
           <label>Observaciones de inicio</label>
           <textarea id="inf-obs-inicio" placeholder="Condiciones del punto de trabajo, accesos, riesgos observados..." style="min-height:70px"></textarea>
         </div>
       </div>
 
-      <!-- TAB MATERIALES DE CAMPO -->
+      <!-- TAB MATERIALES -->
       <div id="itab-materiales" style="display:none">
         <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.6;background:var(--s3);padding:10px;border-radius:var(--r)">
-          Registra el estado de cada material. Indica si fue <b>consumido</b> en obra, <b>devuelto</b> al almacén, <b>prestado</b> a otra cuadrilla, o si necesitas <b>solicitar más</b>.
+          Primero elige el <b>estado del material</b>, luego ingresa los datos. Los prestados y solicitados quedan como pendientes en el sistema.
         </div>
-        <!-- Agregar material -->
-        <div style="display:grid;grid-template-columns:1fr 80px 80px;gap:7px;margin-bottom:10px">
-          <input type="text" id="inf-mat-desc" placeholder="Material..." style="padding:8px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit"/>
-          <input type="number" id="inf-mat-qty" placeholder="Cant." min="0" step="0.01" style="padding:8px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit;text-align:center"/>
-          <select id="inf-mat-unidad" style="padding:8px;background:var(--s3);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit">
-            <option>m</option><option>und</option><option>kg</option><option>rollo</option><option>caja</option>
-          </select>
+        <!-- Selector de tipo de operación primero -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px" id="inf-mat-tipo-btns">
+          <button class="btn inf-mat-tipo-btn act" data-tipo="consumido" style="flex-direction:column;padding:10px;font-size:12px;gap:3px;border-color:var(--gn);color:var(--gn)">
+            <span style="font-size:20px">✅</span><span>Consumido en obra</span>
+          </button>
+          <button class="btn inf-mat-tipo-btn" data-tipo="devuelto" style="flex-direction:column;padding:10px;font-size:12px;gap:3px">
+            <span style="font-size:20px">🔄</span><span>Devuelto al almacén</span>
+          </button>
+          <button class="btn inf-mat-tipo-btn" data-tipo="prestado" style="flex-direction:column;padding:10px;font-size:12px;gap:3px">
+            <span style="font-size:20px">🤝</span><span>Prestado a cuadrilla</span>
+          </button>
+          <button class="btn inf-mat-tipo-btn" data-tipo="solicitado" style="flex-direction:column;padding:10px;font-size:12px;gap:3px">
+            <span style="font-size:20px">📋</span><span>Solicitar más material</span>
+          </button>
         </div>
-        <button class="btn bp" id="btn-inf-add-mat" style="width:100%;justify-content:center;margin-bottom:14px;font-size:13px">+ Agregar material</button>
-        <!-- Lista de materiales con estado -->
+        <!-- Campos de material -->
+        <div style="background:var(--s3);border-radius:var(--r);padding:12px;margin-bottom:10px">
+          <div style="font-size:11px;color:var(--t2);margin-bottom:8px" id="inf-mat-tipo-label">✅ Ingresa el material <b>consumido</b>:</div>
+          <div style="display:grid;grid-template-columns:1fr 70px 70px;gap:7px;margin-bottom:8px">
+            <input type="text" id="inf-mat-desc" placeholder="Descripción del material..." style="padding:8px;background:var(--s2);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit"/>
+            <input type="number" id="inf-mat-qty" placeholder="Cant." min="0" step="0.01" style="padding:8px;background:var(--s2);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit;text-align:center"/>
+            <select id="inf-mat-unidad" style="padding:8px;background:var(--s2);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit">
+              <option>m</option><option>und</option><option>kg</option><option>rollo</option><option>caja</option><option>gl</option><option>juego</option>
+            </select>
+          </div>
+          <div id="inf-mat-dest-wrap" style="display:none;margin-bottom:8px">
+            <input type="text" id="inf-mat-dest-inp" placeholder="¿A qué cuadrilla se prestó?" style="width:100%;padding:8px;background:var(--s2);border:1px solid var(--br);border-radius:var(--r);color:var(--tx);font-size:12px;font-family:inherit;box-sizing:border-box"/>
+          </div>
+          <button class="btn bp" id="btn-inf-add-mat" style="width:100%;justify-content:center;font-size:13px">+ Agregar material</button>
+        </div>
         <div id="inf-mat-list"></div>
-        <!-- Panel de pendientes -->
         <div id="inf-pendientes-panel" style="display:none;margin-top:12px;background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.3);border-radius:var(--r);padding:12px">
-          <div style="font-size:12px;font-weight:600;color:var(--rd);margin-bottom:8px">⚠️ Materiales pendientes de resolución</div>
+          <div style="font-size:12px;font-weight:600;color:var(--rd);margin-bottom:8px">⚠️ Materiales pendientes</div>
           <div id="inf-pendientes-list" style="font-size:12px"></div>
         </div>
       </div>
 
       <!-- TAB CIERRE -->
       <div id="itab-cierre" style="display:none">
+        <!-- Hora de fin -->
+        <div style="background:var(--s3);border-radius:var(--r);padding:12px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:11px;color:var(--t2)">HORA DE INICIO</div>
+            <div id="inf-hora-inicio-cierre" style="font-size:15px;font-weight:700;font-family:monospace;color:var(--ac)">--:--</div>
+          </div>
+          <div style="font-size:20px;color:var(--t2)">→</div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:var(--t2)">HORA DE FIN</div>
+            <div id="inf-hora-fin-display" style="font-size:15px;font-weight:700;font-family:monospace;color:var(--gn)">--:--</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:var(--t2)">DURACIÓN</div>
+            <div id="inf-duracion-display" style="font-size:15px;font-weight:700;font-family:monospace;color:var(--tx)">0h 0min</div>
+          </div>
+        </div>
+
         <div class="field">
-          <label>Estado final del trabajo</label>
+          <label>Estado del trabajo al cerrar</label>
           <select id="inf-estado-final">
+            <option value="en_proceso">⚡ En proceso (continuar otro día)</option>
             <option value="completado">✅ Trabajo completado al 100%</option>
-            <option value="parcial">⚡ Completado parcialmente</option>
+            <option value="parcial">🔶 Completado parcialmente</option>
             <option value="suspendido">⏸ Trabajo suspendido</option>
             <option value="reprogramar">📅 Requiere reprogramación</option>
           </select>
         </div>
+
+        <!-- Advertencia para completado -->
+        <div id="inf-warn-completado" style="display:none;background:rgba(63,185,80,.1);border:1px solid var(--gn);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--gn)">
+          ✅ Al guardar, la OT pasará a estado <b>Completado</b> y se registrará la hora de fin del trabajo.
+        </div>
+        <div id="inf-warn-proceso" style="display:none;background:rgba(56,139,253,.1);border:1px solid var(--bl);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--bl)">
+          ⚡ La OT quedará como <b>En Curso</b>. Aparecerá como "Pendiente de informe de cierre" hasta que termines el trabajo.
+        </div>
+        <div id="inf-warn-suspendido" style="display:none;background:rgba(248,81,73,.1);border:1px solid var(--rd);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--rd)">
+          ⚠️ La OT pasará a <b>Observado</b>. Se registrará el motivo y se habilitará la opción de reprogramación.
+        </div>
+
         <div id="inf-suspension-fields" style="display:none">
           <div class="field">
             <label>Motivo de suspensión</label>
@@ -1761,10 +1852,11 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
             </select>
           </div>
           <div class="field">
-            <label>¿Se requiere reprogramar?</label>
-            <input type="date" id="inf-fecha-reprog" placeholder="Fecha sugerida de reprogramación"/>
+            <label>Fecha sugerida de reprogramación</label>
+            <input type="date" id="inf-fecha-reprog"/>
           </div>
         </div>
+
         <div class="field">
           <label>% de avance estimado</label>
           <div style="display:flex;align-items:center;gap:12px">
@@ -1774,7 +1866,7 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
         </div>
         <div class="field">
           <label>Observaciones finales</label>
-          <textarea id="inf-obs-final" placeholder="Describe el trabajo realizado, incidentes, recomendaciones..." style="min-height:90px"></textarea>
+          <textarea id="inf-obs-final" placeholder="Describe el trabajo realizado, incidentes, recomendaciones..." style="min-height:80px"></textarea>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
           <button class="btn bp" id="btn-inf-fotos" style="justify-content:center;padding:12px">📷 Adjuntar fotos</button>
@@ -6798,6 +6890,16 @@ function openInforme(otId){
   _infCuadrilla = [];
   _infMateriales = [];
   _infGPS = null;
+  _infUnidades = [];
+  _infMatTipo = 'consumido';
+  // Hora de inicio automática
+  infSetHoraInicio();
+  // Reset hora fin
+  var hf=ge('inf-hora-fin-display'); if(hf) hf.textContent='--:--';
+  var hd=ge('inf-duracion-display'); if(hd) hd.textContent='0h 0min';
+  // Reset tab colors
+  infUpdateTabColors('');
+  infSetMatTipo('consumido');
   var o = S.ordenes.find(function(x){return x.id===otId;}) || {ot:'—',zona:'—'};
   // Cargar informe anterior si existe
   var informes = loadInformes();
@@ -6947,7 +7049,10 @@ function saveInforme(){
   var estadoFinal=ge('inf-estado-final').value;
   var avance=parseInt(ge('inf-avance').value)||0;
   var obsFinal=(ge('inf-obs-final').value||'').trim();
-  var unidadesChecked=Array.from(ge('inf-unidades-check').querySelectorAll('input:checked')).map(function(cb){return cb.value;});
+  // Hora de fin automática
+  var horaFin=infSetHoraFin();
+  // Unidades del nuevo sistema
+  var unidadesChecked=_infUnidades.map(function(u){return u.nombre+(u.qty>1?' (x'+u.qty+')':'');});
   var unidadesExtra=(ge('inf-unidades-extra').value||'').trim();
   if(unidadesExtra) unidadesChecked.push(unidadesExtra);
   var informes=loadInformes();
@@ -6969,11 +7074,13 @@ function saveInforme(){
   saveInformes(informes);
   // Actualizar estado de la OT
   if(o){
-    if(estadoFinal==='completado') o.estado='Completado';
+    if(estadoFinal==='completado')  o.estado='Completado';
     else if(estadoFinal==='suspendido'||estadoFinal==='reprogramar') o.estado='Observado';
-    else if(estadoFinal==='parcial') o.estado='En Curso';
+    else if(estadoFinal==='parcial'||estadoFinal==='en_proceso') o.estado='En Curso';
     o.updated=new Date().toISOString();
     o.informe=informe;
+    o.horaFin=horaFin;
+    o.horaInicio=_infHoraInicio?_infHoraInicio.toISOString():null;
     saveAll();
   }
   // Registrar materiales pendientes en el sistema global
@@ -7281,6 +7388,111 @@ function mpIniciarTrabajo(otId){
   // Abrir informe de campo
   openInforme(otId);
 }
+
+// ─── INFORME: Variables globales adicionales ───
+var _infHoraInicio = null;
+var _infUnidades = []; // [{nombre, qty}]
+var _infMatTipo = 'consumido'; // tipo activo en materiales
+
+// ─── HORA DE INICIO ───
+function infSetHoraInicio(){
+  _infHoraInicio = new Date();
+  var hh=String(_infHoraInicio.getHours()).padStart(2,'0');
+  var mm=String(_infHoraInicio.getMinutes()).padStart(2,'0');
+  var txt = hh+':'+mm;
+  var d1=ge('inf-hora-inicio-display'); if(d1) d1.textContent=txt;
+  var d2=ge('inf-hora-inicio-cierre'); if(d2) d2.textContent=txt;
+}
+
+// ─── HORA DE FIN y DURACIÓN ───
+function infSetHoraFin(){
+  var now=new Date();
+  var hh=String(now.getHours()).padStart(2,'0');
+  var mm=String(now.getMinutes()).padStart(2,'0');
+  var txt=hh+':'+mm;
+  var d=ge('inf-hora-fin-display'); if(d) d.textContent=txt;
+  // Duración
+  if(_infHoraInicio){
+    var diffMs=now-_infHoraInicio;
+    var diffMin=Math.round(diffMs/60000);
+    var dur=Math.floor(diffMin/60)+'h '+( diffMin%60)+'min';
+    var dd=ge('inf-duracion-display'); if(dd) dd.textContent=dur;
+  }
+  return now.toISOString();
+}
+
+// ─── UNIDADES con cantidad ───
+function infRenderUnidades(){
+  var el=ge('inf-unidades-list'); if(!el) return;
+  el.innerHTML=_infUnidades.length?
+    _infUnidades.map(function(u,i){
+      return '<div class="inf-unidad-chip">'+u.nombre+
+        '<span class="qty-badge">x'+u.qty+'</span>'+
+        '<button onclick="infDelUnidad('+i+')" style="background:none;border:none;cursor:pointer;color:var(--rd);font-size:12px;padding:0;line-height:1">✕</button>'+
+      '</div>';
+    }).join(''):
+    '<span style="font-size:12px;color:var(--t3)">Sin equipos agregados</span>';
+}
+function infDelUnidad(i){ _infUnidades.splice(i,1); infRenderUnidades(); }
+function infAddUnidad(){
+  var sel=ge('inf-unidad-sel'), qty=parseInt(ge('inf-unidad-qty').value)||1;
+  var val=(sel&&sel.value)||'';
+  if(!val){ toast('Selecciona un equipo','error'); return; }
+  // Si elige Otro, usar el campo de texto
+  if(val==='Otro'){
+    var extra=(ge('inf-unidades-extra').value||'').trim();
+    if(!extra){ toast('Escribe el nombre del equipo','error'); return; }
+    val=extra; ge('inf-unidades-extra').value='';
+  }
+  // Evitar duplicados — sumar cantidad
+  var existing=_infUnidades.find(function(u){return u.nombre===val;});
+  if(existing){ existing.qty+=qty; }
+  else { _infUnidades.push({nombre:val, qty:qty}); }
+  sel.value=''; ge('inf-unidad-qty').value='1';
+  infRenderUnidades();
+}
+
+// ─── MATERIAL TIPO BUTTON ───
+function infSetMatTipo(tipo){
+  _infMatTipo=tipo;
+  document.querySelectorAll('.inf-mat-tipo-btn').forEach(function(b){
+    b.classList.toggle('act',b.dataset.tipo===tipo);
+  });
+  var labels={
+    consumido:'✅ Ingresa el material <b>consumido</b> en obra:',
+    devuelto:'🔄 Ingresa el material que se <b>devuelve</b> al almacén:',
+    prestado:'🤝 Ingresa el material <b>prestado</b> a otra cuadrilla:',
+    solicitado:'📋 Ingresa el material que necesitas <b>solicitar</b>:'
+  };
+  var lbl=ge('inf-mat-tipo-label'); if(lbl) lbl.innerHTML=labels[tipo]||'';
+  var destWrap=ge('inf-mat-dest-wrap');
+  if(destWrap) destWrap.style.display=tipo==='prestado'?'block':'none';
+}
+
+// ─── TABS con colores de estado ───
+function infUpdateTabColors(estadoFinal){
+  // cierre tab
+  var cierreBtn=ge('itab-btn-cierre');
+  if(!cierreBtn) return;
+  cierreBtn.classList.remove('tab-pendiente','tab-proceso','tab-completo');
+  if(estadoFinal==='completado'){ cierreBtn.classList.add('tab-completo'); cierreBtn.textContent='✅ Cierre'; }
+  else if(estadoFinal==='en_proceso'){ cierreBtn.classList.add('tab-proceso'); cierreBtn.textContent='⚡ En proceso'; }
+  else if(estadoFinal==='suspendido'||estadoFinal==='reprogramar'){ cierreBtn.classList.add('tab-pendiente'); cierreBtn.textContent='⚠️ Cierre'; }
+  else { cierreBtn.textContent='📋 Cierre'; }
+}
+
+// ─── ESTADO FINAL → warnings ───
+function infUpdateEstadoWarning(val){
+  ge('inf-warn-completado').style.display  = val==='completado'?'block':'none';
+  ge('inf-warn-proceso').style.display     = val==='en_proceso'?'block':'none';
+  ge('inf-warn-suspendido').style.display  = val==='suspendido'||val==='reprogramar'?'block':'none';
+  ge('inf-suspension-fields').style.display= val==='suspendido'||val==='reprogramar'?'block':'none';
+  infUpdateTabColors(val);
+  // Avance auto
+  var avance=ge('inf-avance'), avanceVal=ge('inf-avance-val');
+  if(val==='completado'&&avance){ avance.value=100; if(avanceVal)avanceVal.textContent='100%'; }
+  else if(val==='en_proceso'&&avance){ /* no change */ }
+}
 // ═══ EVENT LISTENERS ═══
 
 // Login
@@ -7385,8 +7597,13 @@ document.querySelectorAll('[data-itab]').forEach(function(btn){
 });
 // Estado final — mostrar campos de suspensión
 var _elEstFinal=ge('inf-estado-final');if(_elEstFinal)_elEstFinal.addEventListener('change',function(){
-  var susp=ge('inf-suspension-fields');
-  if(susp) susp.style.display=this.value==='suspendido'||this.value==='reprogramar'?'block':'none';
+  infUpdateEstadoWarning(this.value);
+});
+// Unidades: botón agregar
+var _elAddUnidad=ge('btn-inf-add-unidad');if(_elAddUnidad)_elAddUnidad.addEventListener('click',infAddUnidad);
+// Tipo material buttons
+document.querySelectorAll('.inf-mat-tipo-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){ infSetMatTipo(this.dataset.tipo); });
 });
 // Avance slider
 var _elAvance=ge('inf-avance');if(_elAvance)_elAvance.addEventListener('input',function(){
