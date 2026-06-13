@@ -980,8 +980,23 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
 
     <!-- ORDENES -->
     <div class="page" id="page-ordenes">
+      <!-- Banner gestión -->
+      <div style="background:linear-gradient(135deg,rgba(240,165,0,.12),rgba(240,165,0,.04));border-bottom:2px solid rgba(240,165,0,.3);padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:20px">⚙️</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--ac)">Zona de Gestión</div>
+            <div style="font-size:11px;color:var(--t2)">Crea, edita, asigna y gestiona todas las Órdenes de Trabajo</div>
+          </div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:11px;background:rgba(240,165,0,.15);color:var(--ac);border:1px solid rgba(240,165,0,.3);border-radius:20px;padding:3px 10px">✏️ Editar</span>
+          <span style="font-size:11px;background:rgba(248,81,73,.1);color:var(--rd);border:1px solid rgba(248,81,73,.3);border-radius:20px;padding:3px 10px">🗑 Eliminar</span>
+          <span style="font-size:11px;background:rgba(56,139,253,.1);color:var(--bl);border:1px solid rgba(56,139,253,.3);border-radius:20px;padding:3px 10px">📤 Importar</span>
+        </div>
+      </div>
       <div class="ph">
-        <div><h2>📋 Órdenes de Trabajo</h2><div class="sub">Checklist con 27 subcarpetas automáticas</div></div>
+        <div><h2>📋 Órdenes de Trabajo</h2><div class="sub">Gestión completa — crear, editar, asignar y eliminar OT</div></div>
         <div class="ph-right">
           <button class="btn bs" id="btn-expxls" style="font-size:12px">📥 Excel</button>
           <button class="btn bs" id="btn-import-excel" style="font-size:12px;display:none">📤 Importar</button>
@@ -1267,44 +1282,71 @@ select.fsel:focus{outline:none;border-color:var(--ac)}
         <p style="font-size:12px;color:var(--t3);margin-top:4px">El supervisor o coordinador te asignará trabajos.</p>
       </div>
 
-      <!-- PANEL GENERAL (solo lectura para técnicos) -->
-      <div class="card" style="margin-top:20px">
-        <div class="ch">
-          <h3>📋 Panel General — Todas las OT</h3>
-          <span style="font-size:11px;color:var(--t2);margin-left:auto">Solo lectura</span>
-        </div>
-        <div style="padding:8px 14px;border-bottom:1px solid var(--br);display:flex;gap:8px;flex-wrap:wrap">
-          <input type="text" id="mp-gen-search" placeholder="🔍 Buscar..." class="sf" style="flex:1;min-width:120px"/>
-          <select class="fsel" id="mp-gen-est"><option value="">Todos</option><option value="Pendiente">Pendiente</option><option value="En Curso">En Curso</option><option value="Completado">Completado</option><option value="Observado">Observado</option></select>
-          <select class="fsel" id="mp-gen-zona"><option value="">Todas las zonas</option></select>
-        </div>
-        <div style="overflow-x:auto">
-          <table style="min-width:600px">
-            <thead><tr><th>OT</th><th>Fecha</th><th>Zona</th><th>Alimentador</th><th>Estado</th><th>Asignado</th><th>Docs</th><th>Ver</th></tr></thead>
-            <tbody id="mp-gen-tbody"></tbody>
-          </table>
-        </div>
-      </div>
     </div>
 
     <!-- PANEL GENERAL -->
     <div class="page" id="page-panelgeneral">
+      <!-- Banner consulta -->
+      <div style="background:linear-gradient(135deg,rgba(56,139,253,.1),rgba(56,139,253,.03));border-bottom:2px solid rgba(56,139,253,.3);padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:20px">👁</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--bl)">Vista de Consulta — Solo lectura</div>
+            <div style="font-size:11px;color:var(--t2)">Revisa el historial de trabajos anteriores antes de ir a campo</div>
+          </div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:11px;background:rgba(56,139,253,.1);color:var(--bl);border:1px solid rgba(56,139,253,.3);border-radius:20px;padding:3px 10px">👁 Solo ver</span>
+          <span style="font-size:11px;background:rgba(63,185,80,.1);color:var(--gn);border:1px solid rgba(63,185,80,.3);border-radius:20px;padding:3px 10px">📷 Ver fotos</span>
+          <span style="font-size:11px;background:rgba(63,185,80,.1);color:var(--gn);border:1px solid rgba(63,185,80,.3);border-radius:20px;padding:3px 10px">📁 Ver docs</span>
+        </div>
+      </div>
       <div class="ph">
-        <div><h2>🌐 Panel General</h2><div class="sub">Todas las OT — consulta y seguimiento</div></div>
+        <div><h2>🌐 Panel General</h2><div class="sub">Consulta quién fue antes y qué trabajo se realizó</div></div>
         <div class="ph-right">
-          <input type="text" id="mp-gen-search" placeholder="🔍 Buscar OT..." class="sf" style="width:180px"/>
+          <input type="text" id="mp-gen-search" placeholder="🔍 Buscar OT, zona, alimentador..." class="sf" style="width:200px"/>
           <select class="fsel" id="mp-gen-est"><option value="">Todos los estados</option><option value="Pendiente">⏳ Pendiente</option><option value="En Curso">⚡ En Curso</option><option value="Completado">✅ Completado</option><option value="Observado">⚠️ Observado</option></select>
           <select class="fsel" id="mp-gen-zona"><option value="">Todas las zonas</option></select>
         </div>
       </div>
       <div class="sgrid" style="margin-bottom:14px" id="pg-stats"></div>
       <div class="card">
-        <div class="ch"><h3>📋 Registro de Órdenes de Trabajo</h3><span id="pg-count" style="font-size:12px;color:var(--t2);margin-left:auto"></span></div>
+        <div class="ch">
+          <h3>📋 Registro de Trabajos</h3>
+          <span id="pg-count" style="font-size:12px;color:var(--t2);margin-left:auto"></span>
+        </div>
+        <!-- Leyenda de colores -->
+        <div style="padding:8px 14px;border-bottom:1px solid var(--br);display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--t2)">
+          <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(63,185,80,.2);border:1px solid var(--gn);margin-right:4px"></span>Con informe completo</span>
+          <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(240,165,0,.15);border:1px solid var(--ac);margin-right:4px"></span>En curso / parcial</span>
+          <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:transparent;border:1px solid var(--br);margin-right:4px"></span>Sin informe</span>
+        </div>
         <div style="overflow-x:auto">
-          <table style="min-width:700px">
-            <thead><tr><th>OT</th><th>Fecha</th><th>Zona</th><th>Alimentador</th><th>Estado</th><th>Asignado</th><th>Informe</th><th>Checklist</th><th>Ver</th></tr></thead>
+          <table style="min-width:800px">
+            <thead>
+              <tr>
+                <th>OT</th>
+                <th>Fecha</th>
+                <th>Zona / Alimentador</th>
+                <th>Estado</th>
+                <th>Asignado</th>
+                <th style="color:var(--bl)">🕐 Última visita</th>
+                <th style="color:var(--bl)">👷 Cuadrilla</th>
+                <th>Checklist</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
             <tbody id="mp-gen-tbody"></tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- MODAL HISTORIAL DE OT -->
+      <div class="mover" id="m-ot-historial">
+        <div class="modal" style="max-width:500px">
+          <div class="mh"><h3>📜 Historial de visitas</h3><button class="mc" data-close="m-ot-historial">✕</button></div>
+          <div class="mb" id="ot-historial-body"></div>
+          <div class="mf"><button class="btn bs" data-close="m-ot-historial">Cerrar</button></div>
         </div>
       </div>
     </div>
@@ -7385,56 +7427,146 @@ function renderPanelGeneral(){
   // KPI rápidos
   var pgStats = ge('pg-stats');
   if(pgStats){
-    var tot=ots.length, pend=ots.filter(function(o){return o.estado==='Pendiente';}).length;
+    var tot=ots.length;
+    var pend=ots.filter(function(o){return o.estado==='Pendiente';}).length;
     var curso=ots.filter(function(o){return o.estado==='En Curso';}).length;
     var comp=ots.filter(function(o){return o.estado==='Completado';}).length;
+    var informesTot=Object.keys(loadInformes?loadInformes():{}).length;
     pgStats.innerHTML=[
-      {c:'y',ico:'📋',lbl:'Total',val:tot,sub:'filtradas'},
+      {c:'y',ico:'📋',lbl:'Total OT',val:tot,sub:'en el sistema'},
       {c:'r',ico:'⏳',lbl:'Pendientes',val:pend,sub:'por iniciar'},
       {c:'b',ico:'⚡',lbl:'En Curso',val:curso,sub:'en ejecución'},
-      {c:'g',ico:'✅',lbl:'Completadas',val:comp,sub:tot?Math.round(comp/tot*100)+'%':'0%'},
+      {c:'g',ico:'✅',lbl:'Con informe',val:informesTot,sub:'informes registrados'},
     ].map(function(s){return'<div class="sc '+s.c+'"><div class="slbl">'+s.lbl+'</div><div class="sval">'+s.val+'</div><div class="sico">'+s.ico+'</div><div class="ssub">'+s.sub+'</div></div>';}).join('');
   }
+  var pgCount=ge('pg-count');
+  if(pgCount) pgCount.textContent=ots.length+' OT mostradas';
 
-  var pgCount = ge('pg-count');
-  if(pgCount) pgCount.textContent = ots.length + ' OT';
-
-  var tbody = ge('mp-gen-tbody');
+  var tbody=ge('mp-gen-tbody');
   if(!tbody) return;
-  var informes = loadInformes ? loadInformes() : {};
+  var informes=loadInformes?loadInformes():{};
+  var tiempos=loadTiempo?loadTiempo():{};
+
   tbody.innerHTML = ots.length ? ots.map(function(o){
-    var ow  = S.users.find(function(u){return u.id===o.userId;})||{nombre:'—'};
-    var oF  = S.files.filter(function(f){return f.otId===o.id;});
-    var clD = CHECKLIST.filter(function(sf){return oF.some(function(f){return f.subFolder===sf;});}).length;
-    var clPct = Math.round(clD/CHECKLIST.length*100);
-    var inf = informes[o.id];
-    return '<tr>'+
-      '<td><b style="color:var(--ac)">'+o.ot+'</b><br><span style="font-size:10px;color:var(--t2)">'+(o.supervisor||'—')+'</span></td>'+
-      '<td style="white-space:nowrap;font-size:12px">'+o.fecha+'</td>'+
-      '<td style="font-size:12px">'+(o.zona||'—')+'</td>'+
-      '<td style="font-size:12px">'+(o.alimentador||'—')+'</td>'+
+    var ow   = S.users.find(function(u){return u.id===o.userId;})||{nombre:'—'};
+    var oF   = S.files.filter(function(f){return f.otId===o.id;});
+    var clD  = CHECKLIST.filter(function(sf){return oF.some(function(f){return f.subFolder===sf;});}).length;
+    var clPct= Math.round(clD/CHECKLIST.length*100);
+    var inf  = informes[o.id];
+    var tdata= tiempos[o.id];
+    var totalMin = tdata?tdata.sesiones.reduce(function(a,s){return a+(s.durMin||0);},0):0;
+
+    // Color de fila según estado de informe
+    var rowBg = inf && inf.estadoFinal==='completado' ? 'rgba(63,185,80,.06)' :
+                inf ? 'rgba(240,165,0,.06)' : 'transparent';
+    var rowBorder = inf && inf.estadoFinal==='completado' ? 'border-left:3px solid var(--gn)' :
+                    inf ? 'border-left:3px solid var(--ac)' : 'border-left:3px solid transparent';
+
+    // Última visita
+    var ultimaVisita = '—';
+    var ultimaCuadrilla = '—';
+    if(inf){
+      var fechaInf = new Date(inf.fechaInicio||o.updated);
+      var diasAtras = Math.floor((Date.now()-fechaInf)/86400000);
+      ultimaVisita = '<div style="font-size:12px;font-weight:600;color:'+(inf.estadoFinal==='completado'?'var(--gn)':'var(--ac)')+'">'+
+        inf.nombre+'</div>'+
+        '<div style="font-size:10px;color:var(--t2)">'+(diasAtras===0?'Hoy':diasAtras===1?'Ayer':diasAtras+'d atrás')+'</div>'+
+        '<div style="font-size:10px;color:'+(inf.estadoFinal==='completado'?'var(--gn)':'var(--or)')+'">'+
+          {completado:'✅ Completado',en_proceso:'⚡ En proceso',suspendido:'⏸ Suspendido',parcial:'🔶 Parcial',reprogramar:'📅 Reprogramar'}[inf.estadoFinal]||inf.estadoFinal+
+        '</div>';
+      ultimaCuadrilla = inf.cuadrilla&&inf.cuadrilla.length ?
+        '<div style="font-size:11px">'+inf.cuadrilla.slice(0,2).join('<br>')+(inf.cuadrilla.length>2?' +'+( inf.cuadrilla.length-2)+' más':'')+'</div>'+
+        (inf.unidades&&inf.unidades.length?'<div style="font-size:10px;color:var(--t2)">'+inf.unidades.slice(0,2).join(', ')+'</div>':''):
+        '<span style="color:var(--t3);font-size:11px">—</span>';
+    }
+
+    return '<tr style="background:'+rowBg+';'+rowBorder+'">'+
+      '<td>'+
+        '<b style="color:var(--ac);font-size:13px">'+o.ot+'</b>'+
+        '<div style="font-size:10px;color:var(--t2)">'+o.fecha+'</div>'+
+        (totalMin>0?'<div style="font-size:10px;color:var(--t2)">⏱ '+Math.floor(totalMin/60)+'h '+(totalMin%60)+'min</div>':'')+
+      '</td>'+
+      '<td style="font-size:12px">'+
+        '<div style="font-weight:600">'+(o.zona||'—')+'</div>'+
+        '<div style="font-size:11px;color:var(--t2)">'+(o.alimentador||'—')+'</div>'+
+      '</td>'+
       '<td><span class="badge '+ebadge(o.estado)+'" style="font-size:10px">'+o.estado+'</span></td>'+
       '<td style="font-size:12px">'+ow.nombre+'</td>'+
-      '<td style="font-size:11px;text-align:center">'+
-        (inf?'<span style="color:var(--gn)">✅ '+inf.estadoFinal+'<br>'+inf.avance+'% · '+inf.cuadrilla.slice(0,2).join(', ')+'</span>':
-             '<span style="color:var(--t3)">Sin informe</span>')+
-      '</td>'+
+      '<td>'+ultimaVisita+'</td>'+
+      '<td>'+ultimaCuadrilla+'</td>'+
       '<td style="text-align:center">'+
-        '<div style="background:var(--s3);border-radius:10px;height:5px;width:60px;margin:0 auto 2px">'+
-          '<div style="height:100%;border-radius:10px;background:var(--gn);width:'+clPct+'%"></div>'+
+        '<div style="background:var(--s3);border-radius:10px;height:6px;width:70px;margin:0 auto 3px">'+
+          '<div style="height:100%;border-radius:10px;background:'+(clPct===100?'var(--gn)':'var(--ac)')+';width:'+clPct+'%"></div>'+
         '</div>'+
-        '<span style="font-size:10px;color:var(--t2)">'+clD+'/'+CHECKLIST.length+'</span>'+
+        '<span style="font-size:10px;color:'+(clPct===100?'var(--gn)':'var(--t2)')+'">'+clD+'/'+CHECKLIST.length+'</span>'+
       '</td>'+
-      '<td>'+
-        '<button class="btn bi" data-ocl="'+o.id+'" title="Checklist" style="font-size:14px">📁</button>'+
-        '<button class="btn bi" data-galeria="'+o.id+'" title="Fotos" style="font-size:14px">📷</button>'+
-        '<button class="btn bi" data-comments="'+o.id+'" title="Comentarios" style="font-size:14px">💬</button>'+
+      '<td style="white-space:nowrap">'+
+        '<button class="btn bi" data-ocl="'+o.id+'" title="Ver documentos" style="font-size:14px">📁</button>'+
+        '<button class="btn bi" data-galeria="'+o.id+'" title="Ver fotos" style="font-size:14px">📷</button>'+
+        '<button class="btn bi" data-pg-hist="'+o.id+'" title="Historial de visitas" style="font-size:14px">📜</button>'+
       '</td>'+
     '</tr>';
-  }).join('') : '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--t2)">Sin OT que coincidan con los filtros</td></tr>';
+  }).join('') :
+  '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--t2)">'+
+    '<div style="font-size:32px;margin-bottom:8px">🔍</div>'+
+    '<p>Sin OT que coincidan con los filtros</p>'+
+  '</td></tr>';
 }
-// Alias para compatibilidad
+// Alias compatibilidad
 function renderMiPanelGeneral(){ renderPanelGeneral(); }
+
+// ── HISTORIAL DE VISITAS DE UNA OT ──
+function openOTHistorial(otId){
+  var o = S.ordenes.find(function(x){return x.id===otId;})||{ot:'—'};
+  var informes = loadInformes ? loadInformes() : {};
+  var inf = informes[otId];
+  var tiempos = loadTiempo ? loadTiempo()[otId] : null;
+  var body = ge('ot-historial-body');
+  if(!body) return;
+
+  var html = '<div style="font-size:14px;font-weight:700;color:var(--ac);margin-bottom:14px">'+o.ot+' — '+(o.zona||'—')+'</div>';
+
+  if(!inf && !(tiempos&&tiempos.sesiones.length)){
+    html += '<div style="text-align:center;padding:20px;color:var(--t2)"><div style="font-size:32px;margin-bottom:8px">📭</div><p>Sin visitas registradas aún</p></div>';
+  } else {
+    // Informe de campo
+    if(inf){
+      html += '<div style="background:var(--s3);border-radius:var(--r);padding:12px;margin-bottom:12px">'+
+        '<div style="font-size:12px;font-weight:700;color:var(--ac);margin-bottom:8px">📋 ÚLTIMO INFORME DE CAMPO</div>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">'+
+          '<div><span style="color:var(--t2)">Técnico:</span><br><b>'+inf.nombre+'</b></div>'+
+          '<div><span style="color:var(--t2)">Estado final:</span><br><b style="color:'+
+            (inf.estadoFinal==='completado'?'var(--gn)':inf.estadoFinal==='suspendido'?'var(--rd)':'var(--ac)')+'">'+
+            {completado:'✅ Completado',en_proceso:'⚡ En proceso',suspendido:'⏸ Suspendido',parcial:'🔶 Parcial'}[inf.estadoFinal]+
+          '</b></div>'+
+          '<div><span style="color:var(--t2)">Avance:</span><br><b>'+inf.avance+'%</b></div>'+
+          '<div><span style="color:var(--t2)">Fecha:</span><br><b>'+new Date(inf.fechaInicio||'').toLocaleDateString('es-PE')+'</b></div>'+
+        '</div>'+
+        (inf.cuadrilla&&inf.cuadrilla.length?'<div style="margin-top:8px;font-size:12px"><span style="color:var(--t2)">👷 Cuadrilla:</span> '+inf.cuadrilla.join(', ')+'</div>':'')+
+        (inf.unidades&&inf.unidades.length?'<div style="font-size:12px"><span style="color:var(--t2)">🚗 Unidades:</span> '+inf.unidades.join(', ')+'</div>':'')+
+        (inf.obsFinal?'<div style="margin-top:8px;font-size:12px;background:var(--s2);padding:8px;border-radius:var(--r);font-style:italic;color:var(--t2)">💬 "'+inf.obsFinal+'"</div>':'')+
+        (inf.materiales&&inf.materiales.length?
+          '<div style="margin-top:8px;font-size:11px;color:var(--t2)"><b>Materiales:</b> '+
+          inf.materiales.map(function(m){return m.desc+' ('+m.qty+' '+m.unidad+' — '+m.estado+')';}).join(' · ')+'</div>':'')+'</div>';
+    }
+    // Sesiones de tiempo
+    if(tiempos&&tiempos.sesiones.length){
+      var totalMin=tiempos.sesiones.reduce(function(a,s){return a+(s.durMin||0);},0);
+      html += '<div style="background:var(--s3);border-radius:var(--r);padding:12px">'+
+        '<div style="font-size:12px;font-weight:700;color:var(--ac);margin-bottom:8px">⏱ SESIONES DE TRABAJO ('+Math.floor(totalMin/60)+'h '+(totalMin%60)+'min total)</div>'+
+        tiempos.sesiones.map(function(s){
+          return '<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--br);font-size:12px">'+
+            '<span>'+new Date(s.inicio).toLocaleDateString('es-PE')+' '+new Date(s.inicio).toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})+'</span>'+
+            '<span style="color:var(--ac);font-weight:600">'+Math.floor(s.durMin/60)+'h '+(s.durMin%60)+'min</span>'+
+            (s.nota?'<span style="color:var(--t2);font-style:italic">'+s.nota+'</span>':'<span></span>')+
+          '</div>';
+        }).join('')+
+      '</div>';
+    }
+  }
+  body.innerHTML = html;
+  openM('m-ot-historial');
+}
 
 // Iniciar trabajo desde Mi Panel
 function mpIniciarTrabajo(otId){
@@ -7615,6 +7747,9 @@ document.addEventListener('click',function(e){
   if(btn){ mpIniciarTrabajo(btn.dataset.mpIniciar); return; }
   var inf=e.target.closest('[data-mp-informe]');
   if(inf){ openInforme(inf.dataset.mpInforme); return; }
+  // Historial de OT desde Panel General
+  var hist=e.target.closest('[data-pg-hist]');
+  if(hist){ openOTHistorial(hist.dataset.pgHist); return; }
 });
 
 
